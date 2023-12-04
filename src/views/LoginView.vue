@@ -45,14 +45,14 @@ export default {
   gap: 1rem;
 }
 
+img {
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
 input {
   border-radius: 8px;
   border: 1px solid lightgray;
   padding: 0.5rem;
-}
-
-img {
-  max-width: 40rem;
-  margin: 0 auto;
 }
 </style>
