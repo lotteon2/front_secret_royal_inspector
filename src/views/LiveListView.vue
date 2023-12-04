@@ -12,6 +12,7 @@
         :wait="item.wait"
         :deny="item.deny"
         :participation="item.participation"
+        @click="goDetailAuction(item.auctionId)"
       ></LiveItem>
     </div>
   </div>
@@ -55,6 +56,11 @@ export default {
       this.$router.push({
         path: '/live/add'
       })
+    },
+    goDetailAuction(auctionId) {
+      this.$router.push({
+        path: `/live/detail/${auctionId}`
+      })
     }
   }
 }
@@ -62,6 +68,7 @@ export default {
 
 <style lang="scss" scoped>
 .liveList {
+  cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;

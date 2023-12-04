@@ -20,17 +20,19 @@
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
             <span v-else>{{ item[key] }}</span>
           </td>
+          <CustomModal
+            v-if="popState"
+            :modalTitle="items[index].productName"
+            :modalImg="items[index].productImageUrl"
+            btnText1="반려"
+            btnText2="승인"
+            @btnClick1="handleDisapprove()"
+            @btnClick2="handleApprove()"
+          ></CustomModal>
         </tr>
       </tbody>
     </table>
   </div>
-  <CustomModal
-    v-if="popState"
-    btnText1="반려"
-    btnText2="승인"
-    @btnClick1="handleDisapprove()"
-    @btnClick2="handleApprove()"
-  ></CustomModal>
 </template>
 
 <script scoped>

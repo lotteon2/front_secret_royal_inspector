@@ -1,7 +1,8 @@
 <template>
   <div class="modal-wrap">
     <div class="modal-container">
-      MODAL
+      <h2>{{ modalTitle }}</h2>
+      <img :src="modalImg" alt="modal Img" />
       <div class="modal-btn">
         <button @click="$emit('btnClick1', false)">{{ btnText1 }}</button>
         <button @click="$emit('btnClick2', false)">{{ btnText2 }}</button>
@@ -14,6 +15,8 @@
 export default {
   name: 'CustomModal',
   props: {
+    modalTitle: { type: String },
+    modalImg: { type: String },
     btnText1: { type: String },
     btnText2: { type: String }
   }
@@ -40,5 +43,23 @@ export default {
   border-radius: 10px;
   padding: 20px;
   box-sizing: border-box;
+
+  img {
+    width: 10rem;
+    height: 10rem;
+  }
+}
+
+.modal-btn {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+  button {
+    width: 30%;
+    padding: 0.5rem 0;
+    font-size: 1rem;
+    font-weight: 700;
+  }
 }
 </style>
