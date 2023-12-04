@@ -58,6 +58,14 @@ const routes = [
         meta: {
           title: '라이브경매등록'
         }
+      },
+      {
+        path: '/live/detail/:id',
+        name: 'live/detail',
+        component: () => import('@/views/LiveDetailView.vue'),
+        meta: {
+          title: '라이브경매 상세 페이지'
+        }
       }
     ]
   }

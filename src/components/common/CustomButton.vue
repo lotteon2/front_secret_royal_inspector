@@ -4,7 +4,7 @@
   </button>
 </template>
 
-<script>
+<script scoped>
 export default {
   name: 'CustomButton',
   props: {

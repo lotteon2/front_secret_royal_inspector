@@ -81,6 +81,7 @@ export default {
   gap: 1rem;
   margin: 3rem auto;
 }
+
 input {
   border-radius: 8px;
   border: 1px solid lightgray;
