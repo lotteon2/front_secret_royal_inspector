@@ -2,7 +2,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import MainLayout from '@/layouts/MainLayout.vue'
 import LoginLayout from '@/layouts/LoginLayout.vue'
 import DashBoardView from '@/views/DashBoardView.vue'
-import LoginView from '@/views/LoginView.vue'
 
 const routes = [
   {
@@ -42,6 +41,22 @@ const routes = [
         component: () => import('@/views/DashBoardView.vue'),
         meta: {
           title: '대시보드'
+        }
+      },
+      {
+        path: '/live',
+        name: 'live',
+        component: () => import('@/views/LiveListView.vue'),
+        meta: {
+          title: '라이브경매'
+        }
+      },
+      {
+        path: '/live/add',
+        name: 'live/add',
+        component: () => import('@/views/LiveAddView.vue'),
+        meta: {
+          title: '라이브경매등록'
         }
       }
     ]

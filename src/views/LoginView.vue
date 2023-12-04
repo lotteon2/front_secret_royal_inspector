@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts" scoped>
-import CustomButton from '../components/common/CustomButton.vue'
+import CustomButton from '@/components/common/CustomButton.vue'
 
 export default {
   components: {
@@ -47,10 +47,12 @@ export default {
 
 input {
   border-radius: 8px;
-  border-color: 1px solid var(--light-gray);
+  border: 1px solid lightgray;
   padding: 0.5rem;
 }
 
 img {
+  max-width: 40rem;
+  margin: 0 auto;
 }
 </style>

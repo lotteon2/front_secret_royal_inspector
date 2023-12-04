@@ -1,21 +1,20 @@
 <template>
   <header>
-    <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand" href="#" active-class="active">
+    <nav>
+      <RouterLink to="/dashboard">
         <img
-          src="./assets/logo.svg"
+          src="@/assets/logo.svg"
           alt="logo"
           width="30"
           height="24"
           class="d-inline-block align-text-top"
         />
-        전통주.
-      </a>
-      <a href="#" active-class="active">회원</a>
-      <a href="#" active-class="active">주모</a>
-      <a href="#" active-class="active">상품</a>
-      <a href="#" active-class="active">주문내역</a>
-      <a href="#" active-class="active">라이브경매</a>
+      </RouterLink>
+      <RouterLink to="/user">회원</RouterLink>
+      <RouterLink to="/user">주모</RouterLink>
+      <RouterLink to="/user">상품</RouterLink>
+      <RouterLink to="/user">주문내역</RouterLink>
+      <RouterLink to="/live">라이브경매</RouterLink>
     </nav>
   </header>
 </template>
@@ -30,4 +29,21 @@ export default defineComponent({
 })
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+nav {
+  width: 50%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+}
+a {
+  text-decoration: none;
+  color: black;
+  &:hover,
+  &:active {
+    color: #aab3ff;
+  }
+}
+</style>

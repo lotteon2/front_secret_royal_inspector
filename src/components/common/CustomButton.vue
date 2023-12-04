@@ -22,6 +22,7 @@ button {
   border: none;
   background-color: #94e8b4;
   color: white;
+  cursor: pointer;
 }
 
 /* 비활성화 상태일 때 배경색을 회색으로 설정 */
