@@ -59,7 +59,7 @@ export default {
   methods: {
     goDetailUser(item) {
       this.$router.push({
-        path: `/user/userDetail/${item.consumerId}`
+        path: `/user/userDetail/${item.consumerId}/orderList`
       })
     }
   }

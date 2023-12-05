@@ -71,7 +71,7 @@ const routes = [
   },
   {
     path: '/user',
-    name: 'mainLayout',
+    name: 'user',
     component: () => import('@/layouts/MainLayout.vue'),
     meta: {
       requiresAuth: true
@@ -92,10 +92,42 @@ const routes = [
         component: () => import('@/views/User/UserDetailView.vue'),
         meta: {
           title: '유저 디테일'
-        }
+        },
+        children: [
+          {
+            path: 'orderList',
+            component: () => import('@/views/User/UserDetailOrderView.vue')
+          },
+          {
+            path: 'point',
+            component: () => import('@/views/User/UserDetailPointView.vue')
+          },
+          {
+            path: 'credit',
+            component: () => import('@/views/User/UserDetailCreditView.vue')
+          },
+          {
+            path: 'auction',
+            component: () => import('@/views/User/UserDetailAuctionView.vue')
+          }
+        ]
       }
     ]
   }
+  // {
+  //   path: '/userDetail/:userId',
+  //   component: () => import('@/views/User/UserDetailView.vue'),
+  //   children: [
+  //     {
+  //       path: 'orderList',
+  //       component: () => import('@/views/User/UserDetailOrderView.vue')
+  //     },
+  //     {
+  //       path: 'point',
+  //       component: () => import('@/views/User/UserDetailPointView.vue')
+  //     }
+  //   ]
+  // }
 ]
 
 const router = createRouter({
