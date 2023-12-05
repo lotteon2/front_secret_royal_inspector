@@ -46,7 +46,7 @@ const routes = [
       {
         path: '/live',
         name: 'live',
-        component: () => import('@/views/LiveListView.vue'),
+        component: () => import('@/views/Live/LiveListView.vue'),
         meta: {
           title: '라이브경매'
         }
@@ -54,7 +54,7 @@ const routes = [
       {
         path: '/live/add',
         name: 'live/add',
-        component: () => import('@/views/LiveAddView.vue'),
+        component: () => import('@/views/Live/LiveAddView.vue'),
         meta: {
           title: '라이브경매등록'
         }
@@ -62,7 +62,7 @@ const routes = [
       {
         path: '/live/detail/:id',
         name: 'live/detail',
-        component: () => import('@/views/LiveDetailView.vue'),
+        component: () => import('@/views/Live/LiveDetailView.vue'),
         meta: {
           title: '라이브경매 상세 페이지'
         }
