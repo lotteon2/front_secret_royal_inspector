@@ -11,7 +11,7 @@
       <tbody>
         <!-- 데이터 바인딩 -->
         <tr v-for="(item, index) in items" :key="index">
-          <td v-for="key in headerKey" :key="key + index">
+          <td v-for="key in headerKey" :key="key + index" @click="$emit('rowClick', item)">
             <img
               v-if="key === 'storeImageUrl' || key === 'thumbnail'"
               :src="item[key]"

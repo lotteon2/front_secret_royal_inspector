@@ -1,9 +1,9 @@
 <template>
   <div class="userList">
     <div class="infoSection">
-      <div>자세한 내역이 궁금하다면 눌러주세요</div>
+      <div>행을 클릭하면 유저 상세 페이지로 이동해요.</div>
     </div>
-    <CustomTable :headers="header" :items="items"></CustomTable>
+    <CustomTable :headers="header" :items="items" @rowClick="goDetailUser"></CustomTable>
   </div>
 </template>
 
@@ -57,15 +57,9 @@ export default {
     }
   },
   methods: {
-    addAuction() {
-      console.log('here')
+    goDetailUser(item) {
       this.$router.push({
-        path: '/live/add'
-      })
-    },
-    goDetailAuction(auctionId) {
-      this.$router.push({
-        path: `/live/detail/${auctionId}`
+        path: `/user/userDetail/${item.consumerId}`
       })
     }
   }
