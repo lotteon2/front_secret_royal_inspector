@@ -1,6 +1,6 @@
 <template>
-  <div class="userList">
-    <div class="infoSection">
+  <div class="user-list">
+    <div class="user-list__info-section">
       <div>행을 클릭하면 유저 상세 페이지로 이동해요.</div>
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="goDetailUser"></CustomTable>
@@ -67,13 +67,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.userList {
+.user-list {
   cursor: pointer;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  .infoSection {
+  .user-list__info-section {
     display: flex;
     align-items: center;
     justify-content: space-between;

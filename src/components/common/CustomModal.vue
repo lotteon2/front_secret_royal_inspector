@@ -2,10 +2,10 @@
   <div class="modal-wrap">
     <div class="modal-container">
       <h2>{{ modalTitle }}</h2>
-      <img :src="modalImg" alt="modal Img" />
+      <img :src="modalImg" alt="modal Img" v-if="modalImg" />
       <div class="modal-btn">
-        <button @click="$emit('btnClick1', false)">{{ btnText1 }}</button>
-        <button @click="$emit('btnClick2', false)">{{ btnText2 }}</button>
+        <button @click="$emit('btnClick1', false)" class="btn1">{{ btnText1 }}</button>
+        <button @click="$emit('btnClick2', false)" class="btn2">{{ btnText2 }}</button>
       </div>
     </div>
   </div>
@@ -60,6 +60,12 @@ export default {
     padding: 0.5rem 0;
     font-size: 1rem;
     font-weight: 700;
+    border-radius: 12px;
+    border: none;
+  }
+
+  .btn2 {
+    background-color: #aab3ff;
   }
 }
 </style>
