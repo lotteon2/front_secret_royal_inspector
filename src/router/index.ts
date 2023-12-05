@@ -68,6 +68,33 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/user',
+    name: 'mainLayout',
+    component: () => import('@/layouts/MainLayout.vue'),
+    meta: {
+      requiresAuth: true
+    },
+    children: [
+      {
+        path: '',
+        index: true,
+        name: 'userList',
+        component: () => import('@/views/User/UserListView.vue'),
+        meta: {
+          title: '유저 리스트'
+        }
+      },
+      {
+        path: '/userDetail',
+        name: 'userDetail',
+        component: () => import('@/views/User/UserDetailView.vue'),
+        meta: {
+          title: '유저 디테일'
+        }
+      }
+    ]
   }
 ]
 

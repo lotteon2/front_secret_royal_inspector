@@ -13,7 +13,7 @@
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="key in headerKey" :key="key + index">
             <img
-              v-if="key === 'storeImageUrl'"
+              v-if="key === 'storeImageUrl' || key === 'thumbnail'"
               :src="item[key]"
               style="width: 3rem; height: 3rem"
             />
