@@ -1,5 +1,7 @@
 <template>
-  <div>USER ORDER</div>
+  <div>USER ORDER
+    포인트 적립 , 사용
+  </div>
 </template>
 
 <script>

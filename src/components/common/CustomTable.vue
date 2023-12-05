@@ -9,13 +9,11 @@
         </tr>
       </thead>
       <tbody>
-        <!-- 데이터 바인딩 -->
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="key in headerKey" :key="key + index" @click="$emit('rowClick', item)">
-            <img
-              v-if="key === 'storeImageUrl' || key === 'thumbnail'"
-              :src="item[key]"
-              style="width: 3rem; height: 3rem"
+            <CustomAvatar
+              v-if="key === 'storeImageUrl' || key === 'thumbnail' || key === 'productImageUrl'"
+              :imgSrc="item[key]"
             />
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
             <span v-else>{{ item[key] }}</span>
@@ -37,10 +35,12 @@
 
 <script scoped>
 import CustomModal from '@/components/common/CustomModal.vue'
+import CustomAvatar from '@/components/common/CustomAvatar.vue'
 export default {
   name: 'CustomTable',
   components: {
-    CustomModal
+    CustomModal,
+    CustomAvatar
   },
   props: {
     headers: { type: Array, required: true },

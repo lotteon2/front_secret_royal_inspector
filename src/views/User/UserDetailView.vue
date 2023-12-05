@@ -12,10 +12,10 @@
         >경매 크레딧</RouterLink
       >
       <RouterLink to="/user/userDetail/3/auction" :class="{ active: isActive('auction') }"
-        >경매 낙찰 내역</RouterLink
+        >경매 참여 내역</RouterLink
       >
     </div>
-    <div>
+    <div class="user-detail__sub">
       <RouterView></RouterView>
     </div>
   </div>
@@ -28,6 +28,9 @@ export default {
   components: {
     UserCard
   },
+  mounted() {
+    this.$router.replace('/user/userDetail/3/orderList')
+  },
   methods: {
     isActive(route) {
       return this.$route.path.includes(route)
@@ -39,17 +42,23 @@ export default {
 <style lang="scss" scoped>
 .user-detail {
   margin-top: 2rem;
-
+  display: flex;
+  align-items: center;
+  flex-direction: column;
   .user-detail__menu {
     display: flex;
     gap: 1rem;
     margin: 2rem 0;
     justify-content: center;
   }
+
+  .user-detail__sub {
+    width: 100%;
+  }
   a {
     text-decoration: none;
     border-radius: 4px;
-    background-color: #94e8b4;
+    background-color: #9db0a3;
     padding: 0.3rem;
     color: white;
     &:hover,
