@@ -66,6 +66,47 @@ const routes = [
         meta: {
           title: '라이브경매 상세 페이지'
         }
+      },
+      {
+        path: '/jumo',
+        name: 'jumo/list',
+        component: () => import('@/views/Jumo/JumoListView.vue'),
+        meta: {
+          title: '주모 리스트'
+        },
+        children: [
+          {
+            path: '',
+            index: true,
+            name: 'jumoList',
+            component: () => import('@/views/Jumo/JumoListView.vue'),
+            meta: {
+              title: '유저 리스트'
+            }
+          },
+          {
+            path: 'jumoDetail/:sellerId',
+            name: 'jumoDetail',
+            component: () => import('@/views/Jumo/JumoDetailView.vue'),
+            meta: {
+              title: '유저 디테일'
+            },
+            children: [
+              {
+                path: 'orderList',
+                component: () => import('@/views/Jumo/JumoDetailOrderView.vue')
+              },
+              {
+                path: 'cashup',
+                component: () => import('@/views/Jumo/JumoDetailCashupView.vue')
+              },
+              {
+                path: 'products',
+                component: () => import('@/views/Jumo/JumoDetailProductsView.vue')
+              }
+            ]
+          }
+        ]
       }
     ]
   },

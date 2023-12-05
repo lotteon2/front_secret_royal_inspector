@@ -11,7 +11,7 @@
         />
       </RouterLink>
       <RouterLink to="/user">회원</RouterLink>
-      <RouterLink to="/user">주모</RouterLink>
+      <RouterLink to="/jumo">주모</RouterLink>
       <RouterLink to="/user">상품</RouterLink>
       <RouterLink to="/user">주문내역</RouterLink>
       <RouterLink to="/live">라이브경매</RouterLink>
