@@ -10,7 +10,8 @@
 <script scoped>
 import LiveItem from '@/components/Auction/LiveItem.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
-
+import { getConsumerList } from '@/api/consumer/consumerAPIService.ts'
+import { useToast } from 'vue-toastification'
 export default {
   components: { CustomTable },
   data() {
@@ -26,34 +27,7 @@ export default {
         { text: '가입일', value: 'createdAt' },
         { text: '탈퇴 여부', value: 'isDeleted' }
       ],
-      items: [
-        {
-          consumerId: 1,
-          thumbnail:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp',
-          nickName: '마덤보',
-          email: 'dumbo@naver.com',
-          phoneNumber: '010-0101-0101',
-          point: 300,
-          credit: 1000,
-          isYangban: true,
-          createdAt: '2023-11-26',
-          isDeleted: true
-        },
-        {
-          consumerId: 2,
-          thumbnail:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp',
-          nickName: '마덤보22',
-          email: 'dumbo@naver.com',
-          phoneNumber: '010-0101-0101',
-          point: 300,
-          credit: 1000,
-          isYangban: false,
-          createdAt: '2023-11-26',
-          isDeleted: false
-        }
-      ]
+      items: []
     }
   },
   methods: {
@@ -61,7 +35,26 @@ export default {
       this.$router.push({
         path: `/user/userDetail/${item.consumerId}`
       })
+    },
+    async getConsumerList(page, size) {
+      const toast = useToast()
+      try {
+        const data = await getConsumerList(page, size)
+        if (data.code === 200) {
+          toast.success(`회원 정보들을 성공적으로 불러왔어요.`, {
+            timeout: 2000
+          })
+          this.items = data.data.content
+        }
+      } catch (error) {
+        toast.fail(`회원 정보들을 불러오는데 실패했어요.`, {
+          timeout: 2000
+        })
+      }
     }
+  },
+  mounted() {
+    this.getConsumerList(0, 10)
   }
 }
 </script>
