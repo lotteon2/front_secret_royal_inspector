@@ -9,6 +9,8 @@
 
 <script>
 import CustomTable from '@/components/common/CustomTable.vue'
+import { getSellerList } from '@/api/seller/sellerAPIService'
+import { useToast } from 'vue-toastification'
 export default {
   components: { CustomTable },
   data() {
@@ -24,73 +26,7 @@ export default {
         { text: '가입일', value: 'createdAt' },
         { text: '탈퇴 여부', value: 'isActivate' }
       ],
-      items: [
-        {
-          sellerId: 1,
-          email: 'seller1@naver.com',
-          businessmanName: '이우쪽',
-          storeName: '우리도가',
-          storePhoneNumber: '0701234567',
-          createdAt: '2023-10-11T10:10:11',
-          approvalState: 'ALLOW',
-          isActivate: true,
-          storeDescription: '맛있는 술 싸게 팔아요',
-          storeImageUrl:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
-        },
-        {
-          sellerId: 2,
-          email: 'seller2@naver.com',
-          businessmanName: '김우쪽',
-          storeName: '우리도가',
-          storePhoneNumber: '0701234567',
-          createdAt: '2023-10-11T10:10:11',
-          approvalState: 'ALLOW',
-          isActivate: true,
-          storeDescription: '맛있는 술 싸게 팔아요',
-          storeImageUrl:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
-        },
-        {
-          sellerId: 3,
-          email: 'seller3@naver.com',
-          businessmanName: '장장우쪽',
-          storeName: '우리도가',
-          storePhoneNumber: '0701234567',
-          createdAt: '2023-10-11T10:10:11',
-          approvalState: 'ALLOW',
-          isActivate: true,
-          storeDescription: '맛있는 술 싸게 팔아요',
-          storeImageUrl:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
-        },
-        {
-          sellerId: 4,
-          email: 'seller4@naver.com',
-          businessmanName: '최최우쪽',
-          storeName: '우리도가',
-          storePhoneNumber: '0701234567',
-          createdAt: '2023-10-11T10:10:11',
-          approvalState: 'WAIT',
-          isActivate: true,
-          storeDescription: '맛있는 술 싸게 팔아요',
-          storeImageUrl:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
-        },
-        {
-          sellerId: 5,
-          email: 'seller5@naver.com',
-          businessmanName: '마우쪽',
-          storeName: '우리도가',
-          storePhoneNumber: '0701234567',
-          createdAt: '2023-10-11T10:10:11',
-          approvalState: 'DENY',
-          isActivate: true,
-          storeDescription: '맛있는 술 싸게 팔아요',
-          storeImageUrl:
-            'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
-        }
-      ]
+      items: []
     }
   },
   methods: {
@@ -98,7 +34,26 @@ export default {
       this.$router.push({
         path: `/jumo/jumoDetail/${item.sellerId}`
       })
+    },
+    async getSellerList() {
+      const toast = useToast()
+      try {
+        const data = await getSellerList(0, 'hi', 10)
+        if (data.code === 200) {
+          this.items = data.data.content
+          toast.success('주모 정보를 불러왔어요.', {
+          timeout: 2000
+        })
+        }
+      } catch (err) {
+        toast.error('주모 정보를 불러오는데 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
+  },
+  mounted() {
+    this.getSellerList()
   }
 }
 </script>
