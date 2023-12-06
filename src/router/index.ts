@@ -36,6 +36,22 @@ const routes = [
         }
       },
       {
+        path: 'product',
+        name: 'product',
+        component: () => import('@/views/ProductView.vue'),
+        meta: {
+          title: '상품'
+        }
+      },
+      {
+        path: 'orderList',
+        name: 'orderList',
+        component: () => import('@/views/OrderListView.vue'),
+        meta: {
+          title: '상품'
+        }
+      },
+      {
         path: '/live',
         name: 'live',
         component: () => import('@/views/Live/LiveListView.vue'),
@@ -148,20 +164,6 @@ const routes = [
       }
     ]
   }
-  // {
-  //   path: '/userDetail/:userId',
-  //   component: () => import('@/views/User/UserDetailView.vue'),
-  //   children: [
-  //     {
-  //       path: 'orderList',
-  //       component: () => import('@/views/User/UserDetailOrderView.vue')
-  //     },
-  //     {
-  //       path: 'point',
-  //       component: () => import('@/views/User/UserDetailPointView.vue')
-  //     }
-  //   ]
-  // }
 ]
 
 const router = createRouter({
