@@ -21,33 +21,14 @@
 <script scoped>
 import LiveItem from '@/components/Auction/LiveItem.vue'
 import CustomButton from '@/components/common/CustomButton.vue'
+import { getAuctionList } from '@/api/auction/auctionAPIService.ts'
+import { useToast } from 'vue-toastification'
 
 export default {
   components: { CustomButton, LiveItem },
   data() {
     return {
-      liveList: [
-        {
-          auctionId: '4dfc6b14-7213-3363-8009-b23c56e3a1b1',
-          title: '제 20회 복순도가 경매대회',
-          description: '누가 가져갈 것인가 복순도가',
-          startDate: '2023-12-08T17:00:00',
-          endDate: '',
-          status: 'BEFORE',
-          wait: 4,
-          allow: 3,
-          deny: 1
-        },
-        {
-          auctionId: '4dfc6b14-7213-3363-8009-b23c56e3a1b2',
-          title: '제 19회 복순도가 경매대회',
-          description: '내가바로 복순도가',
-          startDate: '2023-12-01T17:00:00',
-          endDate: '',
-          status: 'ING',
-          participation: 5
-        }
-      ]
+      liveList: []
     }
   },
   methods: {
@@ -61,7 +42,26 @@ export default {
       this.$router.push({
         path: `/live/detail/${auctionId}`
       })
+    },
+    async getAuctionList(page, size) {
+      const toast = useToast()
+      try {
+        const data = await getAuctionList(page, size)
+        if (data.code === 200) {
+          this.liveList = data.data.content
+          toast.success('라이브 경매 내역을 불러왔어요.', {
+            timeout: 2000
+          })
+        }
+      } catch (error) {
+        toast.error('라이브 경매 내역을 불러오는데 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
+  },
+  mounted() {
+    this.getAuctionList(0, 10)
   }
 }
 </script>
