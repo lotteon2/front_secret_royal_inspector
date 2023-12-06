@@ -11,7 +11,8 @@
 
 <script lang="ts" scoped>
 import CustomButton from '@/components/common/CustomButton.vue'
-
+import { localLogin } from '@/api/authentication/authAPIService'
+import { useToast } from 'vue-toastification'
 export default {
   components: {
     CustomButton
@@ -23,9 +24,23 @@ export default {
     }
   },
   methods: {
-    login() {
-      console.log('email', this.email)
-      console.log('password', this.password)
+    async login() {
+      const toast = useToast()
+      try {
+        const data = await localLogin({ email: this.email, password: this.password })
+        if (data.code === 200) {
+          this.$router.push('/')
+          localStorage.setItem('accessToken', data.data.accessToken)
+
+          toast.success('로그인 성공했어요.', {
+            timeout: 2000
+          })
+        }
+      } catch (err) {
+        toast.error('로그인 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
   },
   computed: {
