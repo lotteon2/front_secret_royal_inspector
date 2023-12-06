@@ -68,7 +68,7 @@ export default {
         const data = await registerAuction({
           title: this.title,
           description: this.description,
-          startDate: this.startDate.toLocaleDateString()
+          startDate: this.startDate.toLocaleDateString().replace(/ /g, '')
         })
         if (data.code === 200) {
           toast.success('라이브 경매 등록에 성공했어요.', {
