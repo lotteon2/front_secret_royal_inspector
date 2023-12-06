@@ -3,7 +3,8 @@ import type {
   ApproveSellerParams,
   ApproveSellerResponse,
   GetSellerInfoResponse,
-  GetSellerListResponse
+  GetSellerListResponse,
+  WidthDrawSellerResponse
 } from './sellerAPIService.types'
 
 // TODO: 배포시 URl 변경
@@ -25,6 +26,13 @@ export const approveSeller = async (params: ApproveSellerParams) => {
   const { data } = await authAxiosInstance.patch<ApproveSellerResponse>(
     `/seller-service/api/sellers/judge`,
     params
+  )
+  return data
+}
+
+export const withDrawSeller = async (sellerId: number) => {
+  const { data } = await authAxiosInstance.delete<WidthDrawSellerResponse>(
+    `/seller-service/api/sellers/${sellerId}`
   )
   return data
 }

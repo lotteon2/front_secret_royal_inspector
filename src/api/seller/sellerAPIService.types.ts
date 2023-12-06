@@ -74,3 +74,5 @@ export type GetSellerListResponse = ApiResponse<Page<GetSellerListResponseData[]
 export type GetSellerInfoResponse = ApiResponse<GetSellerInfoResponseData>
 
 export type ApproveSellerResponse = ApiResponse<string>
+
+export type WidthDrawSellerResponse = ApiResponse<string>

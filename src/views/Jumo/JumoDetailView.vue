@@ -25,7 +25,7 @@ mergeProps } from 'vue';
         <CustomButton
           v-if="this.isActivate === true"
           btnText="탈퇴시키기"
-          :handleClick="() => approveSeller('ALLOW')"
+          :handleClick="() => withDrawSeller()"
           btnType="negative"
         />
       </div>
@@ -52,7 +52,11 @@ mergeProps } from 'vue';
 <script>
 import CustomButton from '@/components/Common/CustomButton.vue'
 import UserCard from '@/components/UserCard/UserCard.vue'
-import { getSellerInfoBySellerId, approveSeller } from '@/api/seller/sellerAPIService.ts'
+import {
+  getSellerInfoBySellerId,
+  approveSeller,
+  withDrawSeller
+} from '@/api/seller/sellerAPIService.ts'
 import { useToast } from 'vue-toastification'
 export default {
   components: {
@@ -94,6 +98,22 @@ export default {
         }
       } catch (err) {
         toast.error(`주모 ${approvalState === 'ALLOW' ? '승인' : '반려'}이 실패했어요.`, {
+          timeout: 2000
+        })
+      }
+    },
+    async withDrawSeller() {
+      const toast = useToast()
+      try {
+        const data = await withDrawSeller(this.sellerId)
+        if (data.code === 200) {
+          toast.success(`주모 탈퇴가 완료됐어요.`, {
+            timeout: 2000
+          })
+          this.isActivate = false
+        }
+      } catch (err) {
+        toast.error('주모 탈퇴가 실패했어요.', {
           timeout: 2000
         })
       }
