@@ -38,7 +38,7 @@ export interface Page<T> {
 export type GetConsumerListResponseData = {
   consumerId: number
   thumbnail: string
-  nickName: string
+  name: string
   email: string
   phoneNumber: string
   point: number
@@ -51,7 +51,7 @@ export type GetConsumerListResponseData = {
 export type GetConsumerInfoByConsumerIdResponseData = {
   consumerId: number
   thumbnail: string
-  nickName: string
+  name: string
   email: string
   phoneNumber: string
   point: number

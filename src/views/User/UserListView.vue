@@ -18,7 +18,7 @@ export default {
     return {
       header: [
         { text: '', value: 'thumbnail' },
-        { text: '성함', value: 'nickName' },
+        { text: '성함', value: 'name' },
         { text: '이메일', value: 'email' },
         { text: '전화번호', value: 'phoneNumber' },
         { text: '포인트', value: 'point' },

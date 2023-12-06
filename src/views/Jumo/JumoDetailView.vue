@@ -33,7 +33,9 @@
         :class="{ active: isActive('products') }"
         >상품 내역</RouterLink
       >
-      <RouterLink to="/jumo/jumoDetail/3/orderList" :class="{ active: isActive('orderList') }"
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/orderList`"
+        :class="{ active: isActive('orderList') }"
         >주문 내역</RouterLink
       >
       <RouterLink to="/jumo/jumoDetail/3/cashup" :class="{ active: isActive('cashup') }"
