@@ -1,7 +1,14 @@
 <template>
   <div class="modal-wrap">
     <div class="modal-container">
-      <h2>{{ modalTitle }}</h2>
+      <div v-if="canUpdate === false">
+        <h2>{{ modalTitle }}</h2>
+        <h3>{{ modalDesc }}</h3>
+      </div>
+      <div v-else>
+        <input :value="modalTitle" @input="$emit('editTitle', $event.target.value)" />
+        <input :value="modalDesc" @input="$emit('editDesc', $event.target.value)" />
+      </div>
       <img :src="modalImg" alt="modal Img" v-if="modalImg" />
       <div class="modal-btn">
         <button @click="$emit('btnClick1')" class="btn1">{{ btnText1 }}</button>
@@ -17,8 +24,10 @@ export default {
   props: {
     modalTitle: { type: String },
     modalImg: { type: String },
+    modalDesc: { type: String },
     btnText1: { type: String },
-    btnText2: { type: String }
+    btnText2: { type: String },
+    canUpdate: { type: Boolean, default: false }
   }
 }
 </script>
@@ -48,6 +57,14 @@ export default {
     width: 10rem;
     height: 10rem;
   }
+  input {
+    border-radius: 8px;
+    border: 1px solid lightgray;
+    padding: 0.5rem;
+    width: 90%;
+    box-sizing: border-box;
+    margin: 0.5rem;
+  }
 }
 
 .modal-btn {
@@ -62,6 +79,7 @@ export default {
     font-weight: 700;
     border-radius: 12px;
     border: none;
+    cursor: pointer;
   }
 
   .btn2 {

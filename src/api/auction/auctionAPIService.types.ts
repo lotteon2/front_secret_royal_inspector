@@ -41,6 +41,11 @@ export type RegisterAuctionParams = {
   startDate: string
 }
 
+export type UpdateAuctionParams = {
+  title: string
+  description: string
+}
+
 export type GetAuctionListResponseData = {
   auctionId: string
   title: string
@@ -88,3 +93,6 @@ export type GetAuctionListResponse = ApiResponse<Page<GetAuctionListResponseData
 export type GetAuctionDetailByAuctionIdResponse =
   ApiResponse<GetAuctionDetailByAuctionIdResponseData>
 export type ApproveAuctionByAuctionProductIdResponse = ApiResponse<string>
+export type UpdateAuctionResponse = ApiResponse<string>
+export type DeleteAuctionResponse = ApiResponse<string>
+export type StartStreamResponse = ApiResponse<string>

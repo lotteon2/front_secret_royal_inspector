@@ -7,6 +7,23 @@
       </div>
       <div class="live-detail__desc__date">{{ startDate }} - {{ endDate }}</div>
     </div>
+    <div class="live-detail__btns">
+      <CustomButton
+        v-if="this.status === 'BEFORE'"
+        btnText="수정하기"
+        :handleClick="openEditModal"
+      ></CustomButton>
+      <CustomButton
+        v-if="this.status === 'BEFORE'"
+        btnText="삭제하기"
+        :handleClick="deleteAuction"
+      ></CustomButton>
+      <CustomButton
+        v-if="this.status === 'BEFORE'"
+        btnText="방송하기"
+        :handleClick="startStreaming"
+      ></CustomButton>
+    </div>
     <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
     <CustomModal
       v-if="this.status !== 'BEFORE' && popState"
@@ -16,6 +33,18 @@
       @btnClick1="() => handleApprove('CONFIRM')"
       @btnClick2="() => handleApprove('DENY')"
     ></CustomModal>
+    <CustomModal
+      v-if="this.status !== 'AFTER' && updateModalPopState"
+      :canUpdate="true"
+      :modalTitle="this.updateModalTitle"
+      :modalDesc="this.updateModalDesc"
+      @editTitle="handleChangeEditModalTitle"
+      @editDesc="handleChangeEditModalDesc"
+      btnText1="닫기"
+      btnText2="수정"
+      @btnClick1="() => changeEditModalPopState()"
+      @btnClick2="() => editAuction()"
+    ></CustomModal>
   </div>
 </template>
 
@@ -23,9 +52,13 @@
 import AuctionState from '@/components/Auction/AuctionState.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import CustomModal from '@/components/common/CustomModal.vue'
+import CustomButton from '@/components/common/CustomButton.vue'
 import {
   getAuctionDetailByAuctionId,
-  approveAuctionByAuctionProductId
+  approveAuctionByAuctionProductId,
+  startStream,
+  updateAuction,
+  deleteAuction
 } from '@/api/auction/auctionAPIService.ts'
 import { useToast } from 'vue-toastification'
 export default {
@@ -33,7 +66,8 @@ export default {
   components: {
     AuctionState,
     CustomTable,
-    CustomModal
+    CustomModal,
+    CustomButton
   },
   mounted() {
     this.auctionId = this.$route.params.auctionId
@@ -52,17 +86,86 @@ export default {
       header: [],
       items: [],
       popState: false,
-      modalTitle: ''
+      modalTitle: '',
+      updateModalPopState: false,
+      updateModalTitle: '',
+      updateModalDesc: ''
     }
   },
   methods: {
     changePopState() {
       this.popState = !this.popState
     },
+    changeEditModalPopState() {
+      this.updateModalPopState = !this.updateModalPopState
+    },
+    handleChangeEditModalTitle(title) {
+      console.log(title)
+      this.updateModalTitle = title
+    },
+    handleChangeEditModalDesc(desc) {
+      this.updateModalDesc = desc
+    },
     handleClickRow(items) {
       this.changePopState()
       this.modalTitle = items.sellerName
       this.auctionProductId = items.auctionProductId
+    },
+    openEditModal() {
+      this.changeEditModalPopState()
+      this.updateModalTitle = this.title
+      this.updateModalDesc = this.description
+    },
+    async deleteAuction() {
+      const toast = useToast()
+      try {
+        const data = await deleteAuction(this.auctionId)
+        if (data.code === 200) {
+          toast.success(`성공적으로 경매가 삭제됐어요.`, {
+            timeout: 2000
+          })
+          this.$router.replace('/live')
+        }
+      } catch (err) {
+        toast.error('경매 삭제에 실패했어요.', {
+          timeout: 2000
+        })
+      }
+    },
+    async editAuction() {
+      const toast = useToast()
+      try {
+        const data = await updateAuction(this.auctionId, {
+          title: this.updateModalTitle,
+          description: this.updateModalDesc
+        })
+        if (data.code === 200) {
+          toast.success(`성공적으로 경매가 수정됐어요.`, {
+            timeout: 2000
+          })
+          this.title = this.updateModalTitle
+          this.description = this.updateModalDesc
+        }
+      } catch (err) {
+        toast.error('경매 수정에 실패했어요.', {
+          timeout: 2000
+        })
+      }
+    },
+    async startStreaming() {
+      const toast = useToast()
+      try {
+        const data = await startStream(this.auctionId)
+        if (data.code === 200) {
+          toast.success(`성공적으로 방송이 시작됐어요.`, {
+            timeout: 2000
+          })
+        }
+      } catch (err) {
+        toast.error('방송 시작에 실패했어요.', {
+          timeout: 2000
+        })
+      }
     },
     async handleApprove(approvalState) {
       const toast = useToast()
