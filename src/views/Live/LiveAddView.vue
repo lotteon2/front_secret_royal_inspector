@@ -1,11 +1,11 @@
 <template>
   <div class="liveAdd">
     <div>
-      <div class="label">라이브 경매 이름</div>
+      <div class="label">라이브 경매 이름(3자 이상)</div>
       <input v-model="title" placeholder="라이브 경매 이름을 입력해주세요." />
     </div>
     <div>
-      <div class="label">라이브 경매 설명</div>
+      <div class="label">라이브 경매 설명(3자 이상)</div>
       <input v-model="description" placeholder="라이브 경매 설명을 입력해주세요." />
     </div>
     <div>
@@ -33,8 +33,10 @@
 <script lang="ts" scoped>
 import { ref, reactive } from 'vue'
 import CustomButton from '@/components/common/CustomButton.vue'
+import { registerAuction } from '@/api/auction/auctionAPIService'
 import Datepicker from 'vue3-datepicker'
 import { ko } from 'date-fns/locale'
+import { useToast } from 'vue-toastification'
 
 export default {
   components: {
@@ -60,8 +62,25 @@ export default {
     }
   },
   methods: {
-    addAuction() {
-      console.log(this.title, this.description, this.startDate)
+    async addAuction() {
+      const toast = useToast()
+      try {
+        const data = await registerAuction({
+          title: this.title,
+          description: this.description,
+          startDate: this.startDate.toLocaleDateString().replace(/ /g, '')
+        })
+        if (data.code === 200) {
+          toast.success('라이브 경매 등록에 성공했어요.', {
+            timeout: 2000
+          })
+          this.$router.replace('/live')
+        }
+      } catch (error) {
+        toast.error('라이브 경매 등록에 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
   },
   computed: {

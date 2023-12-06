@@ -38,7 +38,7 @@ export default {
     async getSellerList() {
       const toast = useToast()
       try {
-        const data = await getSellerList(0, 'hi', 10)
+        const data = await getSellerList(0, 10)
         if (data.code === 200) {
           this.items = data.data.content
           toast.success('주모 정보를 불러왔어요.', {

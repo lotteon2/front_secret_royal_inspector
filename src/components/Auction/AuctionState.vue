@@ -1,42 +1,51 @@
 <template>
-  <div>{{ translateState }}</div>
+  <div class="auction-state">{{ this.translatedState }}</div>
 </template>
 
 <script>
 export default {
   name: 'AuctionState',
-  props: {
-    state: {
-      type: String,
-      default: '진행 중'
+  props: ['state'],
+  data() {
+    return {
+      translatedState: ''
     }
   },
-  computed: {
+  watch: {
+    state() {
+      this.translateState()
+    }
+  },
+  methods: {
     translateState() {
-      let translatedState = ''
+      console.log(this.state)
       switch (this.state) {
         case 'BEFORE':
-          translatedState = '진행 예정'
+          this.translatedState = '진행 예정'
           break
         case 'ING':
-          translatedState = '진행 중'
+          this.translatedState = '진행 중'
           break
         case 'AFTER':
-          translatedState = '진행 완료'
+          this.translatedState = '진행 완료'
           break
         default:
-          translatedState = '진행 완료'
+          this.translatedState = '진행 완료'
           break
       }
-      return translatedState
+      return '?'
     }
+  },
+  mounted() {
+    this.translateState()
   }
 }
 </script>
 
 <style lang="scss" scoped>
-div {
-  background-color: white;
+.auction-state {
+  background-color: #94e8b4;
+  color: white;
   border-radius: 8px;
   height: 1.5rem;
   line-height: 1.5rem;
