@@ -8,7 +8,11 @@
       <div class="live-detail__desc__date">{{ startDate }} - {{ endDate }}</div>
     </div>
     <div class="live-detail__btns">
-      <CustomButton btnText="수정하기" :handleClick="openEditModal"></CustomButton>
+      <CustomButton
+        v-if="this.status === 'BEFORE'"
+        btnText="수정하기"
+        :handleClick="openEditModal"
+      ></CustomButton>
       <CustomButton
         v-if="this.status === 'BEFORE'"
         btnText="삭제하기"
