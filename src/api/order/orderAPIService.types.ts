@@ -49,4 +49,20 @@ export type GetOrderListBySellerIdResponseData = {
   isAuction: boolean
 }
 
+export type GetOrderListByConsumerIdResponseData = {
+  ordersId: number
+  productId: string
+  productName: string
+  productCount: number
+  productTotalAmount: number
+  orderDate: string
+  paymentType: string
+  orderStatus: 'ORDER' | 'CANCEL' | 'SHIPPING' | 'COMPLETED' | 'CONFIRMED'
+  isAuction: boolean
+}
+
 export type GetOrderListBySellerIdResponse = ApiResponse<Page<GetOrderListBySellerIdResponseData[]>>
+
+export type GetOrderListByConsumerIdResponse = ApiResponse<
+  Page<GetOrderListByConsumerIdResponseData[]>
+>

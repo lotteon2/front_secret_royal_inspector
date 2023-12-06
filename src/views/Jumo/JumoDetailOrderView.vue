@@ -24,7 +24,7 @@ export default {
           this.items = data.data.content
         }
       } catch (error) {
-        toast.fail(`주모 주문내역들을 불러오는데 실패했어요.`, {
+        toast.error(`주모 주문내역들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
       }
