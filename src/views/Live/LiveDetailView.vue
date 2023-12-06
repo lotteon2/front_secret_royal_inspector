@@ -12,7 +12,7 @@
       <CustomButton
         v-if="this.status === 'BEFORE'"
         btnText="삭제하기"
-        :handleClick="startStreaming"
+        :handleClick="deleteAuction"
       ></CustomButton>
       <CustomButton
         v-if="this.status === 'BEFORE'"
@@ -53,7 +53,8 @@ import {
   getAuctionDetailByAuctionId,
   approveAuctionByAuctionProductId,
   startStream,
-  updateAuction
+  updateAuction,
+  deleteAuction
 } from '@/api/auction/auctionAPIService.ts'
 import { useToast } from 'vue-toastification'
 export default {
@@ -110,6 +111,22 @@ export default {
       this.changeEditModalPopState()
       this.updateModalTitle = this.title
       this.updateModalDesc = this.description
+    },
+    async deleteAuction() {
+      const toast = useToast()
+      try {
+        const data = await deleteAuction(this.auctionId)
+        if (data.code === 200) {
+          toast.success(`성공적으로 경매가 삭제됐어요.`, {
+            timeout: 2000
+          })
+          this.$router.replace('/live')
+        }
+      } catch (err) {
+        toast.error('경매 삭제에 실패했어요.', {
+          timeout: 2000
+        })
+      }
     },
     async editAuction() {
       const toast = useToast()
