@@ -3,14 +3,37 @@ import type { log } from 'console'; import type router from '@/router'; import t
 mergeProps } from 'vue';
 <template>
   <div class="jumo-detail">
-    <UserCard
-      :email="email"
-      :nickName="storeName"
-      :thumbnail="storeImageUrl"
-      :phoneNumber="storePhoneNumber"
-    ></UserCard>
+    <div class="jumo-detail__header">
+      <UserCard
+        :email="email"
+        :nickName="storeName"
+        :thumbnail="storeImageUrl"
+        :phoneNumber="storePhoneNumber"
+      ></UserCard>
+      <div class="jumo-detail__header__btns">
+        <CustomButton
+          v-if="this.approvalState === 'WAIT'"
+          btnText="승인하기"
+          :handleClick="() => approveSeller('ALLOW')"
+        />
+        <CustomButton
+          v-if="this.approvalState === 'WAIT'"
+          btnText="반려하기"
+          :handleClick="() => approveSeller('DENY')"
+          btnType="negative"
+        />
+        <CustomButton
+          v-if="this.isActivate === true"
+          btnText="탈퇴시키기"
+          :handleClick="() => approveSeller('ALLOW')"
+          btnType="negative"
+        />
+      </div>
+    </div>
     <div class="jumo-detail__menu">
-      <RouterLink to="/jumo/jumoDetail/3/products" :class="{ active: isActive('products') }"
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/products`"
+        :class="{ active: isActive('products') }"
         >상품 내역</RouterLink
       >
       <RouterLink to="/jumo/jumoDetail/3/orderList" :class="{ active: isActive('orderList') }"
@@ -27,12 +50,14 @@ mergeProps } from 'vue';
 </template>
 
 <script>
+import CustomButton from '@/components/Common/CustomButton.vue'
 import UserCard from '@/components/UserCard/UserCard.vue'
-import { getSellerInfoBySellerId } from '@/api/seller/sellerAPIService.ts'
+import { getSellerInfoBySellerId, approveSeller } from '@/api/seller/sellerAPIService.ts'
 import { useToast } from 'vue-toastification'
 export default {
   components: {
-    UserCard
+    UserCard,
+    CustomButton
   },
   data() {
     return {
@@ -40,7 +65,9 @@ export default {
       email: '',
       storeName: '',
       storePhoneNumber: '',
-      storeImageUrl: ''
+      storeImageUrl: '',
+      approvalState: null,
+      isActivate: null
     }
   },
   mounted() {
@@ -51,6 +78,25 @@ export default {
   methods: {
     isActive(route) {
       return this.$route.path.includes(route)
+    },
+    async approveSeller(approvalState) {
+      const toast = useToast()
+      try {
+        const data = await approveSeller({
+          sellerId: this.sellerId,
+          approvalState
+        })
+        if (data.code === 200) {
+          toast.success(`주모 ${approvalState === 'ALLOW' ? '승인' : '반려'}이 완료됐어요.`, {
+            timeout: 2000
+          })
+          this.approvalState = approvalState
+        }
+      } catch (err) {
+        toast.error(`주모 ${approvalState === 'ALLOW' ? '승인' : '반려'}이 실패했어요.`, {
+          timeout: 2000
+        })
+      }
     },
     async getSellerDetailInfo() {
       const toast = useToast()
@@ -64,6 +110,8 @@ export default {
           this.storeName = data.data.storeName
           this.storePhoneNumber = data.data.storePhoneNumber
           this.storeImageUrl = data.data.storeImageUrl
+          this.approvalState = data.data.approvalState
+          this.isActivate = data.data.isActivate
         }
       } catch (err) {
         toast.error('주모 상세 정보를 불러오는데 실패했어요.', {
@@ -81,6 +129,18 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  .jumo-detail__header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    .jumo-detail__header__btns {
+      display: flex;
+      gap: 0.5rem;
+      flex-direction: column;
+    }
+  }
   .jumo-detail__menu {
     display: flex;
     gap: 1rem;

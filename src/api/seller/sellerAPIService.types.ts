@@ -47,7 +47,16 @@ export type ApproveSellerParams = {
 }
 
 export type GetSellerListResponseData = {
-  accessToken: string
+  sellerId: number
+  email: string
+  businessmanName: string
+  storeName: string
+  storePhoneNumber: string
+  createdAt: string
+  approvalState: 'ALLOW' | 'WAIT' | 'DENY'
+  isActivate: boolean
+  storeDescription: string
+  storeImageUrl: string
 }
 
 export type GetSellerInfoResponseData = {
@@ -56,11 +65,12 @@ export type GetSellerInfoResponseData = {
   storeName: string
   storePhoneNumber: string
   storeImageUrl: string
+  approvalState: 'ALLOW' | 'DENY'
+  isActivate: boolean
 }
-
 
 export type GetSellerListResponse = ApiResponse<Page<GetSellerListResponseData[]>>
 
 export type GetSellerInfoResponse = ApiResponse<GetSellerInfoResponseData>
 
-export type ApproveSellerResponse = ApiResponse<string>;
+export type ApproveSellerResponse = ApiResponse<string>

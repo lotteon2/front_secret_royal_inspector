@@ -18,6 +18,8 @@
 <script>
 import CustomTable from '@/components/common/CustomTable.vue'
 import CustomModal from '@/components/common/CustomModal.vue'
+import { approveSeller } from '@/api/seller/sellerAPIService.ts'
+import { useToast } from 'vue-toastification'
 export default {
   components: {
     CustomTable,
@@ -28,10 +30,11 @@ export default {
       this.popState = !this.popState
     },
     handleChangeVisibilityToVisible() {
-      //승인
+      //공개로 바꾸기
       console.log('승인')
-      this.changePopState()
+      this.changePopState();      
     },
+
     handleChangeVisibilityToInVisible() {
       console.log('반려')
       this.changePopState()
@@ -45,6 +48,7 @@ export default {
   },
   data() {
     return {
+      sellerId: -1,
       popState: false,
       modalTitle: '',
       isActivate: null,
@@ -80,6 +84,10 @@ export default {
         }
       ]
     }
+  },
+  mounted() {
+    this.sellerId = this.$route.params.sellerId
+    console.log(this.sellerId)
   }
 }
 </script>
