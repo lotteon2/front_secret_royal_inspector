@@ -5,14 +5,6 @@ import DashBoardView from '@/views/DashBoardView.vue'
 
 const routes = [
   {
-    path: '/',
-    name: 'Dashboard',
-    component: DashBoardView,
-    meta: {
-      layout: MainLayout
-    }
-  },
-  {
     path: '/login',
     name: 'loginLayout',
     component: () => import('@/layouts/LoginLayout.vue'),
@@ -37,7 +29,7 @@ const routes = [
     children: [
       {
         path: 'dashboard',
-        name: 'dashboard',
+        name: '',
         component: () => import('@/views/DashBoardView.vue'),
         meta: {
           title: '대시보드'
