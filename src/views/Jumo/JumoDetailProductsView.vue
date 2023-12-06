@@ -19,7 +19,6 @@
 import CustomTable from '@/components/common/CustomTable.vue'
 import CustomModal from '@/components/common/CustomModal.vue'
 import { updateProductVisibility } from '@/api/product/productAPIService.ts'
-import { getProductListBySellerId } from '@/api/search/searchAPIService.ts'
 import { useToast } from 'vue-toastification'
 
 export default {
@@ -30,22 +29,6 @@ export default {
   methods: {
     changePopState() {
       this.popState = !this.popState
-    },
-    async getProductListBySellerId(page, size) {
-      const toast = useToast()
-      try {
-        const data = await getProductListBySellerId(this.sellerId, page, size)
-        if (data.code === 200) {
-          toast.success(`주모의 상품들을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
-          this.items = data.data.content
-        }
-      } catch (error) {
-        toast.fail(`주모의 상품들을 불러오는데 실패했어요.`, {
-          timeout: 2000
-        })
-      }
     },
     async handleChangeVisibility(isActivate) {
       const toast = useToast()
@@ -88,12 +71,33 @@ export default {
         { text: '쇼츠', value: 'shortsId' },
         { text: '공개여부', value: 'isActivate' }
       ],
-      items: []
+      items: [
+        {
+          productId: '280a8a4d-a27f-4d01-b031-2a003cc4c039',
+          productName: '복순도가',
+          totalSalesCount: 100,
+          productPrice: 30000,
+          stockQuantity: 5,
+          reviewCount: 3,
+          shortsId: 12,
+          isActivate: true
+        },
+        {
+          productId: '280a8a4d-a27f-4d01-b031-2a003cc4c030',
+          productName: '안동소주',
+          totalSalesCount: 100,
+          productPrice: 20000,
+          stockQuantity: 5,
+          reviewCount: 3,
+          shortsId: 10,
+          isActivate: true
+        }
+      ]
     }
   },
   mounted() {
     this.sellerId = this.$route.params.sellerId
-    this.getProductListBySellerId(0, 10)
+    console.log(this.sellerId)
   }
 }
 </script>

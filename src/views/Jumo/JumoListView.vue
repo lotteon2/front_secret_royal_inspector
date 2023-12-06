@@ -24,7 +24,7 @@ export default {
         { text: '주모소개', value: 'storeDescription' },
         { text: '승인여부', value: 'approvalState' },
         { text: '가입일', value: 'createdAt' },
-        { text: '탈퇴 여부', value: 'isActivate' }
+        { text: '탈퇴 여부', value: 'isDeleted' }
       ],
       items: []
     }
@@ -42,8 +42,8 @@ export default {
         if (data.code === 200) {
           this.items = data.data.content
           toast.success('주모 정보를 불러왔어요.', {
-          timeout: 2000
-        })
+            timeout: 2000
+          })
         }
       } catch (err) {
         toast.error('주모 정보를 불러오는데 실패했어요.', {

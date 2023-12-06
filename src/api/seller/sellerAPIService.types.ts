@@ -54,7 +54,7 @@ export type GetSellerListResponseData = {
   storePhoneNumber: string
   createdAt: string
   approvalState: 'ALLOW' | 'WAIT' | 'DENY'
-  isActivate: boolean
+  isDeleted: boolean
   storeDescription: string
   storeImageUrl: string
 }
@@ -66,7 +66,7 @@ export type GetSellerInfoResponseData = {
   storePhoneNumber: string
   storeImageUrl: string
   approvalState: 'ALLOW' | 'DENY'
-  isActivate: boolean
+  isDeleted: boolean
 }
 
 export type GetSellerListResponse = ApiResponse<Page<GetSellerListResponseData[]>>

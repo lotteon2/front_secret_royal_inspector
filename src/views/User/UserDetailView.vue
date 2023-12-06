@@ -23,17 +23,51 @@
 
 <script>
 import UserCard from '@/components/UserCard/UserCard.vue'
-
+import { useToast } from 'vue-toastification'
+import { getConsumerDetailInfoByConsumerId } from '@/api/consumer/consumerAPIService.ts'
 export default {
   components: {
     UserCard
   },
   mounted() {
-    this.$router.replace('/user/userDetail/3/orderList')
+    this.consumerId = this.$route.params.consumerId
+    this.getUserDetailInfo()
+    this.$router.replace(`/user/userDetail/${this.consumerId}/orderList`)
+  },
+  data() {
+    return {
+      consumerId: -1,
+      email: '',
+      thumbnail: '',
+      nickName: '',
+      phoneNumber: '',
+      point: '',
+      credit: null,
+      isDeleted: null
+    }
   },
   methods: {
     isActive(route) {
       return this.$route.path.includes(route)
+    },
+    async getUserDetailInfo() {
+      const toast = useToast()
+      try {
+        const data = await getConsumerDetailInfoByConsumerId(this.consumerId)
+        if (data.code === 200) {
+          toast.success('고객 상세 정보를 불러왔어요.', {
+            timeout: 2000
+          })
+          this.email = data.data.email
+          this.thumbnail = data.data.thumbnail
+          this.phoneNumber = data.data.phoneNumber
+          this.isDeleted = data.data.isDeleted
+        }
+      } catch (err) {
+        toast.error('고객 상세 정보를 불러오는데 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
   }
 }
