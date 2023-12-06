@@ -1,6 +1,24 @@
 <template>
   <div class="user-detail">
-    <UserCard></UserCard>
+    <div class="user-detail__header">
+      <UserCard
+        :email="email"
+        :nickName="name"
+        :thumbnail="thumbnail"
+        :phoneNumber="phoneNumber"
+      ></UserCard>
+      <div class="user-detail__header__btns">
+        <CustomButton :btnText="`${credit} 크레딧`" />
+        <CustomButton :btnText="`${point} 포인트`" />
+        <CustomButton
+          v-if="this.isDeleted === true"
+          btnText="탈퇴 유저"
+          :handleClick="() => withDrawSeller()"
+          btnType="negative"
+        />
+        <CustomButton v-else btnText="활성 유저" :handleClick="() => withDrawSeller()" />
+      </div>
+    </div>
     <div class="user-detail__menu">
       <RouterLink to="/user/userDetail/3/orderList" :class="{ active: isActive('orderList') }"
         >주문내역</RouterLink
@@ -23,17 +41,56 @@
 
 <script>
 import UserCard from '@/components/UserCard/UserCard.vue'
-
+import CustomButton from '@/components/Common/CustomButton.vue'
+import { useToast } from 'vue-toastification'
+import { getConsumerDetailInfoByConsumerId } from '@/api/consumer/consumerAPIService.ts'
 export default {
   components: {
-    UserCard
+    UserCard,
+    CustomButton
   },
   mounted() {
-    this.$router.replace('/user/userDetail/3/orderList')
+    this.consumerId = this.$route.params.consumerId
+    this.getUserDetailInfo()
+    this.$router.replace(`/user/userDetail/${this.consumerId}/orderList`)
+  },
+  data() {
+    return {
+      consumerId: -1,
+      email: '',
+      thumbnail: '',
+      name: '',
+      phoneNumber: '',
+      point: '',
+      credit: null,
+      isDeleted: null
+    }
   },
   methods: {
     isActive(route) {
       return this.$route.path.includes(route)
+    },
+    async getUserDetailInfo() {
+      const toast = useToast()
+      try {
+        const data = await getConsumerDetailInfoByConsumerId(this.consumerId)
+        if (data.code === 200) {
+          toast.success('고객 상세 정보를 불러왔어요.', {
+            timeout: 2000
+          })
+          this.email = data.data.email
+          this.name = data.data.name
+          this.thumbnail = data.data.thumbnail
+          this.phoneNumber = data.data.phoneNumber
+          this.point = data.data.point
+          this.credit = data.data.credit
+          this.isDeleted = data.data.isDeleted
+        }
+      } catch (err) {
+        toast.error('고객 상세 정보를 불러오는데 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
   }
 }
@@ -45,6 +102,18 @@ export default {
   display: flex;
   align-items: center;
   flex-direction: column;
+
+  .user-detail__header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    .user-detail__header__btns {
+      display: flex;
+      gap: 0.5rem;
+      flex-direction: column;
+    }
+  }
   .user-detail__menu {
     display: flex;
     gap: 1rem;

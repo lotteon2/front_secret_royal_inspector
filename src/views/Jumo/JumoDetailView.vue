@@ -20,7 +20,7 @@
           btnType="negative"
         />
         <CustomButton
-          v-if="this.isActivate === true"
+          v-if="this.isDeleted === false"
           btnText="탈퇴시키기"
           :handleClick="() => withDrawSeller()"
           btnType="negative"
@@ -33,7 +33,9 @@
         :class="{ active: isActive('products') }"
         >상품 내역</RouterLink
       >
-      <RouterLink to="/jumo/jumoDetail/3/orderList" :class="{ active: isActive('orderList') }"
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/orderList`"
+        :class="{ active: isActive('orderList') }"
         >주문 내역</RouterLink
       >
       <RouterLink to="/jumo/jumoDetail/3/cashup" :class="{ active: isActive('cashup') }"
@@ -68,7 +70,7 @@ export default {
       storePhoneNumber: '',
       storeImageUrl: '',
       approvalState: null,
-      isActivate: null
+      isDeleted: null
     }
   },
   mounted() {
@@ -107,7 +109,7 @@ export default {
           toast.success(`주모 탈퇴가 완료됐어요.`, {
             timeout: 2000
           })
-          this.isActivate = false
+          this.isDeleted = false
         }
       } catch (err) {
         toast.error('주모 탈퇴가 실패했어요.', {
@@ -128,7 +130,7 @@ export default {
           this.storePhoneNumber = data.data.storePhoneNumber
           this.storeImageUrl = data.data.storeImageUrl
           this.approvalState = data.data.approvalState
-          this.isActivate = data.data.isActivate
+          this.isDeleted = data.data.isDeleted
         }
       } catch (err) {
         toast.error('주모 상세 정보를 불러오는데 실패했어요.', {
