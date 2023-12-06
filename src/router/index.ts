@@ -82,6 +82,7 @@ const routes = [
         path: 'jumoDetail/:sellerId',
         name: 'jumoDetail',
         component: () => import('@/views/Jumo/JumoDetailView.vue'),
+        props: true,
         meta: {
           title: '유저 디테일'
         },

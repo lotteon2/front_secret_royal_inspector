@@ -18,15 +18,33 @@ export default {
   components: {
     CustomAvatar
   },
-  data() {
-    return {
-      nickName: '마덤보',
-      email: 'dumbo@naver.com',
-      phoneNumber: '010-1234-5678',
-      thumbnail:
-        'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
+  props: {
+    nickName: {
+      type: String,
+      default: 'user'
+    },
+    email: {
+      type: String,
+      default: 'email'
+    },
+    phoneNumber: {
+      type: String,
+      default: 'phoneNumber'
+    },
+    thumbnail: {
+      type: String,
+      default: 'thumbnail'
     }
   }
+  // data() {
+  //   return {
+  //     nickName: '마덤보',
+  //     email: 'dumbo@naver.com',
+  //     phoneNumber: '010-1234-5678',
+  //     thumbnail:
+  //       'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
+  //   }
+  // }
 }
 </script>
 

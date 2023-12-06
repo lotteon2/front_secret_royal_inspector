@@ -1,6 +1,14 @@
+import type { log } from 'console'; import type router from '@/router'; import type { log } from
+'console'; import type { log } from 'console'; import type { log } from 'console'; import type {
+mergeProps } from 'vue';
 <template>
   <div class="jumo-detail">
-    <UserCard></UserCard>
+    <UserCard
+      :email="email"
+      :nickName="storeName"
+      :thumbnail="storeImageUrl"
+      :phoneNumber="storePhoneNumber"
+    ></UserCard>
     <div class="jumo-detail__menu">
       <RouterLink to="/jumo/jumoDetail/3/products" :class="{ active: isActive('products') }"
         >상품 내역</RouterLink
@@ -20,16 +28,48 @@
 
 <script>
 import UserCard from '@/components/UserCard/UserCard.vue'
+import { getSellerInfoBySellerId } from '@/api/seller/sellerAPIService.ts'
+import { useToast } from 'vue-toastification'
 export default {
   components: {
     UserCard
   },
+  data() {
+    return {
+      sellerId: -1,
+      email: '',
+      storeName: '',
+      storePhoneNumber: '',
+      storeImageUrl: ''
+    }
+  },
   mounted() {
-    this.$router.replace('/jumo/jumoDetail/3/products')
+    this.sellerId = this.$route.params.sellerId
+    this.getSellerDetailInfo()
+    this.$router.replace(`/jumo/jumoDetail/${this.sellerId}/products`)
   },
   methods: {
     isActive(route) {
       return this.$route.path.includes(route)
+    },
+    async getSellerDetailInfo() {
+      const toast = useToast()
+      try {
+        const data = await getSellerInfoBySellerId(this.sellerId)
+        if (data.code === 200) {
+          toast.success('주모 상세 정보를 불러왔어요.', {
+            timeout: 2000
+          })
+          this.email = data.data.email
+          this.storeName = data.data.storeName
+          this.storePhoneNumber = data.data.storePhoneNumber
+          this.storeImageUrl = data.data.storeImageUrl
+        }
+      } catch (err) {
+        toast.error('주모 상세 정보를 불러오는데 실패했어요.', {
+          timeout: 2000
+        })
+      }
     }
   }
 }

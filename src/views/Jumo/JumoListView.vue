@@ -41,12 +41,12 @@ export default {
         const data = await getSellerList(0, 'hi', 10)
         if (data.code === 200) {
           this.items = data.data.content
-        }
-        toast.success('주모 정보를 불러왔어요.', {
+          toast.success('주모 정보를 불러왔어요.', {
           timeout: 2000
         })
+        }
       } catch (err) {
-        toast.error('주모 정보를 불러온느데 실패했어요.', {
+        toast.error('주모 정보를 불러오는데 실패했어요.', {
           timeout: 2000
         })
       }
