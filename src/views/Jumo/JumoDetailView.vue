@@ -1,6 +1,3 @@
-import type { log } from 'console'; import type router from '@/router'; import type { log } from
-'console'; import type { log } from 'console'; import type { log } from 'console'; import type {
-mergeProps } from 'vue';
 <template>
   <div class="jumo-detail">
     <div class="jumo-detail__header">
