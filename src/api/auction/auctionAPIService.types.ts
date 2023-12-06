@@ -87,3 +87,4 @@ export type RegisterAuctionResponse = ApiResponse<string>
 export type GetAuctionListResponse = ApiResponse<Page<GetAuctionListResponseData>>
 export type GetAuctionDetailByAuctionIdResponse =
   ApiResponse<GetAuctionDetailByAuctionIdResponseData>
+export type ApproveAuctionByAuctionProductIdResponse = ApiResponse<string>

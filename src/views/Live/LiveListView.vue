@@ -12,7 +12,7 @@
         :wait="item.wait"
         :deny="item.deny"
         :participation="item.participation"
-        @click="goDetailAuction(item.auctionId)"
+        @click="goDetailAuction(item.auctionId, item.status)"
       ></LiveItem>
     </div>
   </div>
@@ -38,9 +38,9 @@ export default {
         path: '/live/add'
       })
     },
-    goDetailAuction(auctionId) {
+    goDetailAuction(auctionId, status) {
       this.$router.push({
-        path: `/live/detail/${auctionId}`
+        path: `/live/detail/${auctionId}/${status}`
       })
     },
     async getAuctionList(page, size) {

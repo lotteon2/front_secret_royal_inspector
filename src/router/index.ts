@@ -76,8 +76,8 @@ const routes = [
         }
       },
       {
-        path: '/live/detail/:id',
-        name: 'live/detail',
+        path: '/live/detail/:auctionId/:status',
+        name: 'liveDetailView',
         component: () => import('@/views/Live/LiveDetailView.vue'),
         meta: {
           title: '라이브경매 상세 페이지'
