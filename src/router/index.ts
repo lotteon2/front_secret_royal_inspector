@@ -16,6 +16,14 @@ const routes = [
         meta: {
           title: 'login'
         }
+      },
+      {
+        path: 'logout',
+        name: 'logout',
+        component: () => import('@/views/LogoutView.vue'),
+        meta: {
+          title: 'logout'
+        }
       }
     ]
   },

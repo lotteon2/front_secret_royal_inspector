@@ -15,6 +15,7 @@
       <RouterLink to="/product" :class="{ active: isActive('product') }">상품</RouterLink>
       <RouterLink to="/orderList" :class="{ active: isActive('orderList') }">주문내역</RouterLink>
       <RouterLink to="/live" :class="{ active: isActive('live') }">라이브경매</RouterLink>
+      <RouterLink to="/login/logout" :class="{ active: isActive('logout') }">로그아웃</RouterLink>
     </nav>
   </header>
 </template>
