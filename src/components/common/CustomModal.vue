@@ -4,7 +4,7 @@
       <h2>{{ modalTitle }}</h2>
       <img :src="modalImg" alt="modal Img" v-if="modalImg" />
       <div class="modal-btn">
-        <button @click="$emit('btnClick1', false)" class="btn1">{{ btnText1 }}</button>
+        <button @click="$emit('btnClick1')" class="btn1">{{ btnText1 }}</button>
         <button @click="$emit('btnClick2', false)" class="btn2">{{ btnText2 }}</button>
       </div>
     </div>
