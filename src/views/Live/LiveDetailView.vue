@@ -153,19 +153,7 @@ export default {
       }
     },
     async startStreaming() {
-      const toast = useToast()
-      try {
-        const data = await startStream(this.auctionId)
-        if (data.code === 200) {
-          toast.success(`성공적으로 방송이 시작됐어요.`, {
-            timeout: 2000
-          })
-        }
-      } catch (err) {
-        toast.error('방송 시작에 실패했어요.', {
-          timeout: 2000
-        })
-      }
+      this.$router.replace(`/live/lobby/${this.auctionId}`)
     },
     async handleApprove(approvalState) {
       const toast = useToast()

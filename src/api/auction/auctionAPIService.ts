@@ -2,11 +2,13 @@ import { authAxiosInstance } from '../utils'
 import type {
   ApproveAuctionByAuctionProductIdResponse,
   DeleteAuctionResponse,
+  FinishStreamResponse,
   GetAuctionDetailByAuctionIdResponse,
   GetAuctionListResponse,
   RegisterAuctionParams,
   RegisterAuctionResponse,
   StartStreamResponse,
+  UpdateAuctionParams,
   UpdateAuctionResponse
 } from './auctionAPIService.types'
 
@@ -62,6 +64,13 @@ export const deleteAuction = async (auctionId: string) => {
 
 export const startStream = async (auctionId: string) => {
   const { data } = await authAxiosInstance.post<StartStreamResponse>(
+    `/auction-service/api/auction/streaming/${auctionId}`
+  )
+  return data
+}
+
+export const finishStream = async (auctionId: string) => {
+  const { data } = await authAxiosInstance.patch<FinishStreamResponse>(
     `/auction-service/api/auction/streaming/${auctionId}`
   )
   return data
