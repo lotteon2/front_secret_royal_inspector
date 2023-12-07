@@ -96,3 +96,4 @@ export type ApproveAuctionByAuctionProductIdResponse = ApiResponse<string>
 export type UpdateAuctionResponse = ApiResponse<string>
 export type DeleteAuctionResponse = ApiResponse<string>
 export type StartStreamResponse = ApiResponse<string>
+export type FinishStreamResponse = ApiResponse<string>

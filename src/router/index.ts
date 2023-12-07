@@ -82,6 +82,22 @@ const routes = [
         meta: {
           title: '라이브경매 상세 페이지'
         }
+      },
+      {
+        path: '/live/lobby/:auctionId',
+        name: 'liveLobby',
+        component: () => import('@/views/Live/LiveLobbyView.vue'),
+        meta: {
+          title: '라이브경매 로비 페이지'
+        }
+      },
+      {
+        path: '/live/finish/:auctionId',
+        name: 'liveFinishScreen',
+        component: () => import('@/views/Live/LiveFinishView.vue'),
+        meta: {
+          title: '라이브경매 종료 페이지'
+        }
       }
     ]
   },
