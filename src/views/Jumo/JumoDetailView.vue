@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import CustomButton from '@/components/Common/CustomButton.vue'
+import CustomButton from '@/components/common/CustomButton.vue'
 import UserCard from '@/components/UserCard/UserCard.vue'
 import {
   getSellerInfoBySellerId,
