@@ -41,7 +41,7 @@
 
 <script>
 import UserCard from '@/components/UserCard/UserCard.vue'
-import CustomButton from '@/components/Common/CustomButton.vue'
+import CustomButton from '@/components/common/CustomButton.vue'
 import { useToast } from 'vue-toastification'
 import { getConsumerDetailInfoByConsumerId } from '@/api/consumer/consumerAPIService.ts'
 export default {
