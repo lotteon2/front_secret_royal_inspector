@@ -133,7 +133,7 @@ const routes = [
           },
           {
             path: 'cashup',
-            component: () => import('@/views/Jumo/JumoDetailCashupView.vue')
+            component: () => import('@/views/Jumo/JumoDetailCashUpView.vue')
           },
           {
             path: 'products',
