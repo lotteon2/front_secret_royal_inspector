@@ -36,7 +36,7 @@ export interface Page<T> {
 }
 
 export type GetOrderListBySellerIdResponseData = {
-  ordersId: number
+  ordersId: string
   productId: string
   productName: string
   productCount: number
@@ -50,7 +50,7 @@ export type GetOrderListBySellerIdResponseData = {
 }
 
 export type GetOrderListByConsumerIdResponseData = {
-  ordersId: number
+  ordersId: string
   productId: string
   productName: string
   productCount: number
