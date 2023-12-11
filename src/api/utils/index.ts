@@ -6,7 +6,14 @@ const BASE_URL = import.meta.env.VITE_API_BASE_URL
 const axiosApi = (baseURL: string) => {
   return axios.create({
     baseURL,
-    withCredentials: true
+    withCredentials: true,
+    headers: {
+      'Content-Type': `application/json;charset=UTF-8`,
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('accessToken'),
+      'Access-Control-Allow-Origin': 'https://jeontongju-dev.shop/',
+      'Access-Control-Allow-Credentials': 'true'
+    }
   })
 }
 // 인증 요청
@@ -18,7 +25,6 @@ const axiosAuthApi = (baseURL: string) => {
 
   instance.interceptors.request.use((config) => {
     config.headers.Authorization = `${localStorage.getItem('accessToken')}`
-    config.headers.memberId = 1
     return config
   })
   return instance
