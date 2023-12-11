@@ -7,7 +7,6 @@ import type {
   WidthDrawSellerResponse
 } from './sellerAPIService.types'
 
-// TODO: 배포시 URl 변경
 export const getSellerList = async (page: number, sort: string, size: number) => {
   const { data } = await authAxiosInstance.get<GetSellerListResponse>(
     `/seller-service/api/admin/sellers?page=${page}&sort=${sort}&size=${size}`
