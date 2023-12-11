@@ -18,7 +18,6 @@ export default {
   },
   methods: {
     translateState() {
-      console.log(this.state)
       switch (this.state) {
         case 'BEFORE':
           this.translatedState = '진행 예정'
