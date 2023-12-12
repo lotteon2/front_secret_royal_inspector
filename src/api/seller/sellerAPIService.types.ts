@@ -37,7 +37,6 @@ export interface Page<T> {
 
 export type GetSellerListParams = {
   page: number
-  sort: string
   size: number
 }
 

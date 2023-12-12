@@ -7,9 +7,9 @@ import type {
   WidthDrawSellerResponse
 } from './sellerAPIService.types'
 
-export const getSellerList = async (page: number, sort: string, size: number) => {
+export const getSellerList = async (page: number, size: number) => {
   const { data } = await authAxiosInstance.get<GetSellerListResponse>(
-    `/seller-service/api/admin/sellers?page=${page}&sort=${sort}&size=${size}`
+    `/seller-service/api/admin/sellers?page=${page}&size=${size}`
   )
   return data
 }
