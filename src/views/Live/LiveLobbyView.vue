@@ -77,7 +77,7 @@ export default {
       const serverURL = 'https://jeontongju-dev.shop'
       let socket = new SockJS(`${serverURL}/chat/sub/chat/${this.auctionId}`)
       this.stompClient = Stomp.over(socket)
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}`)
+      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`)
       this.stompClient.connect(
         {},
         (frame) => {
