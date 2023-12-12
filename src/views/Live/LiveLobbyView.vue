@@ -62,6 +62,7 @@ export default {
         })
     },
     send() {
+      console.log(this.auctionId)
       console.log('Send message:' + this.message)
       if (this.stompClient && this.stompClient.connected) {
         const msg = {
