@@ -109,7 +109,7 @@ export default {
           toast.success(`주모 탈퇴가 완료됐어요.`, {
             timeout: 2000
           })
-          this.isDeleted = false
+          this.isDeleted = true
         }
       } catch (err) {
         toast.error('주모 탈퇴가 실패했어요.', {
