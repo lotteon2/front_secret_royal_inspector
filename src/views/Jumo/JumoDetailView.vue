@@ -25,6 +25,7 @@
           :handleClick="() => withDrawSeller()"
           btnType="negative"
         />
+        <CustomButton v-else btnText="탈퇴한 회원" btnType="negative" />
       </div>
     </div>
     <div class="jumo-detail__menu">
