@@ -8,7 +8,13 @@ import TheHeader from '@/layouts/TheHeader.vue'
 </template>
 
 <script>
-export default {}
+export default {
+  mounted() {
+    if (!localStorage.getItem('accessToken')) {
+      this.$router.push('/login')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped></style>
