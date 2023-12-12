@@ -17,7 +17,7 @@ export default defineConfig({
     }
   },
   define: {
-    global: {},
+    global: typeof globalThis,
     'process.<wbr>env': {}
   },
   plugins: [
