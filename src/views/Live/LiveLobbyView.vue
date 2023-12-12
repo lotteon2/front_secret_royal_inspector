@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-    this.auctionId = this.$route.params.auctionId.replaceAll('-', '')
+    this.auctionId = this.$route.params.auctionId
     this.video = this.$refs.video
     this.canvas = this.$refs.canvas
     this.getMediaStream()
@@ -150,7 +150,9 @@ export default {
         this.room = ConnectLive.createRoom()
         this.createConferenceHostOptions(this.room)
         if (!this.auctionId) throw new Error('No Conference to Connect')
-        await this.room.connect(this.auctionId)
+        console.log(typeof this.auctionId)
+        console.log(this.auctionId.replaceAll('-', ''))
+        await this.room.connect(this.auctionId.replaceAll('-', ''))
         if (this.localMedia) {
           await this.room.publish([this.localMedia])
           // addLog('Video Connected')

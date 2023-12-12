@@ -7,17 +7,15 @@ import vue from '@vitejs/plugin-vue'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  server: {
-    port: 8000,
-    https: true,
-    hmr: {
-      host: 'jeontongju-dev.shop/auction-service',
-      port: 8000,
-      protocol: 'ws'
-    }
-  },
+  // server: {
+  //   https: true,
+  //   hmr: {
+  //     host: 'jeontongju-dev.shop/auction-service',
+  //     protocol: 'ws'
+  //   }
+  // },
   define: {
-    global: typeof globalThis,
+    global: {},
     'process.<wbr>env': {}
   },
   plugins: [
