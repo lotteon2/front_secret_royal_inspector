@@ -44,7 +44,7 @@ export default {
     }
   },
   mounted() {
-    this.auctionId = this.$route.params.auctionId
+    this.auctionId = this.$route.params.auctionId.replaceAll('-', '')
     this.video = this.$refs.video
     this.canvas = this.$refs.canvas
     this.getMediaStream()
