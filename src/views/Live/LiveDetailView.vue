@@ -185,7 +185,7 @@ export default {
           this.title = title
           this.description = description
           this.startDate = startDate.slice(0, 10)
-          this.endDate = endDate.slice(0, 10)
+          this.endDate = endDate ? endDate.slice(0, 10) : ''
           this.items = data.data.productList
           this.header =
             this.status === 'AFTER'
