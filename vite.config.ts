@@ -15,7 +15,7 @@ export default defineConfig({
   //   }
   // },
   define: {
-    global: {},
+    global: 'window',
     'process.<wbr>env': {}
   },
   plugins: [
