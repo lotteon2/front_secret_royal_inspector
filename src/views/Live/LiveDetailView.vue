@@ -149,6 +149,7 @@ export default {
           })
           this.title = this.updateModalTitle
           this.description = this.updateModalDesc
+          this.changeEditModalPopState()
         }
       } catch (err) {
         toast.error('경매 수정에 실패했어요.', {
