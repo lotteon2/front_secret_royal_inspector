@@ -18,15 +18,6 @@
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
             <span v-else>{{ item[key] }}</span>
           </td>
-          <!-- <CustomModal
-            v-if="popState"
-            :modalTitle="items[index].productName"
-            :modalImg="items[index].productImageUrl"
-            btnText1="반려"
-            btnText2="승인"
-            @btnClick1="handleDisapprove()"
-            @btnClick2="handleApprove()"
-          ></CustomModal> -->
         </tr>
       </tbody>
     </table>
@@ -34,12 +25,10 @@
 </template>
 
 <script scoped>
-import CustomModal from '@/components/common/CustomModal.vue'
 import CustomAvatar from '@/components/common/CustomAvatar.vue'
 export default {
   name: 'CustomTable',
   components: {
-    // CustomModal,
     CustomAvatar
   },
   props: {
@@ -54,15 +43,7 @@ export default {
       popState: false
     }
   },
-  methods: {
-    changePopState() {
-      this.popState = !this.popState
-    },
-    handleDisapprove() {
-      console.log('반려')
-      this.changePopState()
-    }
-  },
+  methods: {},
   computed: {
     // value 순서에 맞게 테이블 데이터를 출력하기 위한 배열
     headerKey() {
