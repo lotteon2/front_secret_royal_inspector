@@ -17,13 +17,13 @@
     </div>
     <div id="local-container"></div>
     <div id="video-tag-id"></div>
-    <div>
+    <div v-if="this.connected">
       유저이름:
       <input v-model="userName" type="text" />
       내용: <input v-model="message" type="text" @keyup="sendMessage" />
       <div v-for="(item, idx) in recvList" :key="idx">
-        <h3>유저이름: {{ item.userName }}</h3>
-        <h3>내용: {{ item.content }}</h3>
+        <h3>이름: {{ item.memberNickname }}</h3>
+        <h3>메시지: {{ item.message }}</h3>
       </div>
     </div>
   </div>
@@ -94,9 +94,6 @@ export default {
       console.log('here')
       const serverURL = 'https://jeontongju-dev.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
-      // let socket = new SockJS(
-      //   'https://jeontongju-dev.shop/auction-service/chat/sub/chat/6e344814-4b97-4879-8771-f633f6d80c91'
-      // )
       this.stompClient = Stomp.over(socket)
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`)
       this.stompClient.connect(
@@ -109,7 +106,6 @@ export default {
           // 이런형태를 pub sub 구조라고 합니다.
           this.stompClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
             console.log('구독으로 받은 메시지 입니다.', res.body)
-
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             this.recvList.push(JSON.parse(res.body))
             // 지웅 25 37
