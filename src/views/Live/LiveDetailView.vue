@@ -30,7 +30,7 @@
       :modalTitle="this.modalTitle"
       btnText1="승인"
       btnText2="반려"
-      @btnClick1="() => handleApprove('CONFIRM')"
+      @btnClick1="() => handleApprove('ALLOW')"
       @btnClick2="() => handleApprove('DENY')"
     ></CustomModal>
     <CustomModal
@@ -166,7 +166,7 @@ export default {
       try {
         const data = await approveAuctionByAuctionProductId(this.auctionProductId, approvalState)
         if (data.code === 200) {
-          toast.success(`성공적으로 ${approvalState === 'CONFIRM' ? '승인' : '반려'}했어요.`, {
+          toast.success(`성공적으로 ${approvalState === 'ALLOW' ? '승인' : '반려'}했어요.`, {
             timeout: 2000
           })
 

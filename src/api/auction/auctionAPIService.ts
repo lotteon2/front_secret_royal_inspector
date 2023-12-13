@@ -39,7 +39,7 @@ export const getAuctionDetailByAuctionId = async (
 
 export const approveAuctionByAuctionProductId = async (
   auctionProductId: string,
-  confirm: 'CONFIRM' | 'DENY'
+  confirm: 'ALLOW' | 'DENY'
 ) => {
   const { data } = await authAxiosInstance.patch<ApproveAuctionByAuctionProductIdResponse>(
     `/auction-service/api/auction/product/${auctionProductId}/confirm/${confirm}`
