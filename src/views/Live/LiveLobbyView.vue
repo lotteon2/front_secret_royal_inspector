@@ -17,6 +17,15 @@
     </div>
     <div id="local-container"></div>
     <div id="video-tag-id"></div>
+    <div>
+      유저이름:
+      <input v-model="userName" type="text" />
+      내용: <input v-model="message" type="text" @keyup="sendMessage" />
+      <div v-for="(item, idx) in recvList" :key="idx">
+        <h3>유저이름: {{ item.userName }}</h3>
+        <h3>내용: {{ item.content }}</h3>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -40,7 +49,10 @@ export default {
       photoSrc: null,
       streaming: false,
       height: 0,
-      width: 320
+      width: 320,
+      userName: '',
+      message: '',
+      recvList: []
     }
   },
   mounted() {
@@ -66,10 +78,10 @@ export default {
       console.log('Send message:' + this.message)
       if (this.stompClient && this.stompClient.connected) {
         const msg = {
-          userName: this.userName,
-          content: this.message
+          memberId: 0,
+          message: this.message
         }
-        this.stompClient.send('/receive', JSON.stringify(msg), {})
+        this.stompClient.send(`/pub/chat/${auctionId}`, JSON.stringify(msg), {})
       }
     },
     connect() {
