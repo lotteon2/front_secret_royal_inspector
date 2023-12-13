@@ -75,7 +75,7 @@ export default {
     connect() {
       console.log('here')
       const serverURL = 'https://jeontongju-dev.shop/auction-service'
-      let socket = new SockJS(`${serverURL}`)
+      let socket = new SockJS(`${serverURL}/chat/sub/chat/${this.auctionId}`)
       // let socket = new SockJS(
       //   'https://jeontongju-dev.shop/auction-service/chat/sub/chat/6e344814-4b97-4879-8771-f633f6d80c91'
       // )
