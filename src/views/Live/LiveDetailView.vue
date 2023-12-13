@@ -26,7 +26,7 @@
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
     <CustomModal
-      v-if="this.status !== 'BEFORE' && popState"
+      v-if="this.status === 'BEFORE' && popState"
       :modalTitle="this.modalTitle"
       btnText1="승인"
       btnText2="반려"
@@ -107,9 +107,11 @@ export default {
       this.updateModalDesc = desc
     },
     handleClickRow(items) {
-      this.changePopState()
-      this.modalTitle = items.sellerName
-      this.auctionProductId = items.auctionProductId
+      if (this.state === 'BEFORE') {
+        this.changePopState()
+        this.modalTitle = items.sellerName
+        this.auctionProductId = items.auctionProductId
+      }
     },
     openEditModal() {
       this.changeEditModalPopState()
