@@ -108,9 +108,11 @@ export default {
     },
     handleClickRow(items) {
       if (this.status === 'BEFORE') {
-        this.changePopState()
-        this.modalTitle = items.sellerName
-        this.auctionProductId = items.auctionProductId
+        if (items.status === 'WAIT') {
+          this.changePopState()
+          this.modalTitle = items.sellerName
+          this.auctionProductId = items.auctionProductId
+        }
       }
     },
     openEditModal() {
