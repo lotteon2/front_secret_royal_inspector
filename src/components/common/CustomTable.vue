@@ -18,7 +18,7 @@
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
             <span v-else>{{ item[key] }}</span>
           </td>
-          <CustomModal
+          <!-- <CustomModal
             v-if="popState"
             :modalTitle="items[index].productName"
             :modalImg="items[index].productImageUrl"
@@ -26,7 +26,7 @@
             btnText2="승인"
             @btnClick1="handleDisapprove()"
             @btnClick2="handleApprove()"
-          ></CustomModal>
+          ></CustomModal> -->
         </tr>
       </tbody>
     </table>
@@ -39,7 +39,7 @@ import CustomAvatar from '@/components/common/CustomAvatar.vue'
 export default {
   name: 'CustomTable',
   components: {
-    CustomModal,
+    // CustomModal,
     CustomAvatar
   },
   props: {
@@ -57,11 +57,6 @@ export default {
   methods: {
     changePopState() {
       this.popState = !this.popState
-    },
-    handleApprove() {
-      //승인
-      console.log('승인')
-      this.changePopState()
     },
     handleDisapprove() {
       console.log('반려')

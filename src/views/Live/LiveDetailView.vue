@@ -107,7 +107,7 @@ export default {
       this.updateModalDesc = desc
     },
     handleClickRow(items) {
-      if (this.state === 'BEFORE') {
+      if (this.status === 'BEFORE') {
         this.changePopState()
         this.modalTitle = items.sellerName
         this.auctionProductId = items.auctionProductId
@@ -158,6 +158,7 @@ export default {
       this.$router.replace(`/live/lobby/${this.auctionId}`)
     },
     async handleApprove(approvalState) {
+      console.log('here')
       const toast = useToast()
       try {
         const data = await approveAuctionByAuctionProductId(this.auctionProductId, approvalState)
