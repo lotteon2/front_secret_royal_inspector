@@ -75,7 +75,7 @@ export default {
     connect() {
       console.log('here')
       const serverURL = 'https://jeontongju-dev.shop/auction-service'
-      let socket = new SockJS(`${serverURL}/chat/sub/chat/${this.auctionId}`)
+      let socket = new SockJS(`${serverURL}/chat`)
       // let socket = new SockJS(
       //   'https://jeontongju-dev.shop/auction-service/chat/sub/chat/6e344814-4b97-4879-8771-f633f6d80c91'
       // )
@@ -89,7 +89,7 @@ export default {
           console.log('소켓 연결 성공', frame)
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // 이런형태를 pub sub 구조라고 합니다.
-          this.stompClient.subscribe(`/chat/sub/chat/${this.auctionId}`, (res) => {
+          this.stompClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
             console.log('구독으로 받은 메시지 입니다.', res.body)
 
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
