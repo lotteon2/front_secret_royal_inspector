@@ -73,6 +73,12 @@ export default {
           console.error(`error occurred : ${err}`)
         })
     },
+    sendMessage(e) {
+      if (e.keyCode === 13 && this.userName !== '' && this.message !== '') {
+        this.send()
+        this.message = ''
+      }
+    },
     send() {
       console.log(this.auctionId)
       console.log('Send message:' + this.message)
