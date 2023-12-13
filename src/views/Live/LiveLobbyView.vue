@@ -75,7 +75,10 @@ export default {
     connect() {
       console.log('here')
       const serverURL = 'https://jeontongju-dev.shop/auction-service'
-      let socket = new SockJS(`${serverURL}/chat/sub/chat/${this.auctionId}`)
+      // let socket = new SockJS(`${serverURL}/chat/sub/chat/${this.auctionId}`)
+      let socket = new SockJS(
+        'https://jeontongju-dev.shop/auction-service/chat/sub/chat/6e344814-4b97-4879-8771-f633f6d80c91'
+      )
       this.stompClient = Stomp.over(socket)
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`)
       this.stompClient.connect(
@@ -91,6 +94,7 @@ export default {
 
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             this.recvList.push(JSON.parse(res.body))
+            // 지웅 25 37
           })
         },
         (error) => {
