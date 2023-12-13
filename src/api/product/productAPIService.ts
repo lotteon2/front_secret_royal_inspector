@@ -10,7 +10,7 @@ export const updateProductVisibility = async (
   productId: number,
   params: UpdateProductVisibilityParams
 ) => {
-  const { data } = await authAxiosInstance.post<UpdateProductVisibilityResponse>(
+  const { data } = await authAxiosInstance.patch<UpdateProductVisibilityResponse>(
     `/product-service/api/products/${productId}`,
     params
   )
