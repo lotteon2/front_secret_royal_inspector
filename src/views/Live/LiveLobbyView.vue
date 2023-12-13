@@ -87,7 +87,7 @@ export default {
           memberId: 0,
           message: this.message
         }
-        this.stompClient.send(`/pub/chat/${auctionId}`, JSON.stringify(msg), {})
+        this.stompClient.send(`/pub/chat/${this.auctionId}`, JSON.stringify(msg), {})
       }
     },
     connect() {
