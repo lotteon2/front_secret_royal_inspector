@@ -1,6 +1,6 @@
 <template>
   <div>
-    <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
+    <CustomTable :headers="header" :items="items"></CustomTable>
   </div>
 </template>
 
