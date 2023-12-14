@@ -1,6 +1,5 @@
 <template>
   <div>
-    충전, 사용 내역 날짜, 사용금(+, -), - => 경매 낙찰시 사용, + -> 충전
     <CustomTable :headers="header" :items="items"></CustomTable>
   </div>
 </template>
