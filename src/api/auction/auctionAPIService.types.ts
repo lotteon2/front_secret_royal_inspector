@@ -88,6 +88,18 @@ export type AuctionProductType = {
   createdAt: string
 }
 
+export type GetAuctionListByConsumerIdResponseData = {
+  auctionId: string
+  auctionName: string
+  productName: string
+  productImageUrl: string
+  startingPrice: number
+  lastBidPrice: number
+  myLastBidPrice: number
+  isBid: boolean
+  bidDate: string
+}
+
 export type RegisterAuctionResponse = ApiResponse<string>
 export type GetAuctionListResponse = ApiResponse<Page<GetAuctionListResponseData>>
 export type GetAuctionDetailByAuctionIdResponse =
@@ -97,3 +109,6 @@ export type UpdateAuctionResponse = ApiResponse<string>
 export type DeleteAuctionResponse = ApiResponse<string>
 export type StartStreamResponse = ApiResponse<string>
 export type FinishStreamResponse = ApiResponse<string>
+export type GetAuctionListByConsumerIdResponse = ApiResponse<
+  Page<GetAuctionListByConsumerIdResponseData>
+>

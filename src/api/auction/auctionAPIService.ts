@@ -75,3 +75,14 @@ export const finishStream = async (auctionId: string) => {
   )
   return data
 }
+
+export const getAuctionListByConsumerId = async (
+  consumerId: number,
+  page: number,
+  size: number
+) => {
+  const { data } = await authAxiosInstance.get<GetAuctionListByConsumerIdResponse>(
+    `/auction-service/api/auction/bid/consumer/${consumerId}?page=${page}&size=${size}`
+  )
+  return data
+}
