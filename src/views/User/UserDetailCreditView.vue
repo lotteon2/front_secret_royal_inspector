@@ -45,7 +45,6 @@ export default defineComponent({
               ? (newItems[idx] = { ...newItems[idx], desc: '경매 크레딧 충전' })
               : (newItems[idx] = { ...newItems[idx], desc: '경매 낙찰시 사용' })
           )
-          console.log(newItems)
           this.items = newItems
         }
       } catch (error) {
