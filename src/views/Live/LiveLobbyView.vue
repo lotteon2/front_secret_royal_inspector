@@ -1,10 +1,11 @@
 <template>
   <div>
-    <div v-if="!this.isStreaming">
+    <div v-if="!this.isStreaming" class="preview-screen">
       <div class="preview-screen__header">
         <h2>미리 보기 화면</h2>
         <CustomButton btnText="방송 시작하기" @click="startStream"></CustomButton>
       </div>
+      <div>카메라와 마이크를 확인해주세요</div>
       <video id="video" ref="video" @canplay="playVideo"></video>
     </div>
     <div class="close__btn">
@@ -220,11 +221,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.preview-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
 .preview-screen__header {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 li {
