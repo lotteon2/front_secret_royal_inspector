@@ -20,7 +20,7 @@ const axiosApi = (baseURL: string) => {
 const axiosAuthApi = (baseURL: string) => {
   const instance: AxiosInstance = axios.create({
     baseURL
-    // withCredentials: true
+    // withCredentials: true2qq2q
   })
 
   instance.interceptors.request.use((config) => {

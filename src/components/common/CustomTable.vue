@@ -71,10 +71,12 @@ export default {
   td {
     border-bottom: 1px solid #f0f0f0;
     padding: 1rem 0;
+    vertical-align: middle;
   }
 
   th {
     background: #fafafa;
+    vertical-align: middle;
   }
 }
 </style>

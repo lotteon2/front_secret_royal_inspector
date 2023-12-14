@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app className="vApp">
     <v-main>
       <router-view />
     </v-main>
@@ -17,3 +17,10 @@ export default defineComponent({
   }
 })
 </script>
+
+<style>
+.vApp {
+  height: 100vh;
+  margin-top: 15vh;
+}
+</style>
