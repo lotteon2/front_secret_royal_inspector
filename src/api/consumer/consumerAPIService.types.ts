@@ -59,7 +59,7 @@ export type GetConsumerInfoByConsumerIdResponseData = {
 }
 
 export type GetConsumerPointListByConsumerIdResponseData = {
-  tradePath: 'TEXT_REVIEW' | 'PURCHASE_USE'
+  tradePath: keyof typeof POINT
   tradePoint: number
   tradeDate: string
 }
