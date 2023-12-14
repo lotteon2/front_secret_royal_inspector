@@ -91,7 +91,6 @@ export default {
   },
   mounted() {
     this.sellerId = this.$route.params.sellerId
-    console.log(this.sellerId)
     this.getSellerProducts()
   }
 }
