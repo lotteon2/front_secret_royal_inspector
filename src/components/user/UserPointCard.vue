@@ -2,7 +2,9 @@
   <div class="user-point-card">
     <div class="user-point-card__title">{{ title }} 냥</div>
     <div class="user-point-card__right">
-      <div class="user-point-card__detail">{{ detail }}</div>
+      <div class="user-point-card__detail">
+        {{ translatedDetail }} / 포인트 {{ title > 0 ? '적립' : '사용' }}
+      </div>
       <div class="user-point-card__date">{{ date }}</div>
     </div>
   </div>
@@ -10,6 +12,7 @@
 
 <script lang="ts" scoped>
 import { defineComponent } from 'vue'
+import { translatePointState } from '@/types/POINT.ts'
 
 export default defineComponent({
   props: {
@@ -25,6 +28,19 @@ export default defineComponent({
       type: String,
       default: ''
     }
+  },
+  data() {
+    return {
+      translatedDetail: ''
+    }
+  },
+  methods: {
+    translateDetail() {
+      this.translatedDetail = translatePointState(this.detail)
+    }
+  },
+  mounted() {
+    this.translateDetail()
   }
 })
 </script>
