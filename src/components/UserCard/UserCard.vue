@@ -36,15 +36,6 @@ export default {
       default: 'thumbnail'
     }
   }
-  // data() {
-  //   return {
-  //     nickName: '마덤보',
-  //     email: 'dumbo@naver.com',
-  //     phoneNumber: '010-1234-5678',
-  //     thumbnail:
-  //       'https://i.namu.wiki/i/X41e9ocvhIVMMdXi6r2jmujAbVnvYEIlr7YDg5rWozymdF-JJdy3aoVqSr_O-8eTWMkTilXWUHarVCubrC22yw.webp'
-  //   }
-  // }
 }
 </script>
 
@@ -56,7 +47,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 2rem;
-  width: 16rem;
+  width: 22rem;
   box-shadow: 5px 5px 5px 0px rgba(214, 209, 209, 0.75);
 
   .custom-avatar__right {

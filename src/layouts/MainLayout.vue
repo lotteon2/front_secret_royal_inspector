@@ -4,7 +4,9 @@ import TheHeader from '@/layouts/TheHeader.vue'
 
 <template>
   <TheHeader></TheHeader>
-  <RouterView></RouterView>
+  <div>
+    <RouterView></RouterView>
+  </div>
 </template>
 
 <script>
@@ -17,4 +19,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+div {
+  width: 100vw;
+}
+</style>
