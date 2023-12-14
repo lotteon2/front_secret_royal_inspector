@@ -1,15 +1,17 @@
 <template>
   <div>
-    <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
+    <CustomTable :headers="header" :items="items"></CustomTable>
   </div>
 </template>
 
-<script>
+<script lang="ts" scoped>
 import CustomTable from '@/components/common/CustomTable.vue'
 import { getOrderListByConsumerId } from '@/api/order/orderAPIService.ts'
 import { useToast } from 'vue-toastification'
+import type { GetOrderListByConsumerIdResponseData } from '@/api/order/orderAPIService.types'
+import { defineComponent } from 'vue'
 
-export default {
+export default defineComponent({
   components: {
     CustomTable
   },
@@ -26,10 +28,14 @@ export default {
         { text: '경매 여부', value: 'isAuction' }
       ],
       items: []
+    } as {
+      consumerId: number
+      header: { text: string; value: string }[]
+      items: GetOrderListByConsumerIdResponseData[]
     }
   },
   methods: {
-    async getOrderListByConsumerId(page, size) {
+    async getOrderListByConsumerId(page: number, size: number) {
       const toast = useToast()
       try {
         const data = await getOrderListByConsumerId(this.consumerId, page, size)
@@ -47,10 +53,10 @@ export default {
     }
   },
   mounted() {
-    this.consumerId = this.$route.params.consumerId
+    this.consumerId = Number(this.$route.params.consumerId)
     this.getOrderListByConsumerId(0, 10)
   }
-}
+})
 </script>
 
 <style lang="scss" scoped>

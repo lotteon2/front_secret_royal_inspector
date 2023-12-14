@@ -58,7 +58,17 @@ export type GetConsumerInfoByConsumerIdResponseData = {
   credit: number
 }
 
+export type GetConsumerPointListByConsumerIdResponseData = {
+  tradePath: keyof typeof POINT
+  tradePoint: number
+  tradeDate: string
+}
+
 export type GetConsumerListResponse = ApiResponse<Page<GetConsumerListResponseData[]>>
 
 export type GetConsumerInfoByConsumerIdResponse =
   ApiResponse<GetConsumerInfoByConsumerIdResponseData>
+
+export type GetConsumerPointListByConsumerIdResponse = ApiResponse<
+  Page<GetConsumerPointListByConsumerIdResponseData[]>
+>
