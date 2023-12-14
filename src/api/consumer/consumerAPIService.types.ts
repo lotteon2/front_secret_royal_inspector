@@ -1,3 +1,4 @@
+import { POINT } from '@/types/POINT.ts'
 interface ApiResponse<T> {
   code: number
   message: string
@@ -64,6 +65,11 @@ export type GetConsumerPointListByConsumerIdResponseData = {
   tradeDate: string
 }
 
+export type GetCreditListByConsumerIdResponseData = {
+  tradeCredit: number
+  tradeDate: string
+}
+
 export type GetConsumerListResponse = ApiResponse<Page<GetConsumerListResponseData[]>>
 
 export type GetConsumerInfoByConsumerIdResponse =
@@ -71,4 +77,8 @@ export type GetConsumerInfoByConsumerIdResponse =
 
 export type GetConsumerPointListByConsumerIdResponse = ApiResponse<
   Page<GetConsumerPointListByConsumerIdResponseData[]>
+>
+
+export type GetCreditListByConsumerIdResponse = ApiResponse<
+  Page<GetCreditListByConsumerIdResponseData>
 >

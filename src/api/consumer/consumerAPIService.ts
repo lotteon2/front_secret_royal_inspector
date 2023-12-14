@@ -29,3 +29,10 @@ export const getConsumerPointListByConsumerId = async (
   )
   return data
 }
+
+export const getCreditListByConsumerId = async (consumerId: number, page: number, size: number) => {
+  const { data } = await authAxiosInstance.get<GetCreditListByConsumerIdResponse>(
+    `/consumer-service/api/consumers/${consumerId}/credits?page=${page}&size=${size}`
+  )
+  return data
+}
