@@ -243,6 +243,14 @@ export default {
     margin-bottom: 1rem;
   }
 
+  .live-detail__btns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
   .live-detail__desc {
     display: flex;
     align-items: center;
