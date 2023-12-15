@@ -1,9 +1,18 @@
 <template>
   <div>
-    <label for="a">전체</label>
-    <select id="a">
-      <option value="javascript">a 주모</option>
-    </select>
+    <label for="sellerSelect">주모를 선택해주세요</label>
+    <template v-if="sellers">
+      <select :value="selectedSeller" @change="setSelect($event)" class="select">
+        <option
+          id="sellerSelect"
+          v-for="seller in sellers"
+          :key="seller.value"
+          :value="seller.value"
+        >
+          {{ seller.label }}
+        </option>
+      </select>
+    </template>
     <CustomTable :headers="header" :items="items"></CustomTable>
   </div>
 </template>
@@ -12,6 +21,7 @@
 import { getOrderListBySellerId } from '@/api/order/orderAPIService'
 import type { GetOrderListBySellerIdResponseData } from '@/api/order/orderAPIService.types'
 import CustomTable from '@/components/common/CustomTable.vue'
+import { useMyInfoStore } from '@/stores/myInfo'
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
 export default defineComponent({
@@ -19,10 +29,13 @@ export default defineComponent({
     CustomTable
   },
   methods: {
-    async getOrderListBySellerId(page: number, size: number) {
+    setSelect(event) {
+      this.selectedSeller = event.target.value
+    },
+    async getOrderListBySellerId(sellerId: number, page: number, size: number) {
       const toast = useToast()
       try {
-        const data = await getOrderListBySellerId(this.sellerId, page, size)
+        const data = await getOrderListBySellerId(sellerId, page, size)
         if (data.code === 200) {
           toast.success(`주문내역을 성공적으로 불러왔어요.`, {
             timeout: 2000
@@ -43,7 +56,7 @@ export default defineComponent({
   },
   data() {
     return {
-      sellerId: -1,
+      selectedSeller: -1,
       header: [
         { text: '주모 이름', value: 'sellerName' },
         { text: '상품 이름', value: 'productName' },
@@ -54,17 +67,81 @@ export default defineComponent({
         { text: '배송 상태', value: 'orderStatus' },
         { text: '경매 여부', value: 'isAuction' }
       ],
-      items: []
+      items: [],
+      sellers: [
+        {
+          value: 1,
+          label: '우리도가'
+        }
+      ]
     } as {
-      sellerId: number
+      selectedSeller: number
       header: { text: string; value: string }[]
       items: GetOrderListBySellerIdResponseData[]
+      sellers: { value: number; label: string }[]
     }
   },
   mounted() {
-    this.getOrderListBySellerId(0, 10)
+    const myInfo = useMyInfoStore()
+    this.sellers = myInfo.sellers
+    this.selectedSeller = this.sellers ? this.sellers[0].value : -1
+    this.getOrderListBySellerId(this.selectedSeller, 0, 10)
+  },
+  watch: {
+    selectedSeller: function (value) {
+      this.getOrderListBySellerId(value, 0, 10)
+    }
   }
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+select::-ms-expand {
+  display: none;
+}
+.select {
+  font-family: 'BMDOHYEON';
+  margin-left: 1rem;
+  margin-bottom: 1rem;
+  background-size: 20px;
+  padding: 5px 30px 5px 10px;
+  border-radius: 4px;
+  outline: 0 none;
+  background: url('@/assets/arrow.jpeg') no-repeat 95% 50%;
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.select option {
+  background: black;
+  color: #fff;
+  padding: 3px 0;
+  font-family: 'BMDOHYEON';
+}
+
+select:hover {
+  border-color: #888;
+}
+
+select:focus {
+  border-color: #aaa;
+  box-shadow: 0 0 1px 3px rgba(59, 153, 252, 0.7);
+  box-shadow: 0 0 0 3px -moz-mac-focusring;
+  color: #222;
+  outline: none;
+}
+
+select:disabled {
+  opacity: 0.5;
+}
+
+label {
+  margin-bottom: 1rem;
+  font-family: 'BMDOHYEON';
+}
+
+option {
+  font-family: 'BMDOHYEON';
+}
+</style>
