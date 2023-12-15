@@ -264,6 +264,7 @@ export default {
         const data = await updateAskingPrice(this.auctionId, this.askingPrice)
         if (data.code === 200) {
           toast.success('호가 수정에 성공했어요', { timeout: 2000 })
+          this.askingPrice = null
         }
       } catch (err) {
         toast.fail('호가 수정에 실패했어요', { timeout: 2000 })
@@ -343,7 +344,7 @@ input {
 
   .chat {
     position: relative;
-    max-height: 40%;
+    max-height: 30%;
     height: 40%;
     overflow: scroll;
   }
