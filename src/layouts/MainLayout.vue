@@ -1,6 +1,6 @@
 <template>
   <TheHeader></TheHeader>
-  <div>
+  <div class="view">
     <RouterView></RouterView>
   </div>
 </template>
@@ -38,7 +38,9 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-div {
+.view {
   width: 100vw;
+  height: 90vh;
+  margin-top: 10vh;
 }
 </style>
