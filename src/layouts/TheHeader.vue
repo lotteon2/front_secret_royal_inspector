@@ -40,6 +40,8 @@ header {
   position: absolute;
   top: 0;
   width: 100%;
+  height: 10vh;
+  margin-bottom: 1rem;
 }
 nav {
   margin: 0 auto;
