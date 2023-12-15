@@ -112,3 +112,5 @@ export type FinishStreamResponse = ApiResponse<string>
 export type GetAuctionListByConsumerIdResponse = ApiResponse<
   Page<GetAuctionListByConsumerIdResponseData>
 >
+
+export type UpdateAskingPriceResponse = ApiResponse<string>
