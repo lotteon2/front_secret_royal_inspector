@@ -350,6 +350,8 @@ input {
 
   input {
     width: 100%;
+    position: absolute;
+    bottom: 0;
   }
 
   .chat-box {
