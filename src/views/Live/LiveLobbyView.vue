@@ -9,6 +9,13 @@
   </div>
   <div v-if="this.isStreaming" class="close__btn">
     <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
+    <input
+      v-model="askingPrice"
+      type="number"
+      @keyup="changeAskingPrice"
+      placeholder="호가를 입력해주세요"
+    />
+    <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
   </div>
   <div class="stream">
     <div class="stream-left">
@@ -39,7 +46,7 @@ import CustomButton from '@/components/common/CustomButton.vue'
 import CustomAvatar from '@/components/common/CustomAvatar.vue'
 import ConnectLive from '@connectlive/connectlive-web-sdk'
 import { useToast } from 'vue-toastification'
-import { startStream, finishStream } from '@/api/auction/auctionAPIService.ts'
+import { startStream, finishStream, updateAskingPrice } from '@/api/auction/auctionAPIService.ts'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 export default {
@@ -59,7 +66,8 @@ export default {
       userName: '',
       message: '',
       recvList: [],
-      auctionList: []
+      auctionList: [],
+      askingPrice: null
     }
   },
   mounted() {
@@ -245,6 +253,22 @@ export default {
     removeLocalVideoNode() {
       const videoItem = document.querySelector('#local-video-item')
       if (videoItem) videoItem.remove()
+    },
+    async changeAskingPrice() {
+      const toast = useToast()
+      if (!this.askingPrice) {
+        toast.fail('호가를 입력해주세요', { timeout: 1000 })
+        return
+      }
+      try {
+        const data = await updateAskingPrice(this.auctionId, this.askingPrice)
+        if (data.code === 200) {
+          toast.success('호가 수정에 성공했어요', { timeout: 2000 })
+          this.askingPrice = null
+        }
+      } catch (err) {
+        toast.fail('호가 수정에 실패했어요', { timeout: 2000 })
+      }
     }
   }
 }
@@ -283,6 +307,21 @@ li {
 
 .close__btn {
   margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  input {
+    margin-top: 0;
+  }
+}
+
+input {
+  border-radius: 8px;
+  border: 1px solid lightgray;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  margin-top: 0.3rem;
+  font-family: 'BMDOHYEON';
 }
 
 .stream {
@@ -305,18 +344,15 @@ li {
 
   .chat {
     position: relative;
-    max-height: 40%;
+    max-height: 30%;
     height: 40%;
     overflow: scroll;
   }
 
   input {
-    border-radius: 8px;
-    border: 1px solid lightgray;
-    padding: 0.5rem;
     width: 100%;
-    box-sizing: border-box;
-    margin-top: 0.3rem;
+    position: absolute;
+    bottom: 0;
   }
 
   .chat-box {

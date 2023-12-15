@@ -6,10 +6,10 @@ import type {
   GetAuctionDetailByAuctionIdResponse,
   GetAuctionListByConsumerIdResponse,
   GetAuctionListResponse,
-  GetCreditListByConsumerIdResponse,
   RegisterAuctionParams,
   RegisterAuctionResponse,
   StartStreamResponse,
+  UpdateAskingPriceResponse,
   UpdateAuctionParams,
   UpdateAuctionResponse
 } from './auctionAPIService.types'
@@ -85,6 +85,17 @@ export const getAuctionListByConsumerId = async (
 ) => {
   const { data } = await authAxiosInstance.get<GetAuctionListByConsumerIdResponse>(
     `/auction-service/api/auction/bid/consumer/${consumerId}?page=${page}&size=${size}`
+  )
+  return data
+}
+
+export const updateAskingPrice = async (auctionId: string, askingPrice: number) => {
+  const { data } = await authAxiosInstance.patch<UpdateAskingPriceResponse>(
+    `/auction-service/api/auction/bid/askingPrice`,
+    {
+      auctionId,
+      askingPrice
+    }
   )
   return data
 }
