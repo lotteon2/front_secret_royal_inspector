@@ -9,12 +9,7 @@
   </div>
   <div v-if="this.isStreaming" class="close__btn">
     <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
-    <input
-      v-model="askingPrice"
-      type="number"
-      @keyup="changeAskingPrice"
-      placeholder="호가를 입력해주세요"
-    />
+    <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
     <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
   </div>
   <div class="stream">

@@ -91,11 +91,7 @@ export const getAuctionListByConsumerId = async (
 
 export const updateAskingPrice = async (auctionId: string, askingPrice: number) => {
   const { data } = await authAxiosInstance.patch<UpdateAskingPriceResponse>(
-    `/auction-service/api/auction/bid/askingPrice`,
-    {
-      auctionId,
-      askingPrice
-    }
+    `/auction-service/api/auction/bid/${auctionId}/askingPrice/${askingPrice}`
   )
   return data
 }
