@@ -60,12 +60,12 @@ export default {
       header: [
         { text: '주모 이름', value: 'sellerName' },
         { text: '상품 이름', value: 'productName' },
-        { text: '판매량', value: 'productCount' },
-        { text: '총 가격', value: 'productTotalAmount' },
-        { text: '주문 날짜', value: 'orderDate' },
-        { text: '결제 수단', value: 'paymentType' },
-        { text: '배송 상태', value: 'orderStatus' },
-        { text: '경매 여부', value: 'isAuction' }
+        { text: '판매량', value: 'totalSalesCount' },
+        { text: '총 가격', value: 'productPrice' },
+        { text: '재고', value: 'stockQuantity' },
+        { text: '리뷰 개수', value: 'reviewCount' },
+        { text: '쇼츠', value: 'shortsId' },
+        { text: '공개 여부', value: 'isActivate' }
       ],
       items: [],
       sellers: [
