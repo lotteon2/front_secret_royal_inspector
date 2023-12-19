@@ -7,7 +7,7 @@ import type {
 } from './productAPIService.types'
 
 export const updateProductVisibility = async (
-  productId: number,
+  productId: string,
   params: UpdateProductVisibilityParams
 ) => {
   const { data } = await authAxiosInstance.patch<UpdateProductVisibilityResponse>(

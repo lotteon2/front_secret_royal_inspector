@@ -10,17 +10,24 @@ const axiosApi = (baseURL: string) => {
     headers: {
       'Content-Type': `application/json;charset=UTF-8`,
       Accept: 'application/json',
-      Authorization: localStorage.getItem('accessToken')
-      // 'Access-Control-Allow-Origin': 'https://jeontongju-dev.shop/',
-      // 'Access-Control-Allow-Credentials': 'true'
+      Authorization: localStorage.getItem('accessToken'),
+      'Access-Control-Allow-Origin': 'https://jeontongju-dev.shop/',
+      'Access-Control-Allow-Credentials': 'true'
     }
   })
 }
 // 인증 요청
 const axiosAuthApi = (baseURL: string) => {
   const instance: AxiosInstance = axios.create({
-    baseURL
-    // withCredentials: true2qq2q
+    baseURL,
+    headers: {
+      'Content-Type': `application/json;charset=UTF-8`,
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('accessToken'),
+      'Access-Control-Allow-Origin': 'https://jeontongju-dev.shop/',
+      'Access-Control-Allow-Credentials': 'true'
+    },
+    withCredentials: true
   })
 
   instance.interceptors.request.use((config) => {
