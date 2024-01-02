@@ -47,6 +47,7 @@ export type GetOrderListBySellerIdResponseData = {
   deliveryId: number
   deliveryCode: string
   isAuction: boolean
+  sellerName?: string
 }
 
 export type GetOrderListByConsumerIdResponseData = {

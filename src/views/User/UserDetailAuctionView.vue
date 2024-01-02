@@ -4,12 +4,17 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import type { GetAuctionListByConsumerIdResponseData } from '@/api/auction/auctionAPIService.types'
 import CustomTable from '@/components/common/CustomTable.vue'
+import { useToast } from 'vue-toastification'
+import { getAuctionListByConsumerId } from '@/api/auction/auctionAPIService.ts'
+
 export default {
   components: { CustomTable },
   data() {
     return {
+      consumerId: -1,
       header: [
         { text: '', value: 'productImageUrl' },
         { text: '경매 이름', value: 'auctionName' },
@@ -19,33 +24,34 @@ export default {
         { text: '낙찰 여부', value: 'isBid' },
         { text: '낙찰 날짜', value: 'bidDate' }
       ],
-      items: [
-        {
-          auctionId: '4dfc6b14-7213-3363-8009-b23c56e3a1b1',
-          auctionName: '제 20회 경매대회',
-          productName: '복순도가 프리미엄',
-          productImageUrl:
-            'https://mblogthumb-phinf.pstatic.net/MjAyMTAxMDhfMjUx/MDAxNjEwMTA1MDg1MTgz.B4WXxZw_gfJUTbeBkW563beyrxlsvuYp1RRZG0mFtzIg.vWGxP9oHbCuiIJD9K6OfIkR1G2TMytWnOWLae9PE-V4g.JPEG.angela8846/SE-18DA6C8F-D93C-4484-BA07-D77C7A56F40F.jpg?type=w800',
-          startingPrice: 1000,
-          lastBidPrice: 36000,
-          myLastBidPrice: 36000,
-          isBid: true,
-          bidDate: '2023-11-26'
-        },
-        {
-          auctionId: '4dfc6b14-7213-3363-8009-b23c56e3a1b1',
-          auctionName: '제 20회 경매대회',
-          productName: '복순도가 프리미엄 22',
-          productImageUrl:
-            'https://mblogthumb-phinf.pstatic.net/MjAyMTAxMDhfMjUx/MDAxNjEwMTA1MDg1MTgz.B4WXxZw_gfJUTbeBkW563beyrxlsvuYp1RRZG0mFtzIg.vWGxP9oHbCuiIJD9K6OfIkR1G2TMytWnOWLae9PE-V4g.JPEG.angela8846/SE-18DA6C8F-D93C-4484-BA07-D77C7A56F40F.jpg?type=w800',
-          startingPrice: 1000,
-          lastBidPrice: 25000,
-          myLastBidPrice: 28000,
-          isBid: false,
-          bidDate: '2023-11-26'
-        }
-      ]
+      items: []
+    } as {
+      consumerId: number
+      header: { text: string; value: string }[]
+      items: GetAuctionListByConsumerIdResponseData[]
     }
+  },
+  methods: {
+    async getAuctionList(page: number, size: number) {
+      const toast = useToast()
+      try {
+        const data = await getAuctionListByConsumerId(this.consumerId, page, size)
+        if (data.code === 200) {
+          toast.success(`고객의 경매내역들을 성공적으로 불러왔어요.`, {
+            timeout: 2000
+          })
+          this.items = data.data.content
+        }
+      } catch (error) {
+        toast.error(`괙의 경매 내역들을 불러오는데 실패했어요.`, {
+          timeout: 2000
+        })
+      }
+    }
+  },
+  mounted() {
+    this.consumerId = Number(this.$route.params.consumerId)
+    this.getAuctionList(0, 10)
   }
 }
 </script>

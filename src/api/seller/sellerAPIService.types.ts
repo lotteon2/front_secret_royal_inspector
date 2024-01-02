@@ -68,6 +68,11 @@ export type GetSellerInfoResponseData = {
   isDeleted: boolean
 }
 
+export type GetAllSellersResponseData = {
+  value: number
+  label: string
+}
+
 export type GetSellerListResponse = ApiResponse<Page<GetSellerListResponseData[]>>
 
 export type GetSellerInfoResponse = ApiResponse<GetSellerInfoResponseData>
@@ -75,3 +80,5 @@ export type GetSellerInfoResponse = ApiResponse<GetSellerInfoResponseData>
 export type ApproveSellerResponse = ApiResponse<string>
 
 export type WidthDrawSellerResponse = ApiResponse<string>
+
+export type GetAllSellersResponse = ApiResponse<GetAllSellersResponseData>

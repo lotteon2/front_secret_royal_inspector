@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss" scoped>
 div {
-  max-width: 62.5rem;
   margin: 0 auto;
+  width: 100dvw;
 }
 </style>

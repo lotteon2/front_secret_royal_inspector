@@ -66,6 +66,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
   .user-list__info-section {
     display: flex;
     align-items: center;

@@ -1,20 +1,46 @@
-<script setup>
-import TheHeader from '@/layouts/TheHeader.vue'
-</script>
-
 <template>
   <TheHeader></TheHeader>
-  <RouterView></RouterView>
+  <div class="view">
+    <RouterView></RouterView>
+  </div>
 </template>
 
-<script>
-export default {
+<script lang="ts" scoped>
+import TheHeader from '@/layouts/TheHeader.vue'
+import { defineComponent } from 'vue'
+import { useMyInfoStore } from '@/stores/myInfo'
+import { getAllSellers } from '@/api/seller/sellerAPIService'
+export default defineComponent({
+  components: {
+    TheHeader
+  },
+  methods: {
+    async getSellerInfo() {
+      const myInfo = useMyInfoStore()
+      try {
+        const data = await getAllSellers()
+        console.log(data)
+        myInfo.setSellers(data.data)
+        console.log(myInfo.getSellers())
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  },
   mounted() {
     if (!localStorage.getItem('accessToken')) {
       this.$router.push('/login')
+    } else {
+      this.getSellerInfo()
     }
   }
-}
+})
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.view {
+  width: 100vw;
+  height: 90vh;
+  margin-top: 10vh;
+}
+</style>

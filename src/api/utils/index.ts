@@ -20,6 +20,13 @@ const axiosApi = (baseURL: string) => {
 const axiosAuthApi = (baseURL: string) => {
   const instance: AxiosInstance = axios.create({
     baseURL,
+    headers: {
+      'Content-Type': `application/json;charset=UTF-8`,
+      Accept: 'application/json',
+      Authorization: localStorage.getItem('accessToken'),
+      'Access-Control-Allow-Origin': 'https://jeontongju-dev.shop/',
+      'Access-Control-Allow-Credentials': 'true'
+    },
     withCredentials: true
   })
 

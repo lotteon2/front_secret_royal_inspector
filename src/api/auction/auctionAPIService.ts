@@ -4,10 +4,12 @@ import type {
   DeleteAuctionResponse,
   FinishStreamResponse,
   GetAuctionDetailByAuctionIdResponse,
+  GetAuctionListByConsumerIdResponse,
   GetAuctionListResponse,
   RegisterAuctionParams,
   RegisterAuctionResponse,
   StartStreamResponse,
+  UpdateAskingPriceResponse,
   UpdateAuctionParams,
   UpdateAuctionResponse
 } from './auctionAPIService.types'
@@ -72,6 +74,24 @@ export const startStream = async (auctionId: string) => {
 export const finishStream = async (auctionId: string) => {
   const { data } = await authAxiosInstance.patch<FinishStreamResponse>(
     `/auction-service/api/auction/streaming/${auctionId}`
+  )
+  return data
+}
+
+export const getAuctionListByConsumerId = async (
+  consumerId: number,
+  page: number,
+  size: number
+) => {
+  const { data } = await authAxiosInstance.get<GetAuctionListByConsumerIdResponse>(
+    `/auction-service/api/auction/bid/consumer/${consumerId}?page=${page}&size=${size}`
+  )
+  return data
+}
+
+export const updateAskingPrice = async (auctionId: string, askingPrice: number) => {
+  const { data } = await authAxiosInstance.patch<UpdateAskingPriceResponse>(
+    `/auction-service/api/auction/bid/${auctionId}/askingPrice/${askingPrice}`
   )
   return data
 }

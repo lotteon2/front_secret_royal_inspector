@@ -36,8 +36,14 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+header {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 10vh;
+  margin-bottom: 1rem;
+}
 nav {
-  width: 50%;
   margin: 0 auto;
   display: flex;
   justify-content: space-between;

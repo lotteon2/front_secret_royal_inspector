@@ -9,6 +9,9 @@ export default defineConfig({
     global: 'window',
     'process.<wbr>env': {}
   },
+  optimizeDeps: {
+    include: ['pinia-persist']
+  },
   plugins: [
     vue({
       template: {

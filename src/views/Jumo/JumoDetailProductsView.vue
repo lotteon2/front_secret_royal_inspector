@@ -40,7 +40,7 @@ export default {
           this.items = data.data.content
         }
       } catch (err) {
-        toast.fail(`상품 조회에 변경에 실패했어요.`, {
+        toast.error(`상품 조회에 변경에 실패했어요.`, {
           timeout: 2000
         })
       }
@@ -91,7 +91,6 @@ export default {
   },
   mounted() {
     this.sellerId = this.$route.params.sellerId
-    console.log(this.sellerId)
     this.getSellerProducts()
   }
 }

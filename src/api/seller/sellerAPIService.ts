@@ -35,3 +35,10 @@ export const withDrawSeller = async (sellerId: number) => {
   )
   return data
 }
+
+export const getAllSellers = async () => {
+  const { data } = await authAxiosInstance.get<GetAllSellersResponse>(
+    '/seller-service/api/admin/sellers/info'
+  )
+  return data
+}

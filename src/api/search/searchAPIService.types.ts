@@ -44,6 +44,7 @@ export type GetProductListBySellerIdResponseData = {
   reviewCount: number
   shortsId: number
   isActivate: boolean
+  sellerName?: string
 }
 
 export type GetProductListBySellerIdResponse = ApiResponse<

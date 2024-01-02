@@ -28,6 +28,7 @@ button {
   background-color: #94e8b4;
   color: white;
   cursor: pointer;
+  font-family: 'BMDOHYEON';
 }
 
 .positive {
