@@ -25,6 +25,8 @@
 </template>
 
 <script lang="ts">
+import { getAllSellers } from '@/api/seller/sellerAPIService'
+import { useMyInfoStore } from '@/stores/myInfo'
 import { defineComponent } from 'vue'
 
 export default defineComponent({
@@ -34,6 +36,24 @@ export default defineComponent({
   methods: {
     isActive(route: string, route2: string) {
       return this.$route.path.includes(route) && this.$route.path.includes(route2)
+    },
+    async getSellerInfo() {
+      const myInfo = useMyInfoStore()
+      try {
+        const data = await getAllSellers()
+        console.log(data)
+        myInfo.setSellers(data.data)
+        console.log(myInfo.getSellers())
+      } catch (err) {
+        console.log(err)
+      }
+    }
+  },
+  mounted() {
+    if (!localStorage.getItem('accessToken')) {
+      this.$router.push('/login')
+    } else {
+      this.getSellerInfo()
     }
   }
 })

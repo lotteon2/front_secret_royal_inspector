@@ -43,6 +43,14 @@ export default {
     CustomModal
   },
   methods: {
+    getSellerName() {
+      console.log(this.sellers)
+      console.log(this.selectedSeller)
+      const idx = this.sellers.findIndex(
+        (seller) => Number(seller.value) === Number(this.selectedSeller)
+      )
+      return this.sellers[idx].label
+    },
     setSelect(event) {
       this.selectedSeller = event.target.value
     },
@@ -55,6 +63,7 @@ export default {
       this.isActivate = items.isActivate
       this.selectedProductId = items.productId
     },
+
     async handleChangeVisibility(isActivate: boolean) {
       const toast = useToast()
       try {
@@ -85,7 +94,7 @@ export default {
           const newItems = data.data.content
           newItems.forEach(
             (it: GetProductListBySellerIdResponseData, idx: number) =>
-              (newItems[idx] = { ...newItems[idx], sellerName: this.sellers[0].label })
+              (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
           )
           this.items = newItems
           this.isLoading = false

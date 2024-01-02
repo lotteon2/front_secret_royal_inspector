@@ -30,7 +30,11 @@ export default defineComponent({
   },
   methods: {
     getSellerName() {
-      const idx = this.sellers.findIndex((seller) => seller.value === this.selectedSeller)
+      console.log(this.sellers)
+      console.log(this.selectedSeller)
+      const idx = this.sellers.findIndex(
+        (seller) => Number(seller.value) === Number(this.selectedSeller)
+      )
       return this.sellers[idx].label
     },
     setSelect(event) {
