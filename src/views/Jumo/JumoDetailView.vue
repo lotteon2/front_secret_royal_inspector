@@ -30,13 +30,13 @@
     </div>
     <div class="jumo-detail__menu">
       <RouterLink
-        :to="`/jumo/jumoDetail/${sellerId}/products`"
-        :class="{ active: isActive('products', 'jumo') }"
+        :to="`/jumo/jumoDetail/${sellerId}/goods`"
+        :class="{ active: isActive('jumo', 'goods') }"
         >상품 내역</RouterLink
       >
       <RouterLink
-        :to="`/jumo/jumoDetail/${sellerId}/orderList`"
-        :class="{ active: isActive('orderList', 'jumo') }"
+        :to="`/jumo/jumoDetail/${sellerId}/orders`"
+        :class="{ active: isActive('orders', 'jumo') }"
         >주문 내역</RouterLink
       >
       <RouterLink
@@ -79,7 +79,7 @@ export default {
   mounted() {
     this.sellerId = this.$route.params.sellerId
     this.getSellerDetailInfo()
-    this.$router.replace(`/jumo/jumoDetail/${this.sellerId}/products`)
+    this.$router.replace(`/jumo/jumoDetail/${this.sellerId}/goods`)
   },
   methods: {
     isActive(route, route2) {

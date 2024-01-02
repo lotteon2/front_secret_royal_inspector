@@ -128,7 +128,7 @@ const routes = [
         },
         children: [
           {
-            path: 'orderList',
+            path: 'orders',
             component: () => import('@/views/Jumo/JumoDetailOrderView.vue')
           },
           {
@@ -136,7 +136,7 @@ const routes = [
             component: () => import('@/views/Jumo/JumoDetailCashUpView.vue')
           },
           {
-            path: 'products',
+            path: 'goods',
             component: () => import('@/views/Jumo/JumoDetailProductsView.vue')
           }
         ]
