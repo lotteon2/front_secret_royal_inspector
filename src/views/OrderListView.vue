@@ -30,8 +30,6 @@ export default defineComponent({
   },
   methods: {
     getSellerName() {
-      console.log(this.sellers)
-      console.log(this.selectedSeller)
       const idx = this.sellers.findIndex(
         (seller) => Number(seller.value) === Number(this.selectedSeller)
       )
