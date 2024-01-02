@@ -16,6 +16,9 @@
               :imgSrc="item[key]"
             />
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
+            <span v-else-if="key === 'settlementImgUrl'" @click="() => handleDownloadImg(item[key])"
+              >다운받기</span
+            >
             <span v-else>{{ item[key] }}</span>
           </td>
         </tr>
@@ -43,7 +46,11 @@ export default {
       popState: false
     }
   },
-  methods: {},
+  methods: {
+    handleDownloadImg(url) {
+      window.open(url, '정산 내역')
+    }
+  },
   computed: {
     // value 순서에 맞게 테이블 데이터를 출력하기 위한 배열
     headerKey() {

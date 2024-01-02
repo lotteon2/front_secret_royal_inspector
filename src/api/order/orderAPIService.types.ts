@@ -62,8 +62,19 @@ export type GetOrderListByConsumerIdResponseData = {
   isAuction: boolean
 }
 
+export type GetCashUpListBySellerIdResponseData = {
+  settlementYear: string
+  settlementMonth: string
+  totalAmount: number
+  settlementCommision: number
+  settlementAmount: number
+  settlementImgUrl: string
+}
+
 export type GetOrderListBySellerIdResponse = ApiResponse<Page<GetOrderListBySellerIdResponseData[]>>
 
 export type GetOrderListByConsumerIdResponse = ApiResponse<
   Page<GetOrderListByConsumerIdResponseData[]>
 >
+
+export type GetCashUpListBySellerIdResponse = ApiResponse<GetCashUpListBySellerIdResponseData[]>

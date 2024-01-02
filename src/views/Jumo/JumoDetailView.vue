@@ -31,15 +31,17 @@
     <div class="jumo-detail__menu">
       <RouterLink
         :to="`/jumo/jumoDetail/${sellerId}/products`"
-        :class="{ active: isActive('products') }"
+        :class="{ active: isActive('products', 'jumo') }"
         >상품 내역</RouterLink
       >
       <RouterLink
         :to="`/jumo/jumoDetail/${sellerId}/orderList`"
-        :class="{ active: isActive('orderList') }"
+        :class="{ active: isActive('orderList', 'jumo') }"
         >주문 내역</RouterLink
       >
-      <RouterLink to="/jumo/jumoDetail/3/cashup" :class="{ active: isActive('cashup') }"
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/cashup`"
+        :class="{ active: isActive('cashup', 'jumo') }"
         >정산 내역</RouterLink
       >
     </div>
@@ -80,8 +82,8 @@ export default {
     this.$router.replace(`/jumo/jumoDetail/${this.sellerId}/products`)
   },
   methods: {
-    isActive(route) {
-      return this.$route.path.includes(route)
+    isActive(route, route2) {
+      return this.$route.path.includes(route) && this.$route.path.includes(route2)
     },
     async approveSeller(approvalState) {
       const toast = useToast()
