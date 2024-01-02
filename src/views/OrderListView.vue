@@ -47,7 +47,7 @@ export default defineComponent({
           const newItems = data.data.content
           newItems.forEach(
             (it: GetOrderListBySellerIdResponseData, idx: number) =>
-              (newItems[idx] = { ...newItems[idx], sellerName: getSellerName() })
+              (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
           )
           this.items = newItems
         }
