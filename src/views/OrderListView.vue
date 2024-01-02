@@ -29,6 +29,10 @@ export default defineComponent({
     CustomTable
   },
   methods: {
+    getSellerName() {
+      const idx = this.sellers.findIndex((seller) => seller.value === this.selectedSeller)
+      return this.sellers[idx].label
+    },
     setSelect(event) {
       this.selectedSeller = event.target.value
     },
@@ -43,7 +47,7 @@ export default defineComponent({
           const newItems = data.data.content
           newItems.forEach(
             (it: GetOrderListBySellerIdResponseData, idx: number) =>
-              (newItems[idx] = { ...newItems[idx], sellerName: 'a주모' })
+              (newItems[idx] = { ...newItems[idx], sellerName: getSellerName() })
           )
           this.items = newItems
         }
