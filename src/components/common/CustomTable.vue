@@ -8,7 +8,7 @@
           </th>
         </tr>
       </thead>
-      <tbody>
+      <tbody v-if="items.length > 0">
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="key in headerKey" :key="key + index" @click="$emit('rowClick', item)">
             <CustomAvatar
@@ -23,6 +23,7 @@
           </td>
         </tr>
       </tbody>
+      <div v-else class="emptyDesc">데이터가 비어있어요!</div>
     </table>
   </div>
 </template>
@@ -52,7 +53,6 @@ export default {
     }
   },
   computed: {
-    // value 순서에 맞게 테이블 데이터를 출력하기 위한 배열
     headerKey() {
       return this.headers.map((header) => header.value)
     }
@@ -84,6 +84,12 @@ export default {
   th {
     background: #fafafa;
     vertical-align: middle;
+  }
+
+  .emptyDesc {
+    position: absolute;
+    top: 50%;
+    left: 40%;
   }
 }
 </style>

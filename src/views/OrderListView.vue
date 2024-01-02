@@ -83,7 +83,7 @@ export default defineComponent({
   },
   mounted() {
     const myInfo = useMyInfoStore()
-    this.sellers = myInfo.sellers
+    this.sellers = myInfo.getSellers()
     this.selectedSeller = this.sellers ? this.sellers[0].value : -1
     this.getOrderListBySellerId(this.selectedSeller, 0, 10)
   },
