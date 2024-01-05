@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="items.length > 0">
     <div v-for="(item, index) in items" :key="index">
       <UserPointCard
         :key="index"
@@ -9,6 +9,7 @@
       />
     </div>
   </div>
+  <div v-else>유저의 포인트 내역이 비어있어요.</div>
 </template>
 
 <script lang="ts" scoped>
