@@ -84,6 +84,22 @@ const routes = [
         }
       },
       {
+        path: '/live/test',
+        name: 'LiveTestView',
+        component: () => import('@/views/Live/LiveTestView.vue'),
+        meta: {
+          title: '라이브경매 페이지'
+        }
+      },
+      {
+        path: '/live/meeting',
+        name: 'liveMeetingView',
+        component: () => import('@/views/Live/LiveMeetingView.vue'),
+        meta: {
+          title: '라이브경매 실제 페이지'
+        }
+      },
+      {
         path: '/live/lobby/:auctionId',
         name: 'liveLobby',
         component: () => import('@/views/Live/LiveLobbyView.vue'),
