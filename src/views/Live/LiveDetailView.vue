@@ -161,7 +161,6 @@ export default {
       this.$router.replace(`/live/lobby/${this.auctionId}`)
     },
     async handleApprove(approvalState) {
-      console.log('here')
       const toast = useToast()
       try {
         const data = await approveAuctionByAuctionProductId(this.auctionProductId, approvalState)
