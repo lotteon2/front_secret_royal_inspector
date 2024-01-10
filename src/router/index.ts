@@ -92,6 +92,14 @@ const routes = [
         }
       },
       {
+        path: '/live/test22',
+        name: 'LiveEnterView',
+        component: () => import('@/views/Live/LiveEnterView.vue'),
+        meta: {
+          title: 'LiveEnterView 페이지'
+        }
+      },
+      {
         path: '/live/meeting',
         name: 'liveMeetingView',
         component: () => import('@/views/Live/LiveMeetingView.vue'),
