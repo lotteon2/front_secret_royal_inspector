@@ -49,7 +49,7 @@
 
 <script>
 import { merge } from 'lodash'
-import AgoraRTC from 'agora-rtc-sdk-ng'
+import AgoraRTC from 'agora-rtc-sdk'
 
 const tile_canvas = {
   1: ['span 12/span 24'],
