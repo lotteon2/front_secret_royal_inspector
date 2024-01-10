@@ -94,7 +94,7 @@ const routes = [
       {
         path: '/live/test22',
         name: 'LiveEnterView',
-        component: () => import('@/views/Live/LiveEnterView.vue'),
+        component: () => import('@/views/Live/LiveAgoraTestView.vue'),
         meta: {
           title: 'LiveEnterView 페이지'
         }
