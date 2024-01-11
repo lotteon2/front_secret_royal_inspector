@@ -15,10 +15,13 @@
   </div>
   <CustomModal v-if="popState" :modalTitle="this.modalTitle" btnText1="비공개로 바꾸기" btnText2="공개로 바꾸기"
     @btnClick1="() => handleChangeVisibility(false)" @btnClick2="() => handleChangeVisibility(true)"></CustomModal>
+
+  <Pagination :pageSetting="pageDataSetting(total, limit, block, this.page)" @paging="pagingMethod" />
 </template>
 
 <script lang="ts" scoped>
 import { useMyInfoStore } from '@/stores/myInfo'
+import Pagination from '@/components/common/Pagination.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import CustomModal from '@/components/common/CustomModal.vue'
 import { useToast } from 'vue-toastification'
@@ -26,12 +29,41 @@ import { getProductListBySellerId } from '@/api/search/searchAPIService.ts'
 import type { GetProductListBySellerIdResponseData } from '@/api/search/searchAPIService.types'
 import { updateProductVisibility } from '@/api/product/productAPIService.ts'
 
+
 export default {
   components: {
     CustomTable,
-    CustomModal
+    CustomModal,
+    Pagination
   },
   methods: {
+    pagingMethod(page) {
+      this.page = page
+      this.pageDataSetting(this.total, this.limit, this.block, page)
+    },
+    pageDataSetting(total, limit, block, page) {
+      console.log('total', total, limit, block, page)
+      const totalPage = total;
+      let currentPage = page
+      const first =
+        currentPage > 1 ? parseInt(currentPage, 10) - parseInt(1, 10) : 0
+
+      console.log('first', first)
+      const end =
+        totalPage !== currentPage
+          ? parseInt(currentPage, 10) + parseInt(1, 10)
+          : null
+
+      let startIndex = (Math.ceil(currentPage / block) - 1) * block + 1
+      let endIndex =
+        startIndex + block > totalPage ? totalPage : startIndex + block - 1
+      let list = []
+      for (let index = startIndex; index <= endIndex; index++) {
+        list.push(index)
+      }
+      return { first, end, list, currentPage }
+    },
+
     getSellerName() {
       const idx = this.sellers.findIndex(
         (seller) => Number(seller.value) === Number(this.selectedSeller)
@@ -78,6 +110,7 @@ export default {
               (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
           )
           this.items = newItems
+          this.total = data.data.totalPages
           this.isLoading = false
         }
       } catch (error) {
@@ -106,7 +139,11 @@ export default {
       modalTitle: '',
       isActivate: false,
       selectedProductId: '-1',
-      popState: false
+      popState: false,
+      total: 0,
+      page: 0,
+      limit: 10,
+      block: 5
     } as {
       selectedSeller: number
       header: { text: string; value: string }[]
@@ -117,6 +154,10 @@ export default {
       isActivate: boolean
       selectedProductId: string
       popState: boolean
+      total: number,
+      page: number,
+      limit: number,
+      block: number
     }
   },
   mounted() {
@@ -128,7 +169,7 @@ export default {
   },
   watch: {
     selectedSeller: function (value) {
-      this.getProductListBySellerId(value, 0, 10)
+      this.getProductListBySellerId(value, this.page, 10)
     }
   }
 }
