@@ -269,29 +269,36 @@ export default {
     console.log('AgoraRTC client initialized')
     console.log($.uid)
     console.log(typeof $.uid)
+    // $.channel = 'afe16861-1ff7-4942-991f-48c6688ca68b'.replaceAll('-', '')
+    console.log($.channel)
     $.subscribeStreamEvents()
-    $.client.join($.appId, $.channel, String($.uid), (uid) => {
-      console.log('User ' + uid + ' join channel successfully')
-      console.log('At ' + new Date().toLocaleTimeString())
-      // create local stream
-      // It is not recommended to setState in function addStream
-      $.localStream = this.streamInit(String($.uid), $.attendeeMode, $.videoProfile)
-      $.localStream.init(
-        () => {
-          if ($.attendeeMode !== 'audience') {
-            $.addStream($.localStream, true)
-            $.client.publish($.localStream, (err) => {
-              console.log('Publish local stream error: ' + err)
-            })
+    $.client.join(
+      '86d9c47e47144b7b96d540cf6118d3ae',
+      '007eJxTYJAv6wldU970bGois1Whr0tF0LuFC79fK73L1v12Xm3UHDMFBguzFMtkE',
+      String($.uid),
+      (uid) => {
+        console.log('User ' + uid + ' join channel successfully')
+        console.log('At ' + new Date().toLocaleTimeString())
+        // create local stream
+        // It is not recommended to setState in function addStream
+        $.localStream = this.streamInit(String($.uid), $.attendeeMode, $.videoProfile)
+        $.localStream.init(
+          () => {
+            if ($.attendeeMode !== 'audience') {
+              $.addStream($.localStream, true)
+              $.client.publish($.localStream, (err) => {
+                console.log('Publish local stream error: ' + err)
+              })
+            }
+            $.readyState = true
+          },
+          (err) => {
+            console.log('getUserMedia failed', err)
+            $.readyState = true
           }
-          $.readyState = true
-        },
-        (err) => {
-          console.log('getUserMedia failed', err)
-          $.readyState = true
-        }
-      )
-    })
+        )
+      }
+    )
     // })
   },
 
