@@ -1,27 +1,19 @@
 <template>
-  <header>
-    <nav>
-      <RouterLink to="/dashboard">
-        <img
-          src="@/assets/logo.svg"
-          alt="logo"
-          width="30"
-          height="24"
-          class="d-inline-block align-text-top"
-        />
-      </RouterLink>
-      <RouterLink to="/user" :class="{ active: isActive('user', '') }">회원</RouterLink>
-      <RouterLink to="/jumo" :class="{ active: isActive('jumo', '') }">주모</RouterLink>
-      <RouterLink to="/product" :class="{ active: isActive('product', '') }">상품</RouterLink>
-      <RouterLink to="/orderList" :class="{ active: isActive('orderList', '') }"
-        >주문내역</RouterLink
-      >
-      <RouterLink to="/live" :class="{ active: isActive('live', '') }">라이브경매</RouterLink>
-      <RouterLink to="/login/logout" :class="{ active: isActive('logout', '') }"
-        >로그아웃</RouterLink
-      >
-    </nav>
-  </header>
+  <div>
+    <header>
+      <nav>
+        <RouterLink to="/dashboard">
+          <img src="@/assets/main_logo.png" alt="logo" width="50" height="50" class="d-inline-block align-text-top" />
+        </RouterLink>
+        <RouterLink to="/user" :class="{ active: isActive('user', '') }">회원</RouterLink>
+        <RouterLink to="/jumo" :class="{ active: isActive('jumo', '') }">주모</RouterLink>
+        <RouterLink to="/product" :class="{ active: isActive('product', '') }">상품</RouterLink>
+        <RouterLink to="/orderList" :class="{ active: isActive('orderList', '') }">주문내역</RouterLink>
+        <RouterLink to="/live" :class="{ active: isActive('live', '') }">라이브경매</RouterLink>
+        <RouterLink to="/login/logout" :class="{ active: isActive('logout', '') }">로그아웃</RouterLink>
+      </nav>
+    </header>
+  </div>
 </template>
 
 <script lang="ts">
@@ -61,27 +53,33 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 header {
-  position: absolute;
-  top: 0;
-  width: 100%;
-  height: 10vh;
+  width: 10rem;
+  height: 100vh;
   margin-bottom: 1rem;
+  border-right: 1px solid #c0c0c0;
 }
+
 nav {
   margin: 0 auto;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 3rem;
+  height: 30vh;
+  padding-left: 2rem;
 }
+
 a {
+  width: 100%;
   text-decoration: none;
   color: black;
+
   &:hover,
   &:active {
     color: #aab3ff;
   }
 }
+
 .active {
   font-weight: bold;
   color: #aab3ff;

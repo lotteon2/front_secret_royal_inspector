@@ -11,14 +11,11 @@
       <tbody v-if="items.length > 0">
         <tr v-for="(item, index) in items" :key="index">
           <td v-for="key in headerKey" :key="key + index" @click="$emit('rowClick', item)">
-            <CustomAvatar
-              v-if="key === 'storeImageUrl' || key === 'thumbnail' || key === 'productImageUrl'"
-              :imgSrc="item[key]"
-            />
+            <CustomAvatar v-if="key === 'storeImageUrl' || key === 'thumbnail' || key === 'productImageUrl'"
+              :imgSrc="item[key]" />
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
-            <span v-else-if="key === 'settlementImgUrl'" @click="() => handleDownloadImg(item[key])"
-              >다운받기</span
-            >
+            <span v-else-if="key === 'settlementImgUrl'" @click="() => handleDownloadImg(item[key])">다운받기</span>
+            <span v-else-if="key === 'createdAt'">{{ item[key].slice(0, 10) }}</span>
             <span v-else>{{ item[key] }}</span>
           </td>
         </tr>
@@ -63,6 +60,7 @@ export default {
 <style lang="scss" scoped>
 .customTable {
   width: 100%;
+
   table {
     width: 100%;
     text-align: center;

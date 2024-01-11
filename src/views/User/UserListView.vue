@@ -71,8 +71,6 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-width: 70vw;
-    max-width: 70vw;
     margin: 1rem 0;
   }
 }

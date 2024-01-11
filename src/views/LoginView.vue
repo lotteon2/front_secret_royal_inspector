@@ -1,6 +1,6 @@
 <template>
   <div class="loginForm" style="height: 100vh">
-    <img src="../assets/main_logo.png" alt="logo" />
+    <img src="../assets/main_logo.png" alt="logo" width="200" />
     <label>이메일</label>
     <input v-model="email" placeholder="이메일을 입력해주세요" />
     <label>비밀번호</label>
@@ -30,14 +30,10 @@ export default {
         const data = await localLogin({ email: this.email, password: this.password })
         if (data.code === 200) {
           this.$router.push('/')
-          localStorage.setItem('accessToken', data.data.accessToken)
-
-          toast.success('로그인 성공했어요.', {
-            timeout: 2000
-          })
+          localStorage.setItem('accessToken', data.data.accessToken);
         }
       } catch (err) {
-        toast.error('로그인 실패했어요.', {
+        toast.error('아이디와 비밀번호를 확인해주세요.', {
           timeout: 2000
         })
       }
@@ -58,7 +54,8 @@ export default {
   justify-content: center;
   flex-direction: column;
   gap: 1rem;
-  width: 50%;
+  width: 80vw;
+  margin: 0 auto;
 }
 
 img {

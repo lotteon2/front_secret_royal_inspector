@@ -1,7 +1,9 @@
 <template>
-  <TheHeader></TheHeader>
-  <div class="view">
-    <RouterView></RouterView>
+  <div class="main">
+    <TheHeader></TheHeader>
+    <div class="view">
+      <RouterView></RouterView>
+    </div>
   </div>
 </template>
 
@@ -38,6 +40,11 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+.main {
+  display: flex;
+  gap: 1rem;
+}
+
 .view {
   width: 100vw;
   height: 90vh;
