@@ -21,9 +21,6 @@ export default {
       try {
         const data = await getCashUpListBySellerId(this.sellerId, 2023)
         if (data.code === 200) {
-          toast.success(`주모 정산내역들을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
           this.items = data.data
         }
       } catch (error) {

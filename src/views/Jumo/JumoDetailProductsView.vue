@@ -4,14 +4,8 @@
       <div>행을 클릭하면 상품의 공개 여부를 변경할 수 있어요.</div>
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
-    <CustomModal
-      v-if="popState"
-      :modalTitle="this.modalTitle"
-      btnText1="비공개로 바꾸기"
-      btnText2="공개로 바꾸기"
-      @btnClick1="() => handleChangeVisibility(false)"
-      @btnClick2="() => handleChangeVisibility(true)"
-    ></CustomModal>
+    <CustomModal v-if="popState" :modalTitle="this.modalTitle" btnText1="비공개로 바꾸기" btnText2="공개로 바꾸기"
+      @btnClick1="() => handleChangeVisibility(false)" @btnClick2="() => handleChangeVisibility(true)"></CustomModal>
   </div>
 </template>
 
@@ -36,7 +30,6 @@ export default {
       try {
         const data = await getProductListBySellerId(this.sellerId, 0, 10)
         if (data.code === 200) {
-          toast.success('주모의 상품 리스트를 조회했어요.', { timeout: 2000 })
           this.items = data.data.content
         }
       } catch (err) {
@@ -58,7 +51,7 @@ export default {
           this.changePopState()
         }
       } catch (err) {
-        toast.fail(`상품 공개 상태가 변경에 실패했어요.`, {
+        toast.error(`상품 공개 상태가 변경에 실패했어요.`, {
           timeout: 2000
         })
       }
@@ -103,6 +96,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
   .jumo-product-list__info-section {
     display: flex;
     align-items: center;

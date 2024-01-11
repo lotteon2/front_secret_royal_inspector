@@ -16,6 +16,9 @@
             <span v-else-if="key === 'status'" @click="changePopState">{{ item[key] }}</span>
             <span v-else-if="key === 'settlementImgUrl'" @click="() => handleDownloadImg(item[key])">다운받기</span>
             <span v-else-if="key === 'createdAt'">{{ item[key].slice(0, 10) }}</span>
+            <span v-else-if="key === 'storeDescription'">{{ item[key].length > 10
+              ? item[key].slice(0, 10) + "..."
+              : item[key] }}</span>
             <span v-else>{{ item[key] }}</span>
           </td>
         </tr>

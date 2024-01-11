@@ -18,9 +18,6 @@ export default {
       try {
         const data = await getOrderListBySellerId(this.sellerId, page, size)
         if (data.code === 200) {
-          toast.success(`주모 주문내역들을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
           this.items = data.data.content
         }
       } catch (error) {

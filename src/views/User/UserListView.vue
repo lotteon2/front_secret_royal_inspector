@@ -41,13 +41,10 @@ export default {
       try {
         const data = await getConsumerList(page, size)
         if (data.code === 200) {
-          toast.success(`회원 정보들을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
           this.items = data.data.content
         }
       } catch (error) {
-        toast.fail(`회원 정보들을 불러오는데 실패했어요.`, {
+        toast.error(`회원 정보들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
       }

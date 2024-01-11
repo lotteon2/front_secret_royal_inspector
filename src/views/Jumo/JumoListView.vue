@@ -1,7 +1,7 @@
 <template>
   <div class="jumoList">
     <div class="infoSection">
-      <div>행을 클릭하면 유저 상세 페이지로 이동해요.</div>
+      <div>행을 클릭하면 주모 상세 페이지로 이동해요.</div>
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="goDetailJumo"></CustomTable>
   </div>
@@ -41,9 +41,6 @@ export default {
         const data = await getSellerList(0, 10)
         if (data.code === 200) {
           this.items = data.data.content
-          toast.success('주모 정보를 불러왔어요.', {
-            timeout: 2000
-          })
         }
       } catch (err) {
         toast.error('주모 정보를 불러오는데 실패했어요.', {
@@ -65,6 +62,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
   .infoSection {
     display: flex;
     align-items: center;

@@ -53,6 +53,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 header {
+  padding-top: 2rem;
   width: 10rem;
   height: 100vh;
   margin-bottom: 1rem;

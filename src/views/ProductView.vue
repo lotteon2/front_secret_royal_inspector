@@ -3,12 +3,7 @@
     <label for="sellerSelect">주모를 선택해주세요</label>
     <template v-if="sellers">
       <select :value="selectedSeller" @change="setSelect($event)" class="select">
-        <option
-          id="sellerSelect"
-          v-for="seller in sellers"
-          :key="seller.value"
-          :value="seller.value"
-        >
+        <option id="sellerSelect" v-for="seller in sellers" :key="seller.value" :value="seller.value">
           {{ seller.label }}
         </option>
       </select>
@@ -18,14 +13,8 @@
   <div v-if="isLoading">
     <img src="../assets/loading.gif" alt="loading" />
   </div>
-  <CustomModal
-    v-if="popState"
-    :modalTitle="this.modalTitle"
-    btnText1="비공개로 바꾸기"
-    btnText2="공개로 바꾸기"
-    @btnClick1="() => handleChangeVisibility(false)"
-    @btnClick2="() => handleChangeVisibility(true)"
-  ></CustomModal>
+  <CustomModal v-if="popState" :modalTitle="this.modalTitle" btnText1="비공개로 바꾸기" btnText2="공개로 바꾸기"
+    @btnClick1="() => handleChangeVisibility(false)" @btnClick2="() => handleChangeVisibility(true)"></CustomModal>
 </template>
 
 <script lang="ts" scoped>
@@ -67,9 +56,6 @@ export default {
       try {
         const data = await updateProductVisibility(this.selectedProductId, { isActivate })
         if (data.code === 200) {
-          toast.success(`상품 공개 상태가 변경되었어요.`, {
-            timeout: 2000
-          })
           const idx = this.items.findIndex((item) => item.productId === this.selectedProductId)
           this.items[idx].isActivate = isActivate
           this.changePopState()
@@ -86,9 +72,6 @@ export default {
         this.isLoading = true
         const data = await getProductListBySellerId(sellerId, page, size)
         if (data.code === 200) {
-          toast.success(`주모의 상품내역을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
           const newItems = data.data.content
           newItems.forEach(
             (it: GetProductListBySellerIdResponseData, idx: number) =>
@@ -155,6 +138,7 @@ export default {
 select::-ms-expand {
   display: none;
 }
+
 .select {
   font-family: 'BMDOHYEON';
   margin-left: 1rem;
@@ -169,6 +153,7 @@ select::-ms-expand {
   -moz-appearance: none;
   appearance: none;
 }
+
 .select option {
   background: black;
   color: #fff;

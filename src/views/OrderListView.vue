@@ -3,12 +3,7 @@
     <label for="sellerSelect">주모를 선택해주세요</label>
     <template v-if="sellers">
       <select :value="selectedSeller" @change="setSelect($event)" class="select">
-        <option
-          id="sellerSelect"
-          v-for="seller in sellers"
-          :key="seller.value"
-          :value="seller.value"
-        >
+        <option id="sellerSelect" v-for="seller in sellers" :key="seller.value" :value="seller.value">
           {{ seller.label }}
         </option>
       </select>
@@ -43,9 +38,6 @@ export default defineComponent({
       try {
         const data = await getOrderListBySellerId(sellerId, page, size)
         if (data.code === 200) {
-          toast.success(`주문내역을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
           const newItems = data.data.content
           newItems.forEach(
             (it: GetOrderListBySellerIdResponseData, idx: number) =>
@@ -105,6 +97,7 @@ export default defineComponent({
 select::-ms-expand {
   display: none;
 }
+
 .select {
   font-family: 'BMDOHYEON';
   margin-left: 1rem;
@@ -119,6 +112,7 @@ select::-ms-expand {
   -moz-appearance: none;
   appearance: none;
 }
+
 .select option {
   background: black;
   color: #fff;

@@ -37,9 +37,6 @@ export default {
       try {
         const data = await getAuctionListByConsumerId(this.consumerId, page, size)
         if (data.code === 200) {
-          toast.success(`고객의 경매내역들을 성공적으로 불러왔어요.`, {
-            timeout: 2000
-          })
           this.items = data.data.content
         }
       } catch (error) {

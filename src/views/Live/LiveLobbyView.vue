@@ -252,7 +252,7 @@ export default {
     async changeAskingPrice() {
       const toast = useToast()
       if (!this.askingPrice) {
-        toast.fail('호가를 입력해주세요', { timeout: 1000 })
+        toast.error('호가를 입력해주세요', { timeout: 1000 })
         return
       }
       try {
@@ -262,7 +262,7 @@ export default {
           this.askingPrice = null
         }
       } catch (err) {
-        toast.fail('호가 수정에 실패했어요', { timeout: 2000 })
+        toast.error('호가 수정에 실패했어요', { timeout: 2000 })
       }
     }
   }
@@ -280,10 +280,12 @@ video,
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+
   video {
     width: 80%;
   }
 }
+
 .preview-screen__header {
   display: flex;
   align-items: center;
@@ -305,6 +307,7 @@ li {
   display: flex;
   align-items: center;
   gap: 0.5rem;
+
   input {
     margin-top: 0;
   }
@@ -360,13 +363,16 @@ input {
     padding: 0.5rem;
     margin: 0.2rem 0;
     gap: 1rem;
+
     span {
       white-space: nowrap;
     }
+
     .chat-input {
       position: absolute;
       bottom: 5%;
     }
+
     .chat-name {
       font-weight: 800;
     }
@@ -380,6 +386,7 @@ input {
     display: flex;
     flex-direction: column;
   }
+
   .chat-box::before {
     content: '';
     display: block;

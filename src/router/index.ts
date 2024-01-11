@@ -193,7 +193,7 @@ const routes = [
         },
         children: [
           {
-            path: 'orderList',
+            path: 'orders',
             component: () => import('@/views/User/UserDetailOrderView.vue')
           },
           {

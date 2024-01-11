@@ -5,15 +5,8 @@
       <CustomButton btnText="등록하기" :handleClick="addAuction"></CustomButton>
     </div>
     <div v-for="item in liveList" v-bind:key="item.auctionId">
-      <LiveItem
-        :title="item.title"
-        :status="item.status"
-        :allow="item.allow"
-        :wait="item.wait"
-        :deny="item.deny"
-        :participation="item.participation"
-        @click="goDetailAuction(item.auctionId, item.status)"
-      ></LiveItem>
+      <LiveItem :title="item.title" :status="item.status" :allow="item.allow" :wait="item.wait" :deny="item.deny"
+        :participation="item.participation" @click="goDetailAuction(item.auctionId, item.status)"></LiveItem>
     </div>
   </div>
 </template>
@@ -49,9 +42,6 @@ export default {
         const data = await getAuctionList(page, size)
         if (data.code === 200) {
           this.liveList = data.data.content
-          toast.success('라이브 경매 내역을 불러왔어요.', {
-            timeout: 2000
-          })
         }
       } catch (error) {
         toast.error('라이브 경매 내역을 불러오는데 실패했어요.', {
@@ -73,6 +63,7 @@ export default {
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
+
   .infoSection {
     display: flex;
     align-items: center;
