@@ -58,6 +58,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   gap: 1rem;
+  width: 50%;
 }
 
 img {

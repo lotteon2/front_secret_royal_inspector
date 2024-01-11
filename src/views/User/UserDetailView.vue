@@ -20,16 +20,24 @@
       </div>
     </div>
     <div class="user-detail__menu">
-      <RouterLink to="/user/userDetail/3/orderList" :class="{ active: isActive('orderList') }"
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/orderList`"
+        :class="{ active: isActive('orderList', 'user') }"
         >주문내역</RouterLink
       >
-      <RouterLink to="/user/userDetail/3/point" :class="{ active: isActive('point') }"
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/point`"
+        :class="{ active: isActive('point', 'user') }"
         >포인트</RouterLink
       >
-      <RouterLink to="/user/userDetail/3/credit" :class="{ active: isActive('credit') }"
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/credit`"
+        :class="{ active: isActive('credit', 'user') }"
         >경매 크레딧</RouterLink
       >
-      <RouterLink to="/user/userDetail/3/auction" :class="{ active: isActive('auction') }"
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/auction`"
+        :class="{ active: isActive('auction', 'user') }"
         >경매 참여 내역</RouterLink
       >
     </div>
@@ -67,8 +75,8 @@ export default {
     }
   },
   methods: {
-    isActive(route) {
-      return this.$route.path.includes(route)
+    isActive(route, route2) {
+      return this.$route.path.includes(route) && this.$route.path.includes(route2)
     },
     async getUserDetailInfo() {
       const toast = useToast()

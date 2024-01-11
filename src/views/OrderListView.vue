@@ -29,6 +29,12 @@ export default defineComponent({
     CustomTable
   },
   methods: {
+    getSellerName() {
+      const idx = this.sellers.findIndex(
+        (seller) => Number(seller.value) === Number(this.selectedSeller)
+      )
+      return this.sellers[idx].label
+    },
     setSelect(event) {
       this.selectedSeller = event.target.value
     },
@@ -43,7 +49,7 @@ export default defineComponent({
           const newItems = data.data.content
           newItems.forEach(
             (it: GetOrderListBySellerIdResponseData, idx: number) =>
-              (newItems[idx] = { ...newItems[idx], sellerName: 'a주모' })
+              (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
           )
           this.items = newItems
         }
@@ -83,7 +89,7 @@ export default defineComponent({
   },
   mounted() {
     const myInfo = useMyInfoStore()
-    this.sellers = myInfo.sellers
+    this.sellers = myInfo.getSellers()
     this.selectedSeller = this.sellers ? this.sellers[0].value : -1
     this.getOrderListBySellerId(this.selectedSeller, 0, 10)
   },

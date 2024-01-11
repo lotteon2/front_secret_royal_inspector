@@ -84,6 +84,30 @@ const routes = [
         }
       },
       {
+        path: '/live/test',
+        name: 'LiveTestView',
+        component: () => import('@/views/Live/LiveTestView.vue'),
+        meta: {
+          title: '라이브경매 페이지'
+        }
+      },
+      {
+        path: '/live/test22',
+        name: 'LiveEnterView',
+        component: () => import('@/views/Live/LiveAgoraTestView.vue'),
+        meta: {
+          title: 'LiveEnterView 페이지'
+        }
+      },
+      {
+        path: '/live/meeting',
+        name: 'liveMeetingView',
+        component: () => import('@/views/Live/LiveMeetingView.vue'),
+        meta: {
+          title: '라이브경매 실제 페이지'
+        }
+      },
+      {
         path: '/live/lobby/:auctionId',
         name: 'liveLobby',
         component: () => import('@/views/Live/LiveLobbyView.vue'),
@@ -128,7 +152,7 @@ const routes = [
         },
         children: [
           {
-            path: 'orderList',
+            path: 'orders',
             component: () => import('@/views/Jumo/JumoDetailOrderView.vue')
           },
           {
@@ -136,7 +160,7 @@ const routes = [
             component: () => import('@/views/Jumo/JumoDetailCashUpView.vue')
           },
           {
-            path: 'products',
+            path: 'goods',
             component: () => import('@/views/Jumo/JumoDetailProductsView.vue')
           }
         ]

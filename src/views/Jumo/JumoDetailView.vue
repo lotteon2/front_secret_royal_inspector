@@ -30,16 +30,18 @@
     </div>
     <div class="jumo-detail__menu">
       <RouterLink
-        :to="`/jumo/jumoDetail/${sellerId}/products`"
-        :class="{ active: isActive('products') }"
+        :to="`/jumo/jumoDetail/${sellerId}/goods`"
+        :class="{ active: isActive('jumo', 'goods') }"
         >상품 내역</RouterLink
       >
       <RouterLink
-        :to="`/jumo/jumoDetail/${sellerId}/orderList`"
-        :class="{ active: isActive('orderList') }"
+        :to="`/jumo/jumoDetail/${sellerId}/orders`"
+        :class="{ active: isActive('orders', 'jumo') }"
         >주문 내역</RouterLink
       >
-      <RouterLink to="/jumo/jumoDetail/3/cashup" :class="{ active: isActive('cashup') }"
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/cashup`"
+        :class="{ active: isActive('cashup', 'jumo') }"
         >정산 내역</RouterLink
       >
     </div>
@@ -77,11 +79,11 @@ export default {
   mounted() {
     this.sellerId = this.$route.params.sellerId
     this.getSellerDetailInfo()
-    this.$router.replace(`/jumo/jumoDetail/${this.sellerId}/products`)
+    this.$router.replace(`/jumo/jumoDetail/${this.sellerId}/goods`)
   },
   methods: {
-    isActive(route) {
-      return this.$route.path.includes(route)
+    isActive(route, route2) {
+      return this.$route.path.includes(route) && this.$route.path.includes(route2)
     },
     async approveSeller(approvalState) {
       const toast = useToast()
