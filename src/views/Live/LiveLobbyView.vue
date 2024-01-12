@@ -34,8 +34,7 @@
     </div>
   </div>
   <div v-if="this.isStreaming" class="stream-right">
-    <div @click="startStream">
-    </div>
+    <div @click="this.confirmBid">낙찰 (테스트)</div>
   </div>
 </template>
 
