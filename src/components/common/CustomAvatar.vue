@@ -1,6 +1,13 @@
 <template>
   <div class="avatar">
-    <img :src="imgSrc" alt="avatar" class="avatar-img" />
+    <img
+      :src="
+        imgSrc ||
+        'https://github.com/lotteon2/jeontongju-front-consumer/assets/72402747/dae9e692-8cfa-41e2-a44b-9bcf3f22ca4e'
+      "
+      alt="avatar"
+      class="avatar-img"
+    />
   </div>
 </template>
 
