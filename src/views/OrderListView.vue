@@ -3,16 +3,30 @@
     <label for="sellerSelect">주모를 선택해주세요</label>
     <template v-if="sellers">
       <select :value="selectedSeller" @change="setSelect($event)" class="select">
-        <option id="sellerSelect" v-for="seller in sellers" :key="seller.value" :value="seller.value">
+        <option
+          id="sellerSelect"
+          v-for="seller in sellers"
+          :key="seller.value"
+          :value="seller.value"
+        >
           {{ seller.label }}
         </option>
       </select>
     </template>
     <CustomTable :headers="header" :items="items"></CustomTable>
+    <CustomPagination
+      :on-change-page="onChangePage"
+      :request-page="requestPage"
+      :total-pages="totalPages"
+    />
+    <div v-if="isLoading">
+      <img src="../assets/loading.gif" alt="loading" />
+    </div>
   </div>
 </template>
 
 <script lang="ts" scoped>
+import CustomPagination from '@/components/common/CustomPagination.vue'
 import { getOrderListBySellerId } from '@/api/order/orderAPIService'
 import type { GetOrderListBySellerIdResponseData } from '@/api/order/orderAPIService.types'
 import CustomTable from '@/components/common/CustomTable.vue'
@@ -21,9 +35,15 @@ import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
 export default defineComponent({
   components: {
-    CustomTable
+    CustomTable,
+    CustomPagination
   },
   methods: {
+    async onChangePage(page: number) {
+      if (0 <= page && page < this.totalPages) {
+        this.requestPage = page
+      }
+    },
     getSellerName() {
       const idx = this.sellers.findIndex(
         (seller) => Number(seller.value) === Number(this.selectedSeller)
@@ -36,6 +56,7 @@ export default defineComponent({
     async getOrderListBySellerId(sellerId: number, page: number, size: number) {
       const toast = useToast()
       try {
+        this.isLoading = true
         const data = await getOrderListBySellerId(sellerId, page, size)
         if (data.code === 200) {
           const newItems = data.data.content
@@ -44,11 +65,14 @@ export default defineComponent({
               (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
           )
           this.items = newItems
+          this.totalPages = data.data.totalPages
         }
       } catch (error) {
         toast.error(`주문내역을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
+      } finally {
+        this.isLoading = false
       }
     }
   },
@@ -71,12 +95,20 @@ export default defineComponent({
           value: 1,
           label: '우리도가'
         }
-      ]
+      ],
+      page: 0,
+      totalPages: 0,
+      requestPage: 0,
+      isLoading: false
     } as {
       selectedSeller: number
       header: { text: string; value: string }[]
       items: GetOrderListBySellerIdResponseData[]
       sellers: { value: number; label: string }[]
+      page: number
+      totalPages: number
+      requestPage: number
+      isLoading: boolean
     }
   },
   mounted() {
@@ -88,6 +120,9 @@ export default defineComponent({
   watch: {
     selectedSeller: function (value) {
       this.getOrderListBySellerId(value, 0, 10)
+    },
+    requestPage: function (value) {
+      this.getOrderListBySellerId(this.selectedSeller, value, 10)
     }
   }
 })
