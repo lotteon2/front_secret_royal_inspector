@@ -100,7 +100,7 @@ export default {
     },
     connect() {
       console.log('here')
-      const serverURL = 'https://jeontongju-dev.shop/auction-service'
+      const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
       console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`)
@@ -127,7 +127,7 @@ export default {
     },
     connectAuctionInfo() {
       console.log('here')
-      const serverURL = 'https://jeontongju-dev.shop/auction-service'
+      const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
       console.log(
