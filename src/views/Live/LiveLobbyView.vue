@@ -8,6 +8,7 @@
     <video id="video" ref="video" @canplay="playVideo"></video>
   </div>
   <div v-if="this.isStreaming" class="close__btn">
+    <div>현재 호가 | {{ auctionList.askingPrice }}</div>
     <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
     <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
     <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
@@ -26,11 +27,10 @@
       </div>
     </div>
     <div v-if="this.isStreaming" class="stream-right">
-      내용: <input v-model="message" type="text" @keyup="sendMessage" />
-      <div class="messageBox" v-for="(item, idx) in auctionList" :key="idx">
-        <img alt="profileImg" :src="item.memberProfileImage" />
-        <h3>이름: {{ item.memberNickname }}</h3>
-        <h3>메시지: {{ item.message }}</h3>
+      <div class="messageBox" v-for="(item, idx) in auctionList.bidHistory" :key="idx">
+        <CustomAvatar alt="profileImg" :src="item.profileImage" />
+        <h3>이름: {{ item.nickname }}</h3>
+        <h3>메시지: {{ item.bidPrice }}</h3>
       </div>
     </div>
   </div>
@@ -103,7 +103,7 @@ export default {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`)
+      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/sub/chat/${this.auctionId}`)
       this.stompClient.connect(
         {},
         (frame) => {
