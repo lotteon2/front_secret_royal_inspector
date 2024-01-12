@@ -4,15 +4,25 @@
       <div>행을 클릭하면 주모 상세 페이지로 이동해요.</div>
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="goDetailJumo"></CustomTable>
+    <CustomPagination
+      :on-change-page="onChangePage"
+      :request-page="requestPage"
+      :total-pages="totalPages"
+    />
+    <div v-if="isLoading">
+      <img src="../assets/loading.gif" alt="loading" />
+    </div>
   </div>
 </template>
 
-<script>
+<script lang="ts" scoped>
+import CustomPagination from '@/components/common/CustomPagination.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import { getSellerList } from '@/api/seller/sellerAPIService'
 import { useToast } from 'vue-toastification'
+import type { GetSellerListResponseData } from '@/api/seller/sellerAPIService.types'
 export default {
-  components: { CustomTable },
+  components: { CustomTable, CustomPagination },
   data() {
     return {
       header: [
@@ -26,7 +36,18 @@ export default {
         { text: '가입일', value: 'createdAt' },
         { text: '탈퇴 여부', value: 'isDeleted' }
       ],
-      items: []
+      items: [],
+      page: 0,
+      totalPages: 0,
+      requestPage: 0,
+      isLoading: false
+    } as {
+      header: { text: string; value: string }[]
+      items: GetSellerListResponseData[]
+      page: number
+      totalPages: number
+      requestPage: number
+      isLoading: boolean
     }
   },
   methods: {
@@ -35,22 +56,31 @@ export default {
         path: `/jumo/jumoDetail/${item.sellerId}`
       })
     },
-    async getSellerList() {
+    async getSellerList(page: number, size: number) {
       const toast = useToast()
       try {
-        const data = await getSellerList(0, 10)
+        this.isLoading = true
+        const data = await getSellerList(page, size)
         if (data.code === 200) {
           this.items = data.data.content
+          this.totalPages = data.data.totalPages
         }
       } catch (err) {
         toast.error('주모 정보를 불러오는데 실패했어요.', {
           timeout: 2000
         })
+      } finally {
+        this.isLoading = false
       }
     }
   },
   mounted() {
-    this.getSellerList()
+    this.getSellerList(0, 10)
+  },
+  watch: {
+    requestPage: function (value) {
+      this.getSellerList(value, 10)
+    }
   }
 }
 </script>

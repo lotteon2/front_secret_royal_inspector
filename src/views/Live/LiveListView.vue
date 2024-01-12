@@ -5,8 +5,15 @@
       <CustomButton btnText="등록하기" :handleClick="addAuction"></CustomButton>
     </div>
     <div v-for="item in liveList" v-bind:key="item.auctionId">
-      <LiveItem :title="item.title" :status="item.status" :allow="item.allow" :wait="item.wait" :deny="item.deny"
-        :participation="item.participation" @click="goDetailAuction(item.auctionId, item.status)"></LiveItem>
+      <LiveItem
+        :title="item.title"
+        :status="item.status"
+        :allow="item.allow"
+        :wait="item.wait"
+        :deny="item.deny"
+        :participation="item.participation"
+        @click="goDetailAuction(item.auctionId, item.status)"
+      ></LiveItem>
     </div>
   </div>
 </template>
@@ -61,7 +68,6 @@ export default {
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  align-items: center;
   margin: 0 auto;
 
   .infoSection {
