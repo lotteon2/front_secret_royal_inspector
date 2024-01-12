@@ -8,17 +8,43 @@
       <div class="live-detail__desc__date">{{ startDate }} - {{ endDate }}</div>
     </div>
     <div class="live-detail__btns">
-      <CustomButton v-if="this.status === 'BEFORE'" btnText="수정하기" :handleClick="openEditModal"></CustomButton>
-      <CustomButton v-if="this.status === 'BEFORE'" btnText="삭제하기" :handleClick="deleteAuction"></CustomButton>
-      <CustomButton v-if="this.status === 'BEFORE'" btnText="방송하기" :handleClick="startStreaming"></CustomButton>
+      <CustomButton
+        v-if="this.status !== 'AFTER'"
+        btnText="수정하기"
+        :handleClick="openEditModal"
+      ></CustomButton>
+      <CustomButton
+        v-if="this.status !== 'AFTER'"
+        btnText="삭제하기"
+        :handleClick="deleteAuction"
+      ></CustomButton>
+      <CustomButton
+        v-if="this.status !== 'AFTER'"
+        btnText="방송하기"
+        :handleClick="startStreaming"
+      ></CustomButton>
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
-    <CustomModal v-if="this.status === 'BEFORE' && popState" :modalTitle="this.modalTitle" btnText1="승인" btnText2="반려"
-      @btnClick1="() => handleApprove('ALLOW')" @btnClick2="() => handleApprove('DENY')"></CustomModal>
-    <CustomModal v-if="this.status !== 'AFTER' && updateModalPopState" :canUpdate="true"
-      :modalTitle="this.updateModalTitle" :modalDesc="this.updateModalDesc" @editTitle="handleChangeEditModalTitle"
-      @editDesc="handleChangeEditModalDesc" btnText1="닫기" btnText2="수정" @btnClick1="() => changeEditModalPopState()"
-      @btnClick2="() => editAuction()"></CustomModal>
+    <CustomModal
+      v-if="this.status === 'BEFORE' && popState"
+      :modalTitle="this.modalTitle"
+      btnText1="승인"
+      btnText2="반려"
+      @btnClick1="() => handleApprove('ALLOW')"
+      @btnClick2="() => handleApprove('DENY')"
+    ></CustomModal>
+    <CustomModal
+      v-if="this.status !== 'AFTER' && updateModalPopState"
+      :canUpdate="true"
+      :modalTitle="this.updateModalTitle"
+      :modalDesc="this.updateModalDesc"
+      @editTitle="handleChangeEditModalTitle"
+      @editDesc="handleChangeEditModalDesc"
+      btnText1="닫기"
+      btnText2="수정"
+      @btnClick1="() => changeEditModalPopState()"
+      @btnClick2="() => editAuction()"
+    ></CustomModal>
   </div>
 </template>
 
@@ -166,30 +192,30 @@ export default {
           this.header =
             this.status === 'AFTER'
               ? [
-                { text: '', value: 'productImageUrl' },
-                { text: '주모 이름', value: 'sellerName' },
-                { text: '상품 이름', value: 'productName' },
-                { text: '상품이름', value: 'productName' },
-                { text: '시작가', value: 'startingPrice' },
-                { text: '낙찰가', value: 'lastBidPrice' },
-                { text: '낙찰자', value: 'consumerId' },
-                { text: '참여자수', value: 'totalBid' },
-                { text: '도수', value: 'alcoholDegree' },
-                { text: '용량', value: 'capacity' }
-              ]
+                  { text: '', value: 'productImageUrl' },
+                  { text: '주모 이름', value: 'sellerName' },
+                  { text: '상품 이름', value: 'productName' },
+                  { text: '상품이름', value: 'productName' },
+                  { text: '시작가', value: 'startingPrice' },
+                  { text: '낙찰가', value: 'lastBidPrice' },
+                  { text: '낙찰자', value: 'consumerId' },
+                  { text: '참여자수', value: 'totalBid' },
+                  { text: '도수', value: 'alcoholDegree' },
+                  { text: '용량', value: 'capacity' }
+                ]
               : [
-                { text: '', value: 'productImageUrl' },
-                { text: '가게이름', value: 'sellerName' },
-                { text: '이메일', value: 'sellerEmail' },
-                { text: '대표번호', value: 'storePhoneNumber' },
-                { text: '대표자 이름', value: 'businessmanName' },
-                { text: '신청일자', value: 'createdAt' },
-                { text: '상품이름', value: 'productName' },
-                { text: '도수', value: 'alcoholDegree' },
-                { text: '용량', value: 'capacity' },
-                { text: '시작가', value: 'startingPrice' },
-                { text: '승인여부', value: 'status' }
-              ]
+                  { text: '', value: 'productImageUrl' },
+                  { text: '가게이름', value: 'sellerName' },
+                  { text: '이메일', value: 'sellerEmail' },
+                  { text: '대표번호', value: 'storePhoneNumber' },
+                  { text: '대표자 이름', value: 'businessmanName' },
+                  { text: '신청일자', value: 'createdAt' },
+                  { text: '상품이름', value: 'productName' },
+                  { text: '도수', value: 'alcoholDegree' },
+                  { text: '용량', value: 'capacity' },
+                  { text: '시작가', value: 'startingPrice' },
+                  { text: '승인여부', value: 'status' }
+                ]
         }
       } catch (err) {
         toast.error('라이브경매 상세 정보를 불러오는데 실패했어요.', {

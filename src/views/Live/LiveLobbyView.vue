@@ -8,7 +8,7 @@
     <video id="video" ref="video" @canplay="playVideo"></video>
   </div>
   <div v-if="this.isStreaming" class="close__btn">
-    <div>현재 호가 | {{ auctionList.askingPrice }}</div>
+    <div v-if="this.bidInfo">현재 호가 | {{ this.bidInfo.askingPrice }}</div>
     <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
     <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
     <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
@@ -19,7 +19,6 @@
       <div v-if="this.isStreaming" class="chat">
         <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
           <CustomAvatar :src="item.memberProfileImage" />
-          <!-- <img alt="profileImg" :src="item.memberProfileImage" /> -->
           <span class="chat-name">{{ item.memberNickname }}</span>
           <span class="chat-message">{{ item.message }}</span>
         </div>
@@ -27,7 +26,7 @@
       </div>
     </div>
     <div v-if="this.isStreaming" class="stream-right">
-      <div class="messageBox" v-for="(item, idx) in auctionList.bidHistory" :key="idx">
+      <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistory" :key="idx">
         <CustomAvatar alt="profileImg" :src="item.profileImage" />
         <h3>이름: {{ item.nickname }}</h3>
         <h3>메시지: {{ item.bidPrice }}</h3>
@@ -61,7 +60,7 @@ export default {
       userName: '',
       message: '',
       recvList: [],
-      auctionList: [],
+      bidInfo: null,
       askingPrice: null
     }
   },
@@ -144,7 +143,9 @@ export default {
           this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
             console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
             // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
-            this.auctionList.push(JSON.parse(res.body))
+            this.bidInfo = JSON.parse(res.body)
+            console.log('HERE')
+            console.log(this.bidInfo)
           })
         },
         (error) => {
