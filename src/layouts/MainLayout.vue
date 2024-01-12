@@ -46,6 +46,7 @@ export default defineComponent({
 }
 
 .view {
+  margin-top: 1rem;
   width: 100vw;
   height: 90vh;
 }
