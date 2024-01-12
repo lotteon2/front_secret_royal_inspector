@@ -4,16 +4,25 @@
       <div>행을 클릭하면 유저 상세 페이지로 이동해요.</div>
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="goDetailUser"></CustomTable>
+    <CustomPagination
+      :on-change-page="onChangePage"
+      :request-page="requestPage"
+      :total-pages="totalPages"
+    />
+    <div v-if="isLoading">
+      <img src="../assets/loading.gif" alt="loading" />
+    </div>
   </div>
 </template>
 
-<script scoped>
-import LiveItem from '@/components/Auction/LiveItem.vue'
+<script scoped lang="ts">
+import CustomPagination from '@/components/common/CustomPagination.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import { getConsumerList } from '@/api/consumer/consumerAPIService.ts'
 import { useToast } from 'vue-toastification'
+import type { GetConsumerListResponseData } from '@/api/consumer/consumerAPIService.types'
 export default {
-  components: { CustomTable },
+  components: { CustomTable, CustomPagination },
   data() {
     return {
       header: [
@@ -27,31 +36,58 @@ export default {
         { text: '가입일', value: 'createdAt' },
         { text: '탈퇴 여부', value: 'isDeleted' }
       ],
-      items: []
+      items: [],
+      requestPage: 0,
+      page: 0,
+      totalPages: 0,
+      isLoading: false
+    } as {
+      items: GetConsumerListResponseData[]
+      header: { text: string; value: string }[]
+      requestPage: number
+      page: number
+      totalPages: number
+      isLoading: boolean
     }
   },
   methods: {
-    goDetailUser(item) {
+    async onChangePage(page: number) {
+      if (0 <= page && page < this.totalPages) {
+        this.requestPage = page
+      }
+    },
+    goDetailUser(item: GetConsumerListResponseData) {
       this.$router.push({
         path: `/user/userDetail/${item.consumerId}`
       })
     },
-    async getConsumerList(page, size) {
+    async getConsumerList(page: number, size: number) {
       const toast = useToast()
       try {
+        this.isLoading = true
         const data = await getConsumerList(page, size)
         if (data.code === 200) {
           this.items = data.data.content
+          console.log(data.data)
+          this.totalPages = data.data.totalPages
         }
       } catch (error) {
         toast.error(`회원 정보들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
+      } finally {
+        this.isLoading = false
       }
     }
   },
   mounted() {
-    this.getConsumerList(0, 10)
+    this.getConsumerList(0, 7)
+  },
+  watch: {
+    requestPage: function (value) {
+      console.log(value)
+      this.getConsumerList(value, 7)
+    }
   }
 }
 </script>

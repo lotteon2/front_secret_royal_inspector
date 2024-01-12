@@ -58,9 +58,6 @@ export default {
     pagingMethod(page: number) {
       this.page = page
     },
-    changePage(page: number) {
-      console.log('New page: ', page)
-    },
     getSellerName() {
       const idx = this.sellers.findIndex(
         (seller) => Number(seller.value) === Number(this.selectedSeller)
