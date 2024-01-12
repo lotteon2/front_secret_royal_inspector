@@ -114,3 +114,4 @@ export type GetAuctionListByConsumerIdResponse = ApiResponse<
 >
 
 export type UpdateAskingPriceResponse = ApiResponse<string>
+export type ConfirmBidResponse = ApiResponse<string>

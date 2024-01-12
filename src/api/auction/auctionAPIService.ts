@@ -1,6 +1,7 @@
 import { authAxiosInstance } from '../utils'
 import type {
   ApproveAuctionByAuctionProductIdResponse,
+  ConfirmBidResponse,
   DeleteAuctionResponse,
   FinishStreamResponse,
   GetAuctionDetailByAuctionIdResponse,
@@ -92,6 +93,13 @@ export const getAuctionListByConsumerId = async (
 export const updateAskingPrice = async (auctionId: string, askingPrice: number) => {
   const { data } = await authAxiosInstance.patch<UpdateAskingPriceResponse>(
     `/auction-service/api/auction/bid/${auctionId}/askingPrice/${askingPrice}`
+  )
+  return data
+}
+
+export const confirmBid = async (auctionId: string) => {
+  const { data } = await authAxiosInstance.post<ConfirmBidResponse>(
+    `/auction-service/api/auction/bid/${auctionId}`
   )
   return data
 }

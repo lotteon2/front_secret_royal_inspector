@@ -33,6 +33,10 @@
       </div>
     </div>
   </div>
+  <div v-if="this.isStreaming" class="stream-right">
+    <div @click="startStream">
+    </div>
+  </div>
 </template>
 
 <script>
@@ -264,6 +268,17 @@ export default {
         }
       } catch (err) {
         toast.error('호가 수정에 실패했어요', { timeout: 2000 })
+      }
+    },
+    async confirmBid() {
+      try {
+        const data = await confirmBid(this.auctionId)
+        if (data.code === 200) {
+          toast.success('낙찰에 성공했어요', { timeout: 2000 })
+          this.askingPrice = null
+        }
+      } catch (err) {
+        toast.error('낙찰에 실패했어요', { timeout: 2000 })
       }
     }
   }
