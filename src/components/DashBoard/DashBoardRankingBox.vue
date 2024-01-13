@@ -1,15 +1,15 @@
 <template>
   <div class="DashBoardInfoBox">
-    <div class="DashBoardName">{{ state }}</div>
-    <div>{{ cnt }}</div>
+    <div>{{ name }}</div>
+    <div></div>
   </div>
 </template>
 
 <script lang="ts" scoped>
+// import type { MonthSellerRank, MonthProductRank } from '@/api/order/orderAPIService.types'
 export default {
   props: {
-    state: { type: String, default: '확인' },
-    cnt: { type: Number, default: 0 }
+    name: { type: String, default: '확인' }
   }
 }
 </script>
@@ -19,9 +19,5 @@ export default {
   border-radius: 12px;
   box-shadow: 3px 3px 1px 1px #c0c0c0;
   padding: 1rem;
-
-  .DashBoardName {
-    margin-bottom: 1rem;
-  }
 }
 </style>

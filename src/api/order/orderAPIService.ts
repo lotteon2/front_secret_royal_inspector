@@ -29,7 +29,7 @@ export const getCashUpListBySellerId = async (sellerId: number, year: number) =>
 
 export const getOrderForDashBoard = async (date: string) => {
   const { data } = await authAxiosInstance.get<GetOrderForDashBoardResponse>(
-    `/order-service/api/seller/dashboard?date=${date}`
+    `/order-service/api/admin/dashboard?date=${date}`
   )
   return data
 }
