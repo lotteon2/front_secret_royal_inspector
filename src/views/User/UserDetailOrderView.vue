@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="items.length > 0">
     <CustomTable :headers="header" :items="items"></CustomTable>
     <CustomPagination
       :on-change-page="onChangePage"
@@ -9,6 +9,9 @@
     <div v-if="isLoading">
       <img src="../../assets/loading.gif" alt="loading" />
     </div>
+  </div>
+  <div v-else>
+    유저의 주문 내역이 비어있어요.
   </div>
 </template>
 

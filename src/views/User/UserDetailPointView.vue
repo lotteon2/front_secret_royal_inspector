@@ -8,11 +8,20 @@
         :date="item.tradeDate"
       />
     </div>
+    <CustomPagination
+      :on-change-page="onChangePage"
+      :request-page="requestPage"
+      :total-pages="totalPages"
+    />
+    <div v-if="isLoading">
+      <img src="../../assets/loading.gif" alt="loading" />
+    </div>
   </div>
   <div v-else>유저의 포인트 내역이 비어있어요.</div>
 </template>
 
 <script lang="ts" scoped>
+import CustomPagination from '@/components/common/CustomPagination.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import UserPointCard from '@/components/user/UserPointCard.vue'
 import { getConsumerPointListByConsumerId } from '@/api/consumer/consumerAPIService.ts'
@@ -23,7 +32,8 @@ import type { GetConsumerPointListByConsumerIdResponseData } from '@/api/consume
 export default defineComponent({
   components: {
     CustomTable,
-    UserPointCard
+    UserPointCard,
+    CustomPagination
   },
   data() {
     return {
@@ -33,35 +43,53 @@ export default defineComponent({
         { text: '내역', value: 'tradePoint' },
         { text: '날짜', value: 'tradeDate' }
       ],
-      items: []
+      items: [],
+      page: 0,
+      totalPages: 0,
+      requestPage: 0,
+      isLoading: false
     } as {
       consumerId: number
       header: { text: string; value: string }[]
       items: GetConsumerPointListByConsumerIdResponseData[]
+      page: number
+      totalPages: number
+      requestPage: number
+      isLoading: boolean
     }
   },
   methods: {
+    async onChangePage(page: number) {
+      if (0 <= page && page < this.totalPages) {
+        this.requestPage = page
+      }
+    },
     async getPointListByConsumerId(page: number, size: number) {
       const toast = useToast()
       try {
+        this.isLoading = true
         const data = await getConsumerPointListByConsumerId(this.consumerId, page, size)
         if (data.code === 200) {
-          toast.success('고객의 포인트 내역을 성공적으로 불러왔어요.', {
-            timeout: 2000
-          })
           this.items = data.data.content
-          console.log(this.items)
+          this.totalPages = data.data.totalPages
         }
       } catch (err) {
         toast.error('고객의 포인트 내역을 불러오는데 실패했어요.', {
           timeout: 2000
         })
+      } finally {
+        this.isLoading = false
       }
     }
   },
   mounted() {
     this.consumerId = Number(this.$route.params.consumerId)
-    this.getPointListByConsumerId(0, 10)
+    this.getPointListByConsumerId(0, 3)
+  },
+  watch: {
+    requestPage: function (value) {
+      this.getPointListByConsumerId(value, 3)
+    }
   }
 })
 </script>
