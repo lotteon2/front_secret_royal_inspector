@@ -7,7 +7,7 @@
       :total-pages="totalPages"
     />
     <div v-if="isLoading">
-      <img src="../assets/loading.gif" alt="loading" />
+      <img src="../../assets/loading.gif" alt="loading" />
     </div>
   </div>
 </template>
