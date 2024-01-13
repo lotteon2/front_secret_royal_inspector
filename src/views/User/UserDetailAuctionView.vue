@@ -10,7 +10,7 @@
       <img src="../../assets/loading.gif" alt="loading" />
     </div>
   </div>
-  <div v-else>유저의 주문 내역이 비어있어요.</div>
+  <div v-else>유저의 경매 참여 내역이 비어있어요.</div>
 </template>
 
 <script lang="ts" scoped>

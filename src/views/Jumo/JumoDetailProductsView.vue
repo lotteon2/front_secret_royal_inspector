@@ -3,34 +3,57 @@
     <div class="jumo-product-list__info-section">
       <div>행을 클릭하면 상품의 공개 여부를 변경할 수 있어요.</div>
     </div>
-    <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
-    <CustomModal v-if="popState" :modalTitle="this.modalTitle" btnText1="비공개로 바꾸기" btnText2="공개로 바꾸기"
-      @btnClick1="() => handleChangeVisibility(false)" @btnClick2="() => handleChangeVisibility(true)"></CustomModal>
+    <div class="jumo-product-list-table" v-if="items.length > 0">
+      <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
+      <CustomPagination
+        :on-change-page="onChangePage"
+        :request-page="requestPage"
+        :total-pages="totalPages"
+      />
+    </div>
+    <div v-else>해당 주모의 상품 내역이 비어있어요.</div>
+    <CustomModal
+      v-if="popState"
+      :modalTitle="this.modalTitle"
+      btnText1="비공개로 바꾸기"
+      btnText2="공개로 바꾸기"
+      @btnClick1="() => handleChangeVisibility(false)"
+      @btnClick2="() => handleChangeVisibility(true)"
+    ></CustomModal>
   </div>
 </template>
 
-<script lant="ts">
+<script lang="ts" scoped>
+import CustomPagination from '@/components/common/CustomPagination.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import CustomModal from '@/components/common/CustomModal.vue'
 import { updateProductVisibility } from '@/api/product/productAPIService.ts'
 import { getProductListBySellerId } from '@/api/search/searchAPIService.ts'
 import { useToast } from 'vue-toastification'
+import type { GetProductListBySellerIdResponseData } from '@/api/search/searchAPIService.types'
 
 export default {
   components: {
     CustomTable,
-    CustomModal
+    CustomModal,
+    CustomPagination
   },
   methods: {
+    async onChangePage(page: number) {
+      if (0 <= page && page < this.totalPages) {
+        this.requestPage = page
+      }
+    },
     changePopState() {
       this.popState = !this.popState
     },
-    async getSellerProducts() {
+    async getSellerProducts(page: number, size: number) {
       const toast = useToast()
       try {
-        const data = await getProductListBySellerId(this.sellerId, 0, 10)
+        const data = await getProductListBySellerId(this.sellerId, page, size)
         if (data.code === 200) {
           this.items = data.data.content
+          this.totalPages = data.data.totalPages
         }
       } catch (err) {
         toast.error(`상품 조회에 변경에 실패했어요.`, {
@@ -38,7 +61,7 @@ export default {
         })
       }
     },
-    async handleChangeVisibility(isActivate) {
+    async handleChangeVisibility(isActivate: boolean) {
       const toast = useToast()
       try {
         const data = await updateProductVisibility(this.selectedProductId, { isActivate })
@@ -68,8 +91,8 @@ export default {
       sellerId: -1,
       popState: false,
       modalTitle: '',
-      isActivate: null,
-      selectedProductId: -1,
+      isActivate: false,
+      selectedProductId: '-1',
       header: [
         { text: '상품 이름', value: 'productName' },
         { text: '총 판매량', value: 'totalSalesCount' },
@@ -79,12 +102,33 @@ export default {
         { text: '쇼츠', value: 'shortsId' },
         { text: '공개여부', value: 'isActivate' }
       ],
-      items: []
+      items: [],
+      page: 0,
+      totalPages: 0,
+      requestPage: 0,
+      isLoading: false
+    } as {
+      sellerId: number
+      popState: boolean
+      modalTitle: string
+      isActivate: boolean
+      selectedProductId: string
+      header: { text: string; value: string }[]
+      items: GetProductListBySellerIdResponseData[]
+      page: number
+      totalPages: number
+      requestPage: number
+      isLoading: boolean
     }
   },
   mounted() {
-    this.sellerId = this.$route.params.sellerId
-    this.getSellerProducts()
+    this.sellerId = Number(this.$route.params.sellerId)
+    this.getSellerProducts(0, 6)
+  },
+  watch: {
+    requestPage: function (value) {
+      this.getSellerProducts(value, 6)
+    }
   }
 }
 </script>
@@ -102,6 +146,9 @@ export default {
     align-items: center;
     justify-content: space-between;
     margin: 1rem 0;
+  }
+  .jumo-product-list-table {
+    width: 100%;
   }
 }
 </style>
