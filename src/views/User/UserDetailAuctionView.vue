@@ -1,17 +1,27 @@
 <template>
-  <div>
+  <div v-if="items.length > 0">
     <CustomTable :headers="header" :items="items"></CustomTable>
+    <CustomPagination
+      :on-change-page="onChangePage"
+      :request-page="requestPage"
+      :total-pages="totalPages"
+    />
+    <div v-if="isLoading">
+      <img src="../../assets/loading.gif" alt="loading" />
+    </div>
   </div>
+  <div v-else>유저의 주문 내역이 비어있어요.</div>
 </template>
 
-<script lang="ts">
+<script lang="ts" scoped>
+import CustomPagination from '@/components/common/CustomPagination.vue'
 import type { GetAuctionListByConsumerIdResponseData } from '@/api/auction/auctionAPIService.types'
 import CustomTable from '@/components/common/CustomTable.vue'
 import { useToast } from 'vue-toastification'
 import { getAuctionListByConsumerId } from '@/api/auction/auctionAPIService.ts'
 
 export default {
-  components: { CustomTable },
+  components: { CustomTable, CustomPagination },
   data() {
     return {
       consumerId: -1,
@@ -24,14 +34,27 @@ export default {
         { text: '낙찰 여부', value: 'isBid' },
         { text: '낙찰 날짜', value: 'bidDate' }
       ],
-      items: []
+      items: [],
+      page: 0,
+      totalPages: 0,
+      requestPage: 0,
+      isLoading: false
     } as {
       consumerId: number
       header: { text: string; value: string }[]
       items: GetAuctionListByConsumerIdResponseData[]
+      page: number
+      totalPages: number
+      requestPage: number
+      isLoading: boolean
     }
   },
   methods: {
+    async onChangePage(page: number) {
+      if (0 <= page && page < this.totalPages) {
+        this.requestPage = page
+      }
+    },
     async getAuctionList(page: number, size: number) {
       const toast = useToast()
       try {
