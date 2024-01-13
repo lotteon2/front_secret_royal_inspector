@@ -1,12 +1,15 @@
 <template>
-  <div>
+  <div v-if="items.length > 0">
     <CustomTable :headers="header" :items="items"></CustomTable>
+    <div v-if="isLoading">
+      <img src="../../assets/loading.gif" alt="loading" />
+    </div>
   </div>
+  <div v-else>주모의 정산 내역이 비어있어요.</div>
 </template>
 
-<script lang="ts">
+<script lang="ts" scoped>
 import CustomTable from '@/components/common/CustomTable.vue'
-
 import { getCashUpListBySellerId } from '@/api/order/orderAPIService'
 import { GetCashUpListBySellerIdResponseData } from '@/api/order/orderAPIService.types'
 
@@ -19,7 +22,8 @@ export default {
     async getCashUpListBySellerId() {
       const toast = useToast()
       try {
-        const data = await getCashUpListBySellerId(this.sellerId, 2023)
+        this.isLoading = true
+        const data = await getCashUpListBySellerId(this.sellerId, 2024)
         if (data.code === 200) {
           this.items = data.data
         }
@@ -27,6 +31,8 @@ export default {
         toast.error(`주모 정산내역들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
+      } finally {
+        this.isLoading = false
       }
     }
   },
@@ -41,11 +47,14 @@ export default {
         { text: '정산 수수료', value: 'settlementCommision' },
         { text: '정산 금액', value: 'settlementAmount' },
         { text: '정산 내역증', value: 'settlementImgUrl' }
-      ]
+      ],
+
+      isLoading: false
     } as {
       sellerId: number
       items: GetCashUpListBySellerIdResponseData[]
       header: { text: string; value: string }[]
+      isLoading: boolean
     }
   },
   mounted() {
