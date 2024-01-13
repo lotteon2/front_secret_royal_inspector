@@ -51,6 +51,11 @@ export default {
     }
   },
   methods: {
+    async onChangePage(page: number) {
+      if (0 <= page && page < this.totalPages) {
+        this.requestPage = page
+      }
+    },
     goDetailJumo(item) {
       this.$router.push({
         path: `/jumo/jumoDetail/${item.sellerId}`

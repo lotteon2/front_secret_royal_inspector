@@ -5,7 +5,7 @@
       <div class="user-point-card__detail">
         {{ translatedDetail }} / 포인트 {{ title > 0 ? '적립' : '사용' }}
       </div>
-      <div class="user-point-card__date">{{ date }}</div>
+      <div class="user-point-card__date">{{ date.replace('T', ' ') }}</div>
     </div>
   </div>
 </template>
@@ -51,14 +51,14 @@ export default defineComponent({
   border-radius: 12px;
   background-color: #ffe2e2;
   display: flex;
-  padding: 2rem 3rem;
+  padding: 2rem;
   justify-content: space-between;
   margin: 1rem auto;
 }
 
 .user-point-card__title {
   flex: 1;
-  font-size: 3rem;
+  font-size: 2rem;
 }
 
 .user-point-card__right {
@@ -68,7 +68,7 @@ export default defineComponent({
 }
 
 .user-point-card__detail {
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 .user-point-card__date {
