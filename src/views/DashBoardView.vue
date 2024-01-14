@@ -10,14 +10,24 @@
     <div class="dashboardFlex">
       <div>
         <div class="dashboardFlex">
-          <DashBoardRankingBox name="월 별 셀러 판매 순위" :data="orderData.monthSellerRank"/>
-          <DashBoardRankingBox name="월 별 상품 판매 순위 " />
+          <div class="dashboardRankBox">
+            <h2>월별 상품 판매 순위</h2>
+            <div v-for="data in orderData.monthProductRank" :key="data.productId" class="rankWrapper">
+              <div>{{data.productName}}</div>
+              <div>{{data.totalCount}} 개</div>
+            </div>
+          </div>
+          <div class="dashboardRankBox">
+            <h2>월별 셀러 판매 순위</h2>
+            <div v-for="data in orderData.monthSellerRank" :key="data.sellerId" class="rankWrapper">
+              <div>{{data.sellerName}}</div>
+              <div>{{data.totalPrice}} 원</div>
+            </div>
+          </div>
         </div>
         <div class="dashboardFlex">
-          <div>
-            <div>이번달 판매 순위</div>
-          </div>
-          <DashBoardInfoBox state="이번달 정산 수수료" :cnt="orderData.commissionMonth" />
+          <DashBoardInfoBox state="이번달 정산금" :cnt="orderData.commissionMonth" />
+          <DashBoardInfoBox state="이번달 총 판매금" :cnt="orderData.totalSalesMonth" />
         </div>
       </div>
       <div>시각화</div>
@@ -140,5 +150,11 @@ export default {
   border-radius: 12px;
   box-shadow: 3px 3px 1px 1px #c0c0c0;
   padding: 1rem;
+}
+
+.rankWrapper{
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
 }
 </style>

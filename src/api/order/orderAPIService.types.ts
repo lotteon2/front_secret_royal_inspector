@@ -85,26 +85,11 @@ type ProductRank = {
   totalCount: number
 }
 
-export type MonthSellerRank = {
-  one: SellerRank
-  two: SellerRank
-  three: SellerRank
-  four: SellerRank
-  five: SellerRank
-}
-
-export type MonthProductRank = {
-  one: ProductRank
-  two: ProductRank
-  three: ProductRank
-  four: ProductRank
-  five: ProductRank
-}
 export type GetOrderForDashBoardResponseData = {
   totalSalesMonth: number
   commissionMonth: number
-  monthSellerRank: MonthSellerRank
-  monthProductRank: MonthProductRank
+  monthSellerRank: SellerRank[]
+  monthProductRank: ProductRank[]
 }
 
 export type GetOrderListBySellerIdResponse = ApiResponse<Page<GetOrderListBySellerIdResponseData[]>>
