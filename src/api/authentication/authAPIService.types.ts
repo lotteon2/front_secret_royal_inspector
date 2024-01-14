@@ -24,3 +24,4 @@ export type GetDashBoardAuthResponseData = {
 
 export type LoginResponse = ApiResponse<LoginResponseData>
 export type GetDashBoardAuthResponse = ApiResponse<GetDashBoardAuthResponseData>
+export type GetDashBoardAgeResponse = ApiResponse<string>

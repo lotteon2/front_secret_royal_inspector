@@ -2,7 +2,8 @@ import { authAxiosInstance } from '../utils'
 import type {
   GetConsumerInfoByConsumerIdResponse,
   GetConsumerListResponse,
-  GetConsumerPointListByConsumerIdResponse
+  GetConsumerPointListByConsumerIdResponse,
+  GetCreditListByConsumerIdResponse
 } from './consumerAPIService.types'
 
 export const getConsumerList = async (page: number, size: number) => {

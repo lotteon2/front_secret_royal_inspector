@@ -1,5 +1,6 @@
 import { authAxiosInstance, defaultAxiosInstance } from '../utils'
 import {
+  type GetDashBoardAgeResponse,
   type GetDashBoardAuthResponse,
   type LoginParams,
   type LoginResponse
@@ -18,4 +19,10 @@ export const getDashBoardAuth = async () => {
     `authentication-service/api/admins/site-situation`
   )
   return data
+}
+
+
+export const getAgeListForDashBoard= async() => {
+  const {data} = await authAxiosInstance.get<GetDashBoardAgeResponse>(`/authentication-service/api/admins/members/result`)
+  return data;
 }

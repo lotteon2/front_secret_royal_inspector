@@ -28,7 +28,7 @@
 
 <script lang="ts">
 import CustomButton from '@/components/common/CustomButton.vue'
-import { getDashBoardAuth } from '@/api/authentication/authAPIService'
+import { getDashBoardAuth, getAgeListForDashBoard } from '@/api/authentication/authAPIService'
 import { getOrderForDashBoard, getAllCashUpListForDashBoard } from '@/api/order/orderAPIService'
 import type { GetDashBoardAuthResponseData } from '@/api/authentication/authAPIService.types'
 import type { GetOrderForDashBoardResponseData } from '@/api/order/orderAPIService.types'
@@ -38,6 +38,20 @@ import { useToast } from 'vue-toastification'
 export default {
   components: { DashBoardInfoBox, DashBoardRankingBox, CustomButton },
   methods: {
+    async getAgeData(){
+      const toast = useToast()
+      try{
+        this.isLoading = true
+          const data = await getAgeListForDashBoard();
+          console.log(data);
+      }catch(err){
+        toast.error(`대시보드 데이터들을 불러오는데 실패했어요.`, {
+          timeout: 2000
+        })
+      }finally{
+        this.isLoading = false
+      }
+    },
     async getAuthData() {
       const toast = useToast()
       try {
@@ -104,6 +118,7 @@ export default {
   mounted() {
     this.getAuthData()
     this.getOrderDashBoard()
+    this.getAgeData()
   }
 }
 </script>
