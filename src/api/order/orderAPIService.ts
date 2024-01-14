@@ -3,7 +3,8 @@ import type {
   GetOrderListByConsumerIdResponse,
   GetOrderListBySellerIdResponse,
   GetCashUpListBySellerIdResponse,
-  GetOrderForDashBoardResponse
+  GetOrderForDashBoardResponse,
+  getAllCashUpListForDashBoardResponse
 } from './orderAPIService.types'
 
 export const getOrderListBySellerId = async (sellerId: number, page: number, size: number) => {
@@ -30,6 +31,13 @@ export const getCashUpListBySellerId = async (sellerId: number, year: number) =>
 export const getOrderForDashBoard = async (date: string) => {
   const { data } = await authAxiosInstance.get<GetOrderForDashBoardResponse>(
     `/order-service/api/admin/dashboard?date=${date}`
+  )
+  return data
+}
+
+export const getAllCashUpListForDashBoard= async (year: string, month: string) => {
+  const { data } = await authAxiosInstance.get<getAllCashUpListForDashBoardResponse>(
+    `order-service/api/all-seller-settlement?year=${year}&month=${month}`
   )
   return data
 }

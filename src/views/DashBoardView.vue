@@ -10,29 +10,33 @@
     <div class="dashboardFlex">
       <div>
         <div class="dashboardFlex">
-          <DashBoardRankingBox name="월 별 셀러 판매 순위" />
+          <DashBoardRankingBox name="월 별 셀러 판매 순위" :data="orderData.monthSellerRank"/>
           <DashBoardRankingBox name="월 별 상품 판매 순위 " />
         </div>
         <div class="dashboardFlex">
-          <DashBoardInfoBox state="이번달 판매량" :cnt="orderData.totalSalesMonth" />
+          <div>
+            <div>이번달 판매 순위</div>
+          </div>
           <DashBoardInfoBox state="이번달 정산 수수료" :cnt="orderData.commissionMonth" />
         </div>
       </div>
       <div>시각화</div>
     </div>
+    <CustomButton :handleClick="downloadAllCashUpList" btnText="모든 셀러의 정산 내역 다운받기" />
   </div>
 </template>
 
 <script lang="ts">
+import CustomButton from '@/components/common/CustomButton.vue'
 import { getDashBoardAuth } from '@/api/authentication/authAPIService'
-import { getOrderForDashBoard } from '@/api/order/orderAPIService'
+import { getOrderForDashBoard, getAllCashUpListForDashBoard } from '@/api/order/orderAPIService'
 import type { GetDashBoardAuthResponseData } from '@/api/authentication/authAPIService.types'
 import type { GetOrderForDashBoardResponseData } from '@/api/order/orderAPIService.types'
 import DashBoardInfoBox from '@/components/DashBoard/DashBoardInfoBox.vue'
 import DashBoardRankingBox from '@/components/DashBoard/DashBoardRankingBox.vue'
 import { useToast } from 'vue-toastification'
 export default {
-  components: { DashBoardInfoBox, DashBoardRankingBox },
+  components: { DashBoardInfoBox, DashBoardRankingBox, CustomButton },
   methods: {
     async getAuthData() {
       const toast = useToast()
@@ -66,6 +70,24 @@ export default {
       } finally {
         this.isLoading = false
       }
+    },
+    async downloadAllCashUpList(){
+      const toast = useToast()
+      try{
+        this.isLoading = true
+        const data = await getAllCashUpListForDashBoard('2024', '01')
+        if(data.code === 200) {
+          console.log(data.data)
+          window.open(data.data)
+        }
+      }catch(err){
+        toast.error(`셀러의 정산내역들을 불러오는데 실패했어요.`, {
+          timeout: 2000
+        })
+      }
+      finally{
+        this.isLoading = false
+      }
     }
   },
   data() {
@@ -97,5 +119,11 @@ export default {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.dashboardRankBox{
+  border-radius: 12px;
+  box-shadow: 3px 3px 1px 1px #c0c0c0;
+  padding: 1rem;
 }
 </style>
