@@ -6,17 +6,18 @@
     </div>
     <div>카메라와 마이크를 확인해주세요</div>
   </div>
-  <video id="video" ref="video"></video>
-  <div v-if="this.isStreaming" class="close__btn">
-    <div>
+  <div v-if="this.isStreaming">
+    <div class="close__btn">
       <div v-if="this.bidInfo">현재 호가 | {{ this.bidInfo.askingPrice }}</div>
       <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
       <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
       <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
+      <div class="stream-right">
+        <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
+      </div>
     </div>
     <div class="stream">
       <div class="stream-left">
-        <video id="video" ref="video"></video>
         <div v-if="this.isStreaming" class="chat">
           <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
             <CustomAvatar :src="item.memberProfileImage" />
@@ -36,17 +37,20 @@
         </div>
       </div>
     </div>
-    <div class="stream-right">
-      <div @click="this.confirmBid">낙찰 (테스트)</div>
-    </div>
   </div>
+  <video id="video" ref="video"></video>
 </template>
 
 <script>
 import CustomButton from '@/components/common/CustomButton.vue'
 import CustomAvatar from '@/components/common/CustomAvatar.vue'
 import { useToast } from 'vue-toastification'
-import { startStream, finishStream, updateAskingPrice } from '@/api/auction/auctionAPIService.ts'
+import {
+  startStream,
+  finishStream,
+  updateAskingPrice,
+  confirmBidForAuction
+} from '@/api/auction/auctionAPIService.ts'
 import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 export default {
@@ -107,18 +111,19 @@ export default {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
-      console.log(`소켓 연결을 시도합니다. 서버 주소: ${serverURL}/sub/chat/${this.auctionId}`)
+      console.log(
+        `CHAT INFO | 소켓 연결을 시도합니다. 서버 주소: ${serverURL}/sub/chat/${this.auctionId}`
+      )
       this.stompClient.connect(
         {},
         (frame) => {
           // 소켓 연결 성공
           this.connected = true
-          console.log('소켓 연결 성공', frame)
+          console.log('CHAT | INFO 소켓 연결 성공', frame)
           // 서버의 메시지 전송 endpoint를 구독합니다.
           // 이런형태를 pub sub 구조라고 합니다.
           this.stompClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
-            console.log('구독으로 받은 메시지 입니다.', res.body)
-            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
+            console.log('CHAT | INFO구독으로 받은 메시지 입니다.', res.body)
             this.recvList.push(JSON.parse(res.body))
           })
         },
@@ -181,40 +186,21 @@ export default {
       const toast = useToast()
       console.log('연결중')
       try {
-        // await this.connectKaKaoLive()
-        // this.localMedia = await ConnectLive.createLocalMedia({
-        //   audio: true,
-        //   video: true
-        // })
-        // this.room = ConnectLive.createRoom()
-        // this.createConferenceHostOptions(this.room)
-        // if (!this.auctionId) throw new Error('No Conference to Connect')
-        // console.log(typeof this.auctionId)
-        // console.log(this.auctionId.replaceAll('-', ''))
-        // await this.room.connect(this.auctionId.replaceAll('-', ''))
-        // if (this.localMedia) {
-        //   await this.room.publish([this.localMedia])
-        //   // addLog('Video Connected')
-        try {
-          const data = await startStream(this.auctionId)
-          console.log(data)
-          if (data.code === 200) {
-            this.isStreaming = true
-            this.connect()
-            this.connectAuctionInfo()
-            toast.success(`성공적으로 방송이 시작됐어요.`, {
-              timeout: 2000
-            })
-            // this.addLocalVideoNode(this.localMedia)
-          }
-        } catch (err) {
-          toast.error('방송 시작에 실패했어요.', {
+        const data = await startStream(this.auctionId)
+        console.log(data)
+        if (data.code === 200) {
+          this.isStreaming = true
+          this.connect()
+          this.connectAuctionInfo()
+          toast.success(`성공적으로 방송이 시작됐어요.`, {
             timeout: 2000
           })
+          // this.addLocalVideoNode(this.localMedia)
         }
-        // }
-      } catch (error) {
-        console.error(error)
+      } catch (err) {
+        toast.error('방송 시작에 실패했어요.', {
+          timeout: 2000
+        })
       }
     },
     async changeAskingPrice() {
@@ -234,8 +220,10 @@ export default {
       }
     },
     async confirmBid() {
+      const toast = useToast()
       try {
-        const data = await confirmBid(this.auctionId)
+        console.log('HERE')
+        const data = await confirmBidForAuction(this.auctionId)
         if (data.code === 200) {
           toast.success('낙찰에 성공했어요', { timeout: 2000 })
           this.askingPrice = null
@@ -259,10 +247,10 @@ video,
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+}
 
-  video {
-    width: 80%;
-  }
+video {
+  width: 600px;
 }
 
 .preview-screen__header {

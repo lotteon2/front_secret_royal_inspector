@@ -207,7 +207,6 @@ export default {
                   { text: '', value: 'productImageUrl' },
                   { text: '가게이름', value: 'sellerName' },
                   { text: '이메일', value: 'sellerEmail' },
-                  { text: '대표번호', value: 'storePhoneNumber' },
                   { text: '대표자 이름', value: 'businessmanName' },
                   { text: '신청일자', value: 'createdAt' },
                   { text: '상품이름', value: 'productName' },

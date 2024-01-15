@@ -97,7 +97,7 @@ export const updateAskingPrice = async (auctionId: string, askingPrice: number) 
   return data
 }
 
-export const confirmBid = async (auctionId: string) => {
+export const confirmBidForAuction = async (auctionId: string) => {
   const { data } = await authAxiosInstance.post<ConfirmBidResponse>(
     `/auction-service/api/auction/bid/${auctionId}`
   )
