@@ -11,17 +11,21 @@
       <div>
         <div class="dashboardFlex">
           <div class="dashboardRankBox">
-            <h2>월별 상품 판매 순위</h2>
-            <div v-for="data in orderData.monthProductRank" :key="data.productId" class="rankWrapper">
-              <div>{{data.productName}}</div>
-              <div>{{data.totalCount}} 개</div>
+            <h2 class="dashboardRankBox-title">월별 상품 판매 순위</h2>
+            <div
+              v-for="data in orderData.monthProductRank"
+              :key="data.productId"
+              class="rankWrapper"
+            >
+              <div>{{ data.productName }}</div>
+              <div>{{ data.totalCount }} 개</div>
             </div>
           </div>
           <div class="dashboardRankBox">
-            <h2>월별 셀러 판매 순위</h2>
+            <h2 class="dashboardRankBox-title">월별 셀러 판매 순위</h2>
             <div v-for="data in orderData.monthSellerRank" :key="data.sellerId" class="rankWrapper">
-              <div>{{data.sellerName}}</div>
-              <div>{{data.totalPrice}} 원</div>
+              <div>{{ data.sellerName }}</div>
+              <div>{{ data.totalPrice }} 원</div>
             </div>
           </div>
         </div>
@@ -48,17 +52,17 @@ import { useToast } from 'vue-toastification'
 export default {
   components: { DashBoardInfoBox, DashBoardRankingBox, CustomButton },
   methods: {
-    async getAgeData(){
+    async getAgeData() {
       const toast = useToast()
-      try{
+      try {
         this.isLoading = true
-          const data = await getAgeListForDashBoard();
-          console.log(data);
-      }catch(err){
+        const data = await getAgeListForDashBoard()
+        console.log(data)
+      } catch (err) {
         toast.error(`대시보드 데이터들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
-      }finally{
+      } finally {
         this.isLoading = false
       }
     },
@@ -95,21 +99,20 @@ export default {
         this.isLoading = false
       }
     },
-    async downloadAllCashUpList(){
+    async downloadAllCashUpList() {
       const toast = useToast()
-      try{
+      try {
         this.isLoading = true
         const data = await getAllCashUpListForDashBoard('2024', '01')
-        if(data.code === 200) {
+        if (data.code === 200) {
           console.log(data.data)
           window.open(data.data)
         }
-      }catch(err){
+      } catch (err) {
         toast.error(`셀러의 정산내역들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
-      }
-      finally{
+      } finally {
         this.isLoading = false
       }
     }
@@ -146,13 +149,21 @@ export default {
   gap: 1rem;
 }
 
-.dashboardRankBox{
+.dashboardRankBox {
   border-radius: 12px;
   box-shadow: 3px 3px 1px 1px #c0c0c0;
   padding: 1rem;
+  height: 200px;
+  min-height: 200px;
+  max-height: 200px;
+
+  .dashboardRankBox-title {
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+  }
 }
 
-.rankWrapper{
+.rankWrapper {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;

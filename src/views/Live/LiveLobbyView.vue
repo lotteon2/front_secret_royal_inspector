@@ -5,43 +5,46 @@
       <CustomButton btnText="방송 시작하기" @click="startStream"></CustomButton>
     </div>
     <div>카메라와 마이크를 확인해주세요</div>
-    <video id="video" ref="video" @canplay="playVideo"></video>
   </div>
+  <video id="video" ref="video"></video>
   <div v-if="this.isStreaming" class="close__btn">
-    <div v-if="this.bidInfo">현재 호가 | {{ this.bidInfo.askingPrice }}</div>
-    <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
-    <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
-    <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
-  </div>
-  <div class="stream">
-    <div class="stream-left">
-      <div id="local-container"></div>
-      <div v-if="this.isStreaming" class="chat">
-        <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
-          <CustomAvatar :src="item.memberProfileImage" />
-          <span class="chat-name">{{ item.memberNickname }}</span>
-          <span class="chat-message">{{ item.message }}</span>
+    <div>
+      <div v-if="this.bidInfo">현재 호가 | {{ this.bidInfo.askingPrice }}</div>
+      <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
+      <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
+      <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
+    </div>
+    <div class="stream">
+      <div class="stream-left">
+        <video id="video" ref="video"></video>
+        <div v-if="this.isStreaming" class="chat">
+          <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
+            <CustomAvatar :src="item.memberProfileImage" />
+            <span class="chat-name">{{ item.memberNickname }}</span>
+            <span class="chat-message">{{ item.message }}</span>
+          </div>
+          <input v-model="message" type="text" @keyup="sendMessage" class="chat-input" />
         </div>
-        <input v-model="message" type="text" @keyup="sendMessage" class="chat-input" />
+      </div>
+      <div class="stream-right">
+        <div v-if="bidInfo">
+          <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistory" :key="idx">
+            <CustomAvatar alt="profileImg" :src="item.profileImage" />
+            <h3>이름: {{ item.nickname }}</h3>
+            <h3>메시지: {{ item.bidPrice }}</h3>
+          </div>
+        </div>
       </div>
     </div>
-    <div v-if="this.isStreaming" class="stream-right">
-      <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistory" :key="idx">
-        <CustomAvatar alt="profileImg" :src="item.profileImage" />
-        <h3>이름: {{ item.nickname }}</h3>
-        <h3>메시지: {{ item.bidPrice }}</h3>
-      </div>
+    <div class="stream-right">
+      <div @click="this.confirmBid">낙찰 (테스트)</div>
     </div>
-  </div>
-  <div v-if="this.isStreaming" class="stream-right">
-    <div @click="this.confirmBid">낙찰 (테스트)</div>
   </div>
 </template>
 
 <script>
 import CustomButton from '@/components/common/CustomButton.vue'
 import CustomAvatar from '@/components/common/CustomAvatar.vue'
-import ConnectLive from '@connectlive/connectlive-web-sdk'
 import { useToast } from 'vue-toastification'
 import { startStream, finishStream, updateAskingPrice } from '@/api/auction/auctionAPIService.ts'
 import Stomp from 'webstomp-client'
@@ -101,7 +104,6 @@ export default {
       }
     },
     connect() {
-      console.log('here')
       const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
@@ -158,30 +160,8 @@ export default {
         }
       )
     },
-    async connectKaKaoLive() {
-      try {
-        const LIVE_KEY = import.meta.env.VITE_LIVE_KEY
-        const SERVICE_ID = import.meta.env.VITE_LIVE_SERVICE_ID
-        console.log(SERVICE_ID)
-        console.log(LIVE_KEY)
-        await ConnectLive.signIn({
-          serviceId: 'ICLEXMPLPUBL',
-          serviceSecret: 'ICLEXMPLPUBL0KEY:YOUR0SRVC0SECRET'
-        })
-        this.connect()
-        this.connectAuctionInfo()
-      } catch (err) {
-        console.error(err)
-      }
-    },
     async finishStream() {
       const toast = useToast()
-      this.room?.disconnect()
-      if (this.localMedia) {
-        this.localMedia?.stop()
-        this.localMedia = null
-        this.removeLocalVideoNode()
-      }
       try {
         const data = await finishStream(this.auctionId)
         if (data.code === 200) {
@@ -201,57 +181,41 @@ export default {
       const toast = useToast()
       console.log('연결중')
       try {
-        await this.connectKaKaoLive()
-        this.localMedia = await ConnectLive.createLocalMedia({
-          audio: true,
-          video: true
-        })
-        this.room = ConnectLive.createRoom()
-        this.createConferenceHostOptions(this.room)
-        if (!this.auctionId) throw new Error('No Conference to Connect')
-        console.log(typeof this.auctionId)
-        console.log(this.auctionId.replaceAll('-', ''))
-        await this.room.connect(this.auctionId.replaceAll('-', ''))
-        if (this.localMedia) {
-          await this.room.publish([this.localMedia])
-          // addLog('Video Connected')
-          try {
-            const data = await startStream(this.auctionId)
-            if (data.code === 200) {
-              toast.success(`성공적으로 방송이 시작됐어요.`, {
-                timeout: 2000
-              })
-              this.isStreaming = true
-              this.addLocalVideoNode(this.localMedia)
-            }
-          } catch (err) {
-            toast.error('방송 시작에 실패했어요.', {
+        // await this.connectKaKaoLive()
+        // this.localMedia = await ConnectLive.createLocalMedia({
+        //   audio: true,
+        //   video: true
+        // })
+        // this.room = ConnectLive.createRoom()
+        // this.createConferenceHostOptions(this.room)
+        // if (!this.auctionId) throw new Error('No Conference to Connect')
+        // console.log(typeof this.auctionId)
+        // console.log(this.auctionId.replaceAll('-', ''))
+        // await this.room.connect(this.auctionId.replaceAll('-', ''))
+        // if (this.localMedia) {
+        //   await this.room.publish([this.localMedia])
+        //   // addLog('Video Connected')
+        try {
+          const data = await startStream(this.auctionId)
+          console.log(data)
+          if (data.code === 200) {
+            this.isStreaming = true
+            this.connect()
+            this.connectAuctionInfo()
+            toast.success(`성공적으로 방송이 시작됐어요.`, {
               timeout: 2000
             })
+            // this.addLocalVideoNode(this.localMedia)
           }
+        } catch (err) {
+          toast.error('방송 시작에 실패했어요.', {
+            timeout: 2000
+          })
         }
+        // }
       } catch (error) {
         console.error(error)
       }
-    },
-    async createConferenceHostOptions(room) {
-      room.on('participantEntered', (evt) => {
-        // addLog(`${evt.remoteParticipant.id} joined`);
-      })
-    },
-    addLocalVideoNode(localMedia) {
-      const localContainer = document.querySelector('#local-container')
-
-      const localVideo = localMedia.video?.attach()
-      localVideo.id = 'local-video'
-      localContainer.appendChild(localVideo)
-      const localVideoTag = document.querySelector('#local-video')
-      localVideoTag.style.borderRadius = '12px'
-      localVideoTag.style.width = '100%'
-    },
-    removeLocalVideoNode() {
-      const videoItem = document.querySelector('#local-video-item')
-      if (videoItem) videoItem.remove()
     },
     async changeAskingPrice() {
       const toast = useToast()
