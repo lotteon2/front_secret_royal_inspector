@@ -117,18 +117,14 @@ export default {
       this.stompClient.connect(
         {},
         (frame) => {
-          // 소켓 연결 성공
           this.connected = true
           console.log('CHAT | INFO 소켓 연결 성공', frame)
-          // 서버의 메시지 전송 endpoint를 구독합니다.
-          // 이런형태를 pub sub 구조라고 합니다.
           this.stompClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
             console.log('CHAT | INFO구독으로 받은 메시지 입니다.', res.body)
             this.recvList.push(JSON.parse(res.body))
           })
         },
         (error) => {
-          // 소켓 연결 실패
           console.log('소켓 연결 실패', error)
           this.connected = false
         }
@@ -145,17 +141,57 @@ export default {
       this.stompClient.connect(
         {},
         (frame) => {
-          // 소켓 연결 성공
           this.connected = true
           console.log('BID INFO 소켓 연결 성공', frame)
-          // 서버의 메시지 전송 endpoint를 구독합니다.
-          // 이런형태를 pub sub 구조라고 합니다.
           this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
             console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
-            // 받은 데이터를 json으로 파싱하고 리스트에 넣어줍니다.
             this.bidInfo = JSON.parse(res.body)
             console.log('HERE')
             console.log(this.bidInfo)
+          })
+        },
+        (error) => {
+          // 소켓 연결 실패
+          console.log('BID INFO 소켓 연결 실패', error)
+          this.connected = false
+        }
+      )
+    },
+    connectRoomInfo() {
+      const serverURL = 'https://api.jeontongju.shop/auction-service'
+      let socket = new SockJS(`${serverURL}/chat`)
+      this.stompClient = Stomp.over(socket)
+      this.stompClient.connect(
+        {},
+        (frame) => {
+          this.connected = true
+          console.log('[ROOM RESULT] 구독으로 받은 메시지 입니다', frame)
+          this.stompClient.subscribe(`/sub/auction-numbers/${this.auctionId}`, (res) => {
+            console.log('ROOM INFO 구독으로 받은 메시지 입니다.', res.body)
+            const test = JSON.parse(res.body)
+            console.log(test)
+          })
+        },
+        (error) => {
+          // 소켓 연결 실패
+          console.log('ROOM INFO 소켓 연결 실패', error)
+          this.connected = false
+        }
+      )
+    },
+    connectBidInfo() {
+      const serverURL = 'https://api.jeontongju.shop/auction-service'
+      let socket = new SockJS(`${serverURL}/chat`)
+      this.stompClient = Stomp.over(socket)
+      this.stompClient.connect(
+        {},
+        (frame) => {
+          this.connected = true
+          console.log('[BID RESULT] 구독으로 받은 메시지 입니다', frame)
+          this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
+            console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
+            const test = JSON.parse(res.body)
+            console.log(test)
           })
         },
         (error) => {
@@ -192,6 +228,8 @@ export default {
           this.isStreaming = true
           this.connect()
           this.connectAuctionInfo()
+          this.connectBidInfo()
+          this.connectRoomInfo()
           toast.success(`성공적으로 방송이 시작됐어요.`, {
             timeout: 2000
           })
