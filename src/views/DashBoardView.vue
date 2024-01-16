@@ -34,7 +34,14 @@
           <DashBoardInfoBox state="이번달 총 판매금" :cnt="orderData.totalSalesMonth" />
         </div>
       </div>
-      <div>시각화</div>
+      <div>
+        <div>
+          <DashBoardYearChartBox />
+          <div>지난 일주일간 신규 가입자 수</div>
+          <DashBoardNewUser label="신규 고객" :chartData="ageData.consumers"/>
+          <DashBoardNewUser label="신규 주모" :chartData="ageData.sellers"/>
+        </div>
+      </div>
     </div>
     <CustomButton :handleClick="downloadAllCashUpList" btnText="모든 셀러의 정산 내역 다운받기" />
   </div>
@@ -44,20 +51,26 @@
 import CustomButton from '@/components/common/CustomButton.vue'
 import { getDashBoardAuth, getAgeListForDashBoard } from '@/api/authentication/authAPIService'
 import { getOrderForDashBoard, getAllCashUpListForDashBoard } from '@/api/order/orderAPIService'
-import type { GetDashBoardAuthResponseData } from '@/api/authentication/authAPIService.types'
+import type { GetDashBoardAgeResponseData, GetDashBoardAuthResponseData } from '@/api/authentication/authAPIService.types'
 import type { GetOrderForDashBoardResponseData } from '@/api/order/orderAPIService.types'
 import DashBoardInfoBox from '@/components/DashBoard/DashBoardInfoBox.vue'
 import DashBoardRankingBox from '@/components/DashBoard/DashBoardRankingBox.vue'
+import DashBoardYearChartBox from '@/components/DashBoard/DashBoardYearChartBox.vue'
+import DashBoardNewUser from '@/components/DashBoard/DashBoardNewUser.vue'
 import { useToast } from 'vue-toastification'
 export default {
-  components: { DashBoardInfoBox, DashBoardRankingBox, CustomButton },
+  components: { DashBoardInfoBox, DashBoardRankingBox, CustomButton, DashBoardYearChartBox, DashBoardNewUser },
   methods: {
     async getAgeData() {
       const toast = useToast()
       try {
         this.isLoading = true
         const data = await getAgeListForDashBoard()
-        console.log(data)
+        if(data.code === 200){
+          console.log("HERE")
+          this.ageData = data.data
+        }
+        console.log(this.ageData)
       } catch (err) {
         toast.error(`대시보드 데이터들을 불러오는데 실패했어요.`, {
           timeout: 2000
@@ -121,11 +134,13 @@ export default {
     return {
       isLoading: false,
       authData: {},
-      orderData: {}
+      orderData: {},
+      ageData: {}
     } as {
       isLoading: boolean
       authData: GetDashBoardAuthResponseData
-      orderData: GetOrderForDashBoardResponseData
+      orderData: GetOrderForDashBoardResponseData,
+      ageData: GetDashBoardAgeResponseData
     }
   },
   mounted() {
