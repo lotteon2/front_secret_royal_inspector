@@ -350,46 +350,7 @@ input {
   overflow-y: scroll;
 }
 
-<!-- .chat-box {
-  width: min-content;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  background-color: #ffe2e2;
-  border-radius: 12px;
-  padding: 0.5rem;
-  margin: 0.2rem 0;
-  gap: 1rem;
-
-  span {
-    white-space: nowrap;
-  }
-
-  .chat-input {
-    position: absolute;
-    bottom: 5%;
-  }
-
-  .chat-name {
-    font-weight: 800;
-  }
-
-  .chat-message {
-    font-weight: 700;
-  }
-}
-
 .chat {
-  display: flex;
-  flex-direction: column;
-}
-
-.chat-box::before {
-  content: '';
-  display: block;
-  flex: 1;
-}
--- > .chat {
   position: relative;
   max-height: 300px;
   height: 300px;
