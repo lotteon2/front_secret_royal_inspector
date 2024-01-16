@@ -15,7 +15,7 @@
     },
     data() {
       return {
-        chart: null,
+        userChart: null,
         ageData: {
           labels: Object.keys(this.$props.chartData),
           datasets: [
@@ -32,7 +32,7 @@
     },
     mounted() {
       console.log(this.chartData)
-      this.updateChart()
+      // this.updateChart()
       this.renderChart();
     },
     watch:{
@@ -45,17 +45,23 @@
       updateChart() {
         console.log("실행");
         console.log(Object.keys(this.$props.chartData));
-        console.log(Object.values(this.$props.chartData))
-        // sellers 데이터가 업데이트 될 때 차트 업데이트
-        this.ageData.labels = Object.keys(this.$props.chartData);
-        this.ageData.datasets[0].data = Object.values(this.$props.chartData);
+        console.log(Object.values(this.$props.chartData));
+        if (this.$refs.chartCanvas) {
+          if (this.userChart) {
+                  this.userChart.destroy(); // 기존 차트 제거
+            }
+            this.renderChart();
+        }
+        // this.ageData.labels = Object.keys(this.$props.chartData);
+        // this.ageData.datasets[0].data = Object.values(this.$props.chartData);
+        // this.renderChart();
       },
       renderChart() {
         const ctx = this.$refs.chartCanvas.getContext('2d');
-        if (this.chart) {
-            this.chart.destroy(); // 기존 차트 제거
+        if (this.userChart) {
+            this.userChart.destroy(); // 기존 차트 제거
         }
-        this.chart = new Chart(ctx, {
+        this.userChart = new Chart(ctx, {
           type: 'bar', // 차트 유형 선택 (bar, line, pie 등)
           data: this.ageData,
           options: {

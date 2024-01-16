@@ -36,10 +36,15 @@
       </div>
       <div>
         <div>
-          <DashBoardYearChartBox />
+          <div>지난 일주일간 가입 유저 연령대 비율</div>
+          <div v-if="ageData.teenage || ageData.twenty || ageData.thirty || ageData.fortyOver">
+            <DashBoardYearChartBox :teen="ageData.teenage" :twenty="ageData.twenty" :thirty="ageData.thirty" :forty="ageData.fortyOver"/>
+          </div>
           <div>지난 일주일간 신규 가입자 수</div>
-          <DashBoardNewUser label="신규 고객" :chartData="ageData.consumers"/>
-          <DashBoardNewUser label="신규 주모" :chartData="ageData.sellers"/>
+          <div v-if="ageData.consumers">
+            <DashBoardNewUser label="신규 고객" :chartData="ageData.consumers"/>
+            <DashBoardNewUser label="신규 주모" :chartData="ageData.sellers"/>
+          </div>
         </div>
       </div>
     </div>
