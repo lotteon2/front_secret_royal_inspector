@@ -6,7 +6,7 @@
     </div>
     <div>카메라와 마이크를 확인해주세요</div>
   </div>
-  <div v-if="this.isStreaming">
+  <div v-else>
     <div class="close__btn">
       <div v-if="this.bidInfo">현재 호가 | {{ this.bidInfo.askingPrice }}</div>
       <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
@@ -16,29 +16,36 @@
         <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
       </div>
     </div>
-    <div class="stream">
-      <div class="stream-left">
-        <div v-if="this.isStreaming" class="chat">
-          <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
-            <CustomAvatar :src="item.memberProfileImage" />
-            <span class="chat-name">{{ item.memberNickname }}</span>
-            <span class="chat-message">{{ item.message }}</span>
-          </div>
-          <input v-model="message" type="text" @keyup="sendMessage" class="chat-input" />
-        </div>
-      </div>
-      <div class="stream-right">
-        <div v-if="bidInfo">
-          <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistory" :key="idx">
-            <CustomAvatar alt="profileImg" :src="item.profileImage" />
-            <h3>이름: {{ item.nickname }}</h3>
-            <h3>메시지: {{ item.bidPrice }}</h3>
-          </div>
+  </div>
+  <video id="video" ref="video"></video>
+  <!-- <div v-if="this.isStreaming" class="stream"> -->
+  <div v-if="this.isStreaming" class="chat">
+    <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
+      <CustomAvatar :src="item.memberProfileImage" />
+      <span class="chat-name">{{ item.memberNickname }}</span>
+      <span class="chat-message">{{ item.message }}</span>
+    </div>
+    <input
+      v-model="message"
+      type="text"
+      @keyup="sendMessage"
+      class="chat-input"
+      placeholder="전통주점 채팅"
+    />
+  </div>
+  <!-- </div> -->
+
+  <div v-if="this.isStreaming" class="stream">
+    <div class="stream-right">
+      <div v-if="bidInfo">
+        <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistory" :key="idx">
+          <CustomAvatar alt="profileImg" :src="item.profileImage" />
+          <h3>이름: {{ item.nickname }}</h3>
+          <h3>메시지: {{ item.bidPrice }}</h3>
         </div>
       </div>
     </div>
   </div>
-  <video id="video" ref="video"></video>
 </template>
 
 <script>
@@ -111,9 +118,6 @@ export default {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
-      console.log(
-        `CHAT INFO | 소켓 연결을 시도합니다. 서버 주소: ${serverURL}/sub/chat/${this.auctionId}`
-      )
       this.stompClient.connect(
         {},
         (frame) => {
@@ -126,7 +130,6 @@ export default {
         },
         (error) => {
           console.log('소켓 연결 실패', error)
-          this.connected = false
         }
       )
     },
@@ -220,10 +223,8 @@ export default {
     },
     async startStream() {
       const toast = useToast()
-      console.log('연결중')
       try {
         const data = await startStream(this.auctionId)
-        console.log(data)
         if (data.code === 200) {
           this.isStreaming = true
           this.connect()
@@ -233,7 +234,6 @@ export default {
           toast.success(`성공적으로 방송이 시작됐어요.`, {
             timeout: 2000
           })
-          // this.addLocalVideoNode(this.localMedia)
         }
       } catch (err) {
         toast.error('방송 시작에 실패했어요.', {
@@ -260,7 +260,6 @@ export default {
     async confirmBid() {
       const toast = useToast()
       try {
-        console.log('HERE')
         const data = await confirmBidForAuction(this.auctionId)
         if (data.code === 200) {
           toast.success('낙찰에 성공했어요', { timeout: 2000 })
@@ -328,7 +327,6 @@ input {
 }
 
 .stream {
-  display: flex;
   margin-top: 2rem;
   height: 100%;
 
@@ -349,7 +347,8 @@ input {
     position: relative;
     max-height: 30%;
     height: 40%;
-    overflow: scroll;
+    width: 600px;
+    overflow-y: scroll;
   }
 
   input {
@@ -368,6 +367,7 @@ input {
     padding: 0.5rem;
     margin: 0.2rem 0;
     gap: 1rem;
+    width: 600px;
 
     span {
       white-space: nowrap;
@@ -397,5 +397,59 @@ input {
     display: block;
     flex: 1;
   }
+}
+.chat {
+  position: relative;
+  max-height: 300px;
+  height: 300px;
+  width: 600px;
+  overflow-y: scroll;
+
+  input {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+  }
+}
+
+.chat-box {
+  width: min-content;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background-color: #ffe2e2;
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin: 0.2rem 0;
+  gap: 1rem;
+  width: 600px;
+
+  span {
+    white-space: nowrap;
+  }
+
+  .chat-input {
+    position: absolute;
+    bottom: 5%;
+  }
+
+  .chat-name {
+    font-weight: 800;
+  }
+
+  .chat-message {
+    font-weight: 700;
+  }
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-box::before {
+  content: '';
+  display: block;
+  flex: 1;
 }
 </style>
