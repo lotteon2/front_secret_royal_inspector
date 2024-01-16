@@ -8,7 +8,7 @@
   </div>
   <div v-else>
     <div class="close__btn">
-      <div v-if="this.bidInfo">현재 호가 | {{ this.bidInfo.askingPrice }}</div>
+      <div>현재 호가 | {{ this.bidInfo?.askingPrice || 0 }}원</div>
       <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
       <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
       <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
@@ -21,7 +21,7 @@
   <!-- <div v-if="this.isStreaming" class="stream"> -->
   <div v-if="this.isStreaming" class="chat">
     <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
-      <CustomAvatar :imgSrc="item.memberProfileImage" />
+      <CustomAvatar :imgSrc="item.profileImage" />
       <span class="chat-name">{{ item.memberNickname }}</span>
       <span class="chat-message">{{ item.message }}</span>
     </div>
@@ -36,9 +36,10 @@
   <!-- </div> -->
 
   <div v-if="this.isStreaming" class="stream">
+    <div>{{ this.currentUser || 1 }} 명 동시 시청중</div>
     <div class="stream-right">
       <div v-if="bidInfo">
-        <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistory" :key="idx">
+        <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistoryList" :key="idx">
           <CustomAvatar alt="profileImg" :src="item.profileImage" />
           <h3>이름: {{ item.nickname }}</h3>
           <h3>메시지: {{ item.bidPrice }}</h3>
@@ -78,7 +79,14 @@ export default {
       message: '',
       recvList: [],
       bidInfo: null,
-      askingPrice: null
+      askingPrice: null,
+      currenUser: 1,
+      bidResultInfo: []
+    }
+  },
+  watch: {
+    currentUser: function (value) {
+      console.log(value)
     }
   },
   mounted() {
@@ -86,7 +94,6 @@ export default {
     this.video = this.$refs.video
     this.canvas = this.$refs.canvas
     this.getMediaStream()
-    this.connect()
   },
   methods: {
     getMediaStream() {
@@ -136,24 +143,24 @@ export default {
         }
       )
     },
-    connectAuctionInfo() {
+    connectBidResultInfo() {
       console.log('here')
       const serverURL = 'https://api.jeontongju.shop/auction-service'
       let socket = new SockJS(`${serverURL}/chat`)
       this.stompClient = Stomp.over(socket)
       console.log(
-        `BID INFO | 소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`
+        `connectBidResultInfo| 소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`
       )
       this.stompClient.connect(
         {},
         (frame) => {
           this.stompClient.connected = true
-          console.log('BID INFO 소켓 연결 성공', frame)
-          this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
-            console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
-            this.bidInfo = JSON.parse(res.body)
+          console.log('BID RESULT INFO 소켓 연결 성공', frame)
+          this.stompClient.subscribe(`/sub/bid-result/${this.auctionId}`, (res) => {
+            console.log('BID RESULT INFO 구독으로 받은 메시지 입니다.', res.body)
+            this.bidResultInfo = JSON.parse(res.body)
             console.log('HERE')
-            console.log(this.bidInfo)
+            console.log(this.bidResultInfo)
           })
         },
         (error) => {
@@ -170,18 +177,16 @@ export default {
       this.stompClient.connect(
         {},
         (frame) => {
-          this.connected = true
+          this.stompClient.connected = true
           console.log('[ROOM RESULT] 구독으로 받은 메시지 입니다', frame)
           this.stompClient.subscribe(`/sub/auction-numbers/${this.auctionId}`, (res) => {
-            console.log('ROOM INFO 구독으로 받은 메시지 입니다.', res.body)
-            const test = JSON.parse(res.body)
-            console.log(test)
+            this.currentUser = Number(res.body)
           })
         },
         (error) => {
           // 소켓 연결 실패
           console.log('ROOM INFO 소켓 연결 실패', error)
-          this.connected = false
+          this.stompClient.connected = false
         }
       )
     },
@@ -192,18 +197,18 @@ export default {
       this.stompClient.connect(
         {},
         (frame) => {
-          this.connected = true
-          console.log('[BID RESULT] 구독으로 받은 메시지 입니다', frame)
+          this.stompClient.connected = true
+          console.log('[BID INFO] 구독으로 받은 메시지 입니다', frame)
           this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
             console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
-            const test = JSON.parse(res.body)
+            this.bidInfo = JSON.parse(res.body)
             console.log(test)
           })
         },
         (error) => {
           // 소켓 연결 실패
           console.log('BID INFO 소켓 연결 실패', error)
-          this.connected = false
+          this.stompClient.connected = false
         }
       )
     },
@@ -231,7 +236,7 @@ export default {
         if (data.code === 200) {
           this.isStreaming = true
           this.connect()
-          this.connectAuctionInfo()
+          this.connectBidResultInfo()
           this.connectBidInfo()
           this.connectRoomInfo()
           toast.success(`성공적으로 방송이 시작됐어요.`, {
@@ -327,6 +332,10 @@ input {
   box-sizing: border-box;
   margin-top: 0.3rem;
   font-family: 'BMDOHYEON';
+}
+
+.stream {
+  margin-left: 650px;
 }
 
 .stream-left {
