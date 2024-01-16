@@ -21,7 +21,7 @@
   <!-- <div v-if="this.isStreaming" class="stream"> -->
   <div v-if="this.isStreaming" class="chat">
     <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
-      <CustomAvatar :src="item.memberProfileImage" />
+      <CustomAvatar :imgSrc="item.memberProfileImage" />
       <span class="chat-name">{{ item.memberNickname }}</span>
       <span class="chat-message">{{ item.message }}</span>
     </div>
@@ -86,6 +86,7 @@ export default {
     this.video = this.$refs.video
     this.canvas = this.$refs.canvas
     this.getMediaStream()
+    this.connect()
   },
   methods: {
     getMediaStream() {
@@ -121,15 +122,17 @@ export default {
       this.stompClient.connect(
         {},
         (frame) => {
-          this.connected = true
+          this.stompClient.connected = true
           console.log('CHAT | INFO 소켓 연결 성공', frame)
           this.stompClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
             console.log('CHAT | INFO구독으로 받은 메시지 입니다.', res.body)
             this.recvList.push(JSON.parse(res.body))
+            console.log(this.recvList)
           })
         },
         (error) => {
           console.log('소켓 연결 실패', error)
+          this.stompClient.connect = false
         }
       )
     },
@@ -144,7 +147,7 @@ export default {
       this.stompClient.connect(
         {},
         (frame) => {
-          this.connected = true
+          this.stompClient.connected = true
           console.log('BID INFO 소켓 연결 성공', frame)
           this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
             console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
@@ -156,7 +159,7 @@ export default {
         (error) => {
           // 소켓 연결 실패
           console.log('BID INFO 소켓 연결 실패', error)
-          this.connected = false
+          this.stompClient.connected = false
         }
       )
     },
@@ -326,78 +329,67 @@ input {
   font-family: 'BMDOHYEON';
 }
 
-.stream {
-  margin-top: 2rem;
-  height: 100%;
+.stream-left {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+}
 
-  .stream-left {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    padding: 1rem;
+.stream-right {
+  flex: 1;
+}
+
+//css
+
+.chat {
+  position: relative;
+  max-height: 30%;
+  height: 40%;
+  width: 600px;
+  overflow-y: scroll;
+}
+
+.chat-box {
+  width: min-content;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  background-color: #ffe2e2;
+  border-radius: 12px;
+  padding: 0.5rem;
+  margin: 0.2rem 0;
+  gap: 1rem;
+
+  span {
+    white-space: nowrap;
   }
 
-  .stream-right {
-    flex: 1;
-  }
-
-  //css
-
-  .chat {
-    position: relative;
-    max-height: 30%;
-    height: 40%;
-    width: 600px;
-    overflow-y: scroll;
-  }
-
-  input {
-    width: 100%;
+  .chat-input {
     position: absolute;
-    bottom: 0;
+    bottom: 5%;
   }
 
-  .chat-box {
-    width: min-content;
-    display: flex;
-    align-items: center;
-    flex-direction: row;
-    background-color: #ffe2e2;
-    border-radius: 12px;
-    padding: 0.5rem;
-    margin: 0.2rem 0;
-    gap: 1rem;
-    width: 600px;
-
-    span {
-      white-space: nowrap;
-    }
-
-    .chat-input {
-      position: absolute;
-      bottom: 5%;
-    }
-
-    .chat-name {
-      font-weight: 800;
-    }
-
-    .chat-message {
-      font-weight: 700;
-    }
+  .chat-name {
+    font-weight: 800;
   }
 
-  .chat {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .chat-box::before {
-    content: '';
-    display: block;
-    flex: 1;
+  .chat-message {
+    font-weight: 700;
   }
 }
+
+.chat {
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-box::before {
+  content: '';
+  display: block;
+  flex: 1;
+}
+
 .chat {
   position: relative;
   max-height: 300px;
@@ -422,7 +414,6 @@ input {
   padding: 0.5rem;
   margin: 0.2rem 0;
   gap: 1rem;
-  width: 600px;
 
   span {
     white-space: nowrap;
