@@ -23,6 +23,7 @@
     "agora-rtc-sdk-ng": "^4.20.0",
     "axios": "^1.6.2",
     "bootstrap-icons": "^1.11.2",
+    "chart.js": "^4.4.1",
     "js-cookie": "^3.0.5",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",

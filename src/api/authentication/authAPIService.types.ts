@@ -22,6 +22,15 @@ export type GetDashBoardAuthResponseData = {
   waitingApprovalAuctionCnts: number
 }
 
+export type GetDashBoardAgeResponseData = {
+  teenage: number
+  twenty: number
+  thirty: number
+  fortyOver: number
+  consumers: {}
+  sellers: {}
+};
+
 export type LoginResponse = ApiResponse<LoginResponseData>
 export type GetDashBoardAuthResponse = ApiResponse<GetDashBoardAuthResponseData>
-export type GetDashBoardAgeResponse = ApiResponse<string>
+export type GetDashBoardAgeResponse = ApiResponse<GetDashBoardAgeResponseData>
