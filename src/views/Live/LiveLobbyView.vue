@@ -350,7 +350,7 @@ input {
   overflow-y: scroll;
 }
 
-.chat-box {
+<!-- .chat-box {
   width: min-content;
   display: flex;
   align-items: center;
@@ -389,8 +389,7 @@ input {
   display: block;
   flex: 1;
 }
-
-.chat {
+-- > .chat {
   position: relative;
   max-height: 300px;
   height: 300px;
@@ -420,8 +419,8 @@ input {
   }
 
   .chat-input {
-    position: absolute;
-    bottom: 5%;
+    position: sticky;
+    bottom: 0;
   }
 
   .chat-name {
