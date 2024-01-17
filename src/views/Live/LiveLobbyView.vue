@@ -5,6 +5,7 @@
       <CustomButton btnText="방송 시작하기" @click="startStream"></CustomButton>
     </div>
     <div>카메라와 마이크를 확인해주세요</div>
+    <video id="video" ref="video"></video>
   </div>
   <div v-else>
     <div class="close__btn">
@@ -16,10 +17,10 @@
         <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
       </div>
     </div>
+    <video id="video2" ref="video2"></video>
   </div>
-  <video id="video" ref="video"></video>
   <!-- <div v-if="this.isStreaming" class="stream"> -->
-  <div v-if="this.isStreaming" class="chat">
+  <div v-if="this.isStreaming" class="chat" ref="chatContainer">
     <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
       <CustomAvatar :imgSrc="item.profileImage" />
       <span class="chat-name">{{ item.memberNickname }}</span>
@@ -81,7 +82,8 @@ export default {
       bidInfo: null,
       askingPrice: null,
       currenUser: 1,
-      bidResultInfo: []
+      bidResultInfo: [],
+      video2: null
     }
   },
   watch: {
@@ -92,8 +94,10 @@ export default {
   mounted() {
     this.auctionId = this.$route.params.auctionId
     this.video = this.$refs.video
+    this.video2 = this.$refs.video2
     this.canvas = this.$refs.canvas
     this.getMediaStream()
+    this.getMediaStream2()
   },
   methods: {
     getMediaStream() {
@@ -102,6 +106,17 @@ export default {
         .then((stream) => {
           this.video.srcObject = stream
           this.video.play()
+        })
+        .catch((err) => {
+          console.error(`error occurred : ${err}`)
+        })
+    },
+    getMediaStream2() {
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((stream) => {
+          this.video2.srcObject = stream
+          this.video2.play()
         })
         .catch((err) => {
           console.error(`error occurred : ${err}`)
@@ -120,7 +135,15 @@ export default {
           message: this.message
         }
         this.stompClient.send(`/pub/chat/${this.auctionId}`, JSON.stringify(msg), {})
+        this.$nextTick(() => {
+          this.scrollToBottom()
+        })
       }
+    },
+    scrollToBottom() {
+      // Scroll to the bottom of the chat container
+      const chatContainer = this.$refs.chatContainer
+      chatContainer.scrollTop = chatContainer.scrollHeight
     },
     connect() {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
@@ -368,7 +391,7 @@ input {
 
   input {
     width: 100%;
-    position: absolute;
+    position: sticky;
     bottom: 0;
   }
 }
