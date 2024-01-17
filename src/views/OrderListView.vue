@@ -33,6 +33,7 @@ import CustomTable from '@/components/common/CustomTable.vue'
 import { useMyInfoStore } from '@/stores/myInfo'
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
+import { translateOrderState } from '@/types/ORDER'
 export default defineComponent({
   components: {
     CustomTable,
@@ -64,7 +65,12 @@ export default defineComponent({
             (it: GetOrderListBySellerIdResponseData, idx: number) =>
               (newItems[idx] = {
                 ...newItems[idx],
-                ordersId: it.isAuction ? `AU_${it.ordersId}` : `PR_${it.ordersId}`
+                productTotalAmount: it.productTotalAmount
+                  ? it.productTotalAmount.toLocaleString()
+                  : 0,
+                ordersId: it.isAuction ? `AU_${it.ordersId}` : `PR_${it.ordersId}`,
+                isAuction: it.isAuction ? 'Y' : 'N',
+                orderStatus: it.orderStatus ? translateOrderState(it.orderStatus) : '-'
               })
           )
           this.items = newItems
