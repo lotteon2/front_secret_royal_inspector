@@ -1,7 +1,7 @@
 <template>
   <div class="DashBoardInfoBox">
     <div class="DashBoardName">{{ state }}</div>
-    <div>{{ cnt }}</div>
+    <div>{{ cnt.toLocaleString() }}</div>
   </div>
 </template>
 
@@ -19,6 +19,7 @@ export default {
   border-radius: 12px;
   box-shadow: 3px 3px 1px 1px #c0c0c0;
   padding: 1rem;
+  flex: 1;
 
   .DashBoardName {
     margin-bottom: 1rem;

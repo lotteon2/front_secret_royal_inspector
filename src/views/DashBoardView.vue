@@ -7,9 +7,9 @@
       <DashBoardInfoBox state="탈퇴 유저" :cnt="authData.deletedMemberCnts" />
       <DashBoardInfoBox state="경매 대기 주모" :cnt="authData.waitingApprovalAuctionCnts" />
     </div>
-    <div class="dashboardFlex">
-      <div>
-        <div class="dashboardFlex">
+    <div class="dashboardFlexBottom">
+      <div class="flexBox">
+        <div class="dashboardFlexRank">
           <div class="dashboardRankBox">
             <h2 class="dashboardRankBox-title">월별 상품 판매 순위</h2>
             <div
@@ -25,7 +25,7 @@
             <h2 class="dashboardRankBox-title">월별 셀러 판매 순위</h2>
             <div v-for="data in orderData.monthSellerRank" :key="data.sellerId" class="rankWrapper">
               <div>{{ data.sellerName }}</div>
-              <div>{{ data.totalPrice }} 원</div>
+              <div>{{ data.totalPrice.toLocaleString() }} 원</div>
             </div>
           </div>
         </div>
@@ -34,19 +34,24 @@
           <DashBoardInfoBox state="이번달 총 판매금" :cnt="orderData.totalSalesMonth" />
         </div>
       </div>
-      <div>
-        <div>
-          <div>지난 일주일간 가입 유저 연령대 비율</div>
+      <div class="flexBox">
+        <div class="userAge">
+          <div class="header">지난 일주일간 가입 유저 연령대 비율</div>
           <div v-if="ageData.teenage || ageData.twenty || ageData.thirty || ageData.fortyOver">
-            <DashBoardYearChartBox :teen="ageData.teenage" :twenty="ageData.twenty" :thirty="ageData.thirty" :forty="ageData.fortyOver"/>
-          </div>
-          <div>지난 일주일간 신규 가입자 수</div>
-          <div v-if="ageData.consumers">
-            <DashBoardNewUser label="신규 고객" :chartData="ageData.consumers"/>
-            <DashBoardNewUser label="신규 주모" :chartData="ageData.sellers"/>
+            <DashBoardYearChartBox
+              :teen="ageData.teenage"
+              :twenty="ageData.twenty"
+              :thirty="ageData.thirty"
+              :forty="ageData.fortyOver"
+            />
           </div>
         </div>
       </div>
+    </div>
+    <div class="header">지난 일주일간 신규 가입자 수</div>
+    <div v-if="ageData.consumers" class="dashboardFlexBottom">
+      <DashBoardNewUser label="신규 고객" :chartData="ageData.consumers" class="flexBox" />
+      <DashBoardNewUser label="신규 주모" :chartData="ageData.sellers" class="flexBox" />
     </div>
     <CustomButton :handleClick="downloadAllCashUpList" btnText="모든 셀러의 정산 내역 다운받기" />
   </div>
@@ -56,7 +61,10 @@
 import CustomButton from '@/components/common/CustomButton.vue'
 import { getDashBoardAuth, getAgeListForDashBoard } from '@/api/authentication/authAPIService'
 import { getOrderForDashBoard, getAllCashUpListForDashBoard } from '@/api/order/orderAPIService'
-import type { GetDashBoardAgeResponseData, GetDashBoardAuthResponseData } from '@/api/authentication/authAPIService.types'
+import type {
+  GetDashBoardAgeResponseData,
+  GetDashBoardAuthResponseData
+} from '@/api/authentication/authAPIService.types'
 import type { GetOrderForDashBoardResponseData } from '@/api/order/orderAPIService.types'
 import DashBoardInfoBox from '@/components/DashBoard/DashBoardInfoBox.vue'
 import DashBoardRankingBox from '@/components/DashBoard/DashBoardRankingBox.vue'
@@ -64,15 +72,21 @@ import DashBoardYearChartBox from '@/components/DashBoard/DashBoardYearChartBox.
 import DashBoardNewUser from '@/components/DashBoard/DashBoardNewUser.vue'
 import { useToast } from 'vue-toastification'
 export default {
-  components: { DashBoardInfoBox, DashBoardRankingBox, CustomButton, DashBoardYearChartBox, DashBoardNewUser },
+  components: {
+    DashBoardInfoBox,
+    DashBoardRankingBox,
+    CustomButton,
+    DashBoardYearChartBox,
+    DashBoardNewUser
+  },
   methods: {
     async getAgeData() {
       const toast = useToast()
       try {
         this.isLoading = true
         const data = await getAgeListForDashBoard()
-        if(data.code === 200){
-          console.log("HERE")
+        if (data.code === 200) {
+          console.log('HERE')
           this.ageData = data.data
         }
         console.log(this.ageData)
@@ -144,7 +158,7 @@ export default {
     } as {
       isLoading: boolean
       authData: GetDashBoardAuthResponseData
-      orderData: GetOrderForDashBoardResponseData,
+      orderData: GetOrderForDashBoardResponseData
       ageData: GetDashBoardAgeResponseData
     }
   },
@@ -160,12 +174,19 @@ export default {
 .dashboardHeader {
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
 }
 
 .dashboardFlex {
   margin-top: 1rem;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.dashboardFlexRank {
+  margin-top: 1rem;
+  display: flex;
   gap: 1rem;
 }
 
@@ -187,5 +208,27 @@ export default {
   display: flex;
   gap: 1rem;
   margin-bottom: 0.5rem;
+}
+
+.dashboardFlexBottom {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.flexBox {
+  flex: 1;
+}
+
+.header {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+}
+
+.userAge {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 </style>
