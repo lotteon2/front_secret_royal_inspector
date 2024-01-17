@@ -71,16 +71,10 @@ body {
     color 0.5s,
     background-color 0.5s;
   line-height: 1.6;
-  font-family: 'BMDOHYEON';
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@font-face {
-  font-family: 'BMDOHYEON';
-  src: url('@/assets/fonts/BMDOHYEON_ttf.ttf') format('truetype');
 }
 
 html,
@@ -170,5 +164,4 @@ video {
   font-size: 100%;
   font: inherit;
   vertical-align: baseline;
-  font-family: 'BMDOHYEON';
 }

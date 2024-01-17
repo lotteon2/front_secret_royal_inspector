@@ -178,7 +178,6 @@ defineProps({
 
 .page-button {
   color: #000;
-  font-family: 'The Jamsil 2 Light';
   font-size: 0.9375rem;
   font-style: normal;
   font-weight: 400;
@@ -187,7 +186,6 @@ defineProps({
 
 .page-button.selected {
   color: #fff;
-  font-family: 'The Jamsil 2 Light';
   font-size: 0.9375rem;
   font-weight: 400;
   line-height: normal;

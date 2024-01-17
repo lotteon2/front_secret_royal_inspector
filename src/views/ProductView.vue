@@ -177,7 +177,6 @@ select::-ms-expand {
 }
 
 .select {
-  font-family: 'BMDOHYEON';
   margin-left: 1rem;
   margin-bottom: 1rem;
   background-size: 20px;
@@ -195,7 +194,6 @@ select::-ms-expand {
   background: black;
   color: #fff;
   padding: 3px 0;
-  font-family: 'BMDOHYEON';
 }
 
 select:hover {
@@ -216,10 +214,8 @@ select:disabled {
 
 label {
   margin-bottom: 1rem;
-  font-family: 'BMDOHYEON';
 }
 
 option {
-  font-family: 'BMDOHYEON';
 }
 </style>

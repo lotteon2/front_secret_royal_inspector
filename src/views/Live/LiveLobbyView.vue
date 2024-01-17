@@ -1,49 +1,54 @@
 <template>
-  <div v-if="!this.isStreaming" class="preview-screen">
-    <div class="preview-screen__header">
-      <h2>미리 보기 화면</h2>
-      <CustomButton btnText="방송 시작하기" @click="startStream"></CustomButton>
+  <div class="livePage">
+    <div v-if="!this.isStreaming" class="preview-screen">
+      <div class="preview-screen__header">
+        <h2>미리 보기 화면</h2>
+        <CustomButton btnText="방송 시작하기" @click="startStream"></CustomButton>
+      </div>
+      <div>카메라와 마이크를 확인해주세요</div>
     </div>
-    <div>카메라와 마이크를 확인해주세요</div>
-    <video id="video" ref="video"></video>
-  </div>
-  <div v-else>
-    <div class="close__btn">
-      <div>현재 호가 | {{ this.bidInfo?.askingPrice || 0 }}원</div>
-      <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
-      <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
-      <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
-      <div class="stream-right">
-        <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
+    <div v-else>
+      <div class="close__btn">
+        <div>현재 호가 | {{ this.bidInfo?.askingPrice || 0 }}원</div>
+        <CustomButton
+          btnText="방송 종료하기"
+          btnType="negative"
+          @click="finishStream"
+        ></CustomButton>
+        <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
+        <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
+        <div class="stream-right">
+          <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
+        </div>
       </div>
     </div>
-    <video id="video2" ref="video2"></video>
-  </div>
-  <!-- <div v-if="this.isStreaming" class="stream"> -->
-  <div v-if="this.isStreaming" class="chat" ref="chatContainer">
-    <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
-      <CustomAvatar :imgSrc="item.profileImage" />
-      <span class="chat-name">{{ item.memberNickname }}</span>
-      <span class="chat-message">{{ item.message }}</span>
+    <video id="video" ref="video"></video>
+    <!-- <div v-if="this.isStreaming" class="stream"> -->
+    <div v-if="this.isStreaming" class="chat" ref="chatContainer">
+      <div v-for="(item, idx) in recvList" :key="idx" class="chat-box">
+        <CustomAvatar :imgSrc="item.profileImage" />
+        <span class="chat-name">{{ item.memberNickname }}</span>
+        <span class="chat-message">{{ item.message }}</span>
+      </div>
+      <input
+        v-model="message"
+        type="text"
+        @keyup="sendMessage"
+        class="chat-input"
+        placeholder="전통주점 채팅"
+      />
     </div>
-    <input
-      v-model="message"
-      type="text"
-      @keyup="sendMessage"
-      class="chat-input"
-      placeholder="전통주점 채팅"
-    />
-  </div>
-  <!-- </div> -->
+    <!-- </div> -->
 
-  <div v-if="this.isStreaming" class="stream">
-    <div>{{ this.currentUser || 1 }} 명 동시 시청중</div>
-    <div class="stream-right">
-      <div v-if="bidInfo">
-        <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistoryList" :key="idx">
-          <CustomAvatar alt="profileImg" :src="item.profileImage" />
-          <h3>이름: {{ item.nickname }}</h3>
-          <h3>메시지: {{ item.bidPrice }}</h3>
+    <div v-if="this.isStreaming" class="stream">
+      <div>{{ this.currentUser || 1 }} 명 동시 시청중</div>
+      <div class="stream-right">
+        <div v-if="bidInfo">
+          <div class="messageBox" v-for="(item, idx) in bidInfo.bidHistoryList" :key="idx">
+            <CustomAvatar alt="profileImg" :src="item.profileImage" />
+            <h3>이름: {{ item.nickname }}</h3>
+            <h3>메시지: {{ item.bidPrice }}</h3>
+          </div>
         </div>
       </div>
     </div>
@@ -89,15 +94,19 @@ export default {
   watch: {
     currentUser: function (value) {
       console.log(value)
+    },
+    isStreaming: function (value) {
+      if (value) {
+        this.video2 = this.$refs.video2
+        this.getMediaStream2()
+      }
     }
   },
   mounted() {
     this.auctionId = this.$route.params.auctionId
     this.video = this.$refs.video
-    this.video2 = this.$refs.video2
     this.canvas = this.$refs.canvas
     this.getMediaStream()
-    this.getMediaStream2()
   },
   methods: {
     getMediaStream() {
@@ -141,7 +150,6 @@ export default {
       }
     },
     scrollToBottom() {
-      // Scroll to the bottom of the chat container
       const chatContainer = this.$refs.chatContainer
       chatContainer.scrollTop = chatContainer.scrollHeight
     },
@@ -305,6 +313,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.livePage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
 video,
 #local-video {
   border-radius: 12px;
@@ -354,7 +369,6 @@ input {
   padding: 0.5rem;
   box-sizing: border-box;
   margin-top: 0.3rem;
-  font-family: 'BMDOHYEON';
 }
 
 .stream {
@@ -373,27 +387,20 @@ input {
 }
 
 //css
-
 .chat {
-  position: relative;
-  max-height: 30%;
-  height: 40%;
-  width: 600px;
-  overflow-y: scroll;
-}
-
-.chat {
+  display: flex;
+  flex-direction: column;
   position: relative;
   max-height: 300px;
   height: 300px;
   width: 600px;
   overflow-y: scroll;
+}
 
-  input {
-    width: 100%;
-    position: sticky;
-    bottom: 0;
-  }
+.chat-input {
+  width: 100%;
+  position: sticky;
+  bottom: 0;
 }
 
 .chat-box {
@@ -411,11 +418,6 @@ input {
     white-space: nowrap;
   }
 
-  .chat-input {
-    position: sticky;
-    bottom: 0;
-  }
-
   .chat-name {
     font-weight: 800;
   }
@@ -423,11 +425,6 @@ input {
   .chat-message {
     font-weight: 700;
   }
-}
-
-.chat {
-  display: flex;
-  flex-direction: column;
 }
 
 .chat-box::before {

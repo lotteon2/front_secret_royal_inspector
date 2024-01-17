@@ -75,7 +75,6 @@ export default {
     width: 100%;
     text-align: center;
     border-radius: 12px;
-    font-family: 'BMDOHYEON';
   }
 
   tr:hover {
