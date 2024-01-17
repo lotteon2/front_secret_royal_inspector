@@ -1,23 +1,43 @@
 <template>
   <div class="jumo-detail">
     <div class="jumo-detail__header">
-      <UserCard :email="email" :nickName="storeName" :thumbnail="storeImageUrl" :phoneNumber="storePhoneNumber">
+      <UserCard
+        :email="email"
+        :nickName="storeName"
+        :thumbnail="storeImageUrl"
+        :phoneNumber="storePhoneNumber"
+      >
       </UserCard>
       <div class="jumo-detail__header__btns">
-        <CustomButton v-if="this.approvalState === 'WAIT'" btnText="승인하기" :handleClick="() => approveSeller('ALLOW')" />
-        <CustomButton v-if="this.approvalState === 'WAIT'" btnText="반려하기" :handleClick="() => approveSeller('DENY')"
-          btnType="negative" />
-        <CustomButton v-if="this.isDeleted === false" btnText="탈퇴시키기" :handleClick="() => withDrawSeller()"
-          btnType="negative" />
+        <CustomButton
+          v-if="this.approvalState === 'WAIT'"
+          btnText="승인하기"
+          :handleClick="() => approveSeller('ALLOW')"
+        />
+        <CustomButton
+          v-if="this.approvalState === 'WAIT'"
+          btnText="반려하기"
+          :handleClick="() => approveSeller('DENY')"
+          btnType="negative"
+        />
         <CustomButton v-else btnText="탈퇴한 회원" btnType="negative" />
       </div>
     </div>
     <div class="jumo-detail__menu">
-      <RouterLink :to="`/jumo/jumoDetail/${sellerId}/goods`" :class="{ active: isActive('jumo', 'goods') }">상품 내역
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/goods`"
+        :class="{ active: isActive('jumo', 'goods') }"
+        >상품 내역
       </RouterLink>
-      <RouterLink :to="`/jumo/jumoDetail/${sellerId}/orders`" :class="{ active: isActive('orders', 'jumo') }">주문 내역
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/orders`"
+        :class="{ active: isActive('orders', 'jumo') }"
+        >주문 내역
       </RouterLink>
-      <RouterLink :to="`/jumo/jumoDetail/${sellerId}/cashup`" :class="{ active: isActive('cashup', 'jumo') }">정산 내역
+      <RouterLink
+        :to="`/jumo/jumoDetail/${sellerId}/cashup`"
+        :class="{ active: isActive('cashup', 'jumo') }"
+        >정산 내역
       </RouterLink>
     </div>
     <div class="jumo-detail__sub">
