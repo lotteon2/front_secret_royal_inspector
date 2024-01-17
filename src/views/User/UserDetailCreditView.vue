@@ -61,8 +61,20 @@ export default defineComponent({
           const newItems = data.data.content
           newItems.forEach((it: GetCreditListByConsumerIdResponseData, idx: number) =>
             it.tradeCredit > 0
-              ? (newItems[idx] = { ...newItems[idx], desc: '경매 크레딧 충전' })
-              : (newItems[idx] = { ...newItems[idx], desc: '경매 낙찰시 사용' })
+              ? (newItems[idx] = {
+                  ...newItems[idx],
+                  tradeCredit: newItems[idx].tradeCredit
+                    ? newItems[idx].tradeCredit.toLocaleString()
+                    : 0,
+                  desc: '경매 크레딧 충전'
+                })
+              : (newItems[idx] = {
+                  ...newItems[idx],
+                  tradeCredit: newItems[idx].tradeCredit
+                    ? newItems[idx].tradeCredit.toLocaleString()
+                    : 0,
+                  desc: '경매 낙찰시 사용'
+                })
           )
           this.items = newItems
           this.totalPages = data.data.totalPages

@@ -31,7 +31,7 @@ export default {
         { text: '이메일', value: 'email' },
         { text: '전화번호', value: 'phoneNumber' },
         { text: '포인트', value: 'point' },
-        { text: '크레딧', value: 'credit' },
+        { text: '경매 크레딧', value: 'credit' },
         { text: '양반여부', value: 'isYangban' },
         { text: '가입일', value: 'createdAt' },
         { text: '탈퇴 여부', value: 'isDeleted' }
@@ -67,8 +67,18 @@ export default {
         this.isLoading = true
         const data = await getConsumerList(page, size)
         if (data.code === 200) {
-          this.items = data.data.content
-          console.log(data.data)
+          const newItems = data.data.content
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                point: it.point ? it.point.toLocaleString() : 0,
+                credit: it.credit ? it.credit.toLocaleString() : 0,
+                isYangban: it.isYangban ? 'Y' : 'N',
+                isDeleted: it.isDeleted ? 'Y' : 'N'
+              })
+          )
+          this.items = newItems
           this.totalPages = data.data.totalPages
         }
       } catch (error) {

@@ -31,11 +31,11 @@ export default {
               (newItems[idx] = {
                 ...newItems[idx],
                 settlementCommision: it.settlementCommision
-                  ? `${it.settlementCommision.toLocaleString()} 원`
+                  ? `${it.settlementCommision.toLocaleString()}`
                   : 0,
-                totalAmount: it.totalAmount ? `${it.totalAmount.toLocaleString()} 원` : '0',
+                totalAmount: it.totalAmount ? `${it.totalAmount.toLocaleString()}` : '0',
                 settlementAmount: it.settlementAmount
-                  ? `${it.settlementAmount.toLocaleString()} 원`
+                  ? `${it.settlementAmount.toLocaleString()}`
                   : 0
               })
           )
@@ -57,8 +57,8 @@ export default {
       header: [
         { text: '정산 연도', value: 'settlementYear' },
         { text: '정산 월', value: 'settlementMonth' },
-        { text: '총 판매 가격', value: 'totalAmount' },
-        { text: '정산 수수료', value: 'settlementCommision' },
+        { text: '총 판매 가격(원)', value: 'totalAmount' },
+        { text: '정산 수수료(원)', value: 'settlementCommision' },
         { text: '정산 금액', value: 'settlementAmount' },
         { text: '정산 내역증', value: 'settlementImgUrl' }
       ],

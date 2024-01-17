@@ -1,24 +1,46 @@
 <template>
   <div class="user-detail">
     <div class="user-detail__header">
-      <UserCard :email="email" :nickName="name" :thumbnail="thumbnail" :phoneNumber="phoneNumber"></UserCard>
+      <UserCard
+        :email="email"
+        :nickName="name"
+        :thumbnail="thumbnail"
+        :phoneNumber="phoneNumber"
+      ></UserCard>
       <div class="user-detail__header__btns">
-        <CustomButton :btnText="`${credit} 크레딧`" />
-        <CustomButton :btnText="`${point} 포인트`" />
-        <CustomButton v-if="this.isDeleted === true" btnText="탈퇴 유저" :handleClick="() => withDrawSeller()"
-          btnType="negative" />
+        <CustomButton :btnText="`${credit ? credit.toLocaleString() : 0} 크레딧`" />
+        <CustomButton :btnText="`${point ? point.toLocaleString() : 0} 포인트`" />
+        <CustomButton
+          v-if="this.isDeleted === true"
+          btnText="탈퇴 유저"
+          :handleClick="() => withDrawSeller()"
+          btnType="negative"
+        />
         <CustomButton v-else btnText="활성 유저" :handleClick="() => withDrawSeller()" />
       </div>
     </div>
     <div class="user-detail__menu">
-      <RouterLink :to="`/user/userDetail/${this.consumerId}/orders`" :class="{ active: isActive('orders', 'user') }">
-        주문내역</RouterLink>
-      <RouterLink :to="`/user/userDetail/${this.consumerId}/point`" :class="{ active: isActive('point', 'user') }">포인트
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/orders`"
+        :class="{ active: isActive('orders', 'user') }"
+      >
+        주문내역</RouterLink
+      >
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/point`"
+        :class="{ active: isActive('point', 'user') }"
+        >포인트
       </RouterLink>
-      <RouterLink :to="`/user/userDetail/${this.consumerId}/credit`" :class="{ active: isActive('credit', 'user') }">경매
-        크레딧</RouterLink>
-      <RouterLink :to="`/user/userDetail/${this.consumerId}/auction`" :class="{ active: isActive('auction', 'user') }">경매
-        참여 내역</RouterLink>
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/credit`"
+        :class="{ active: isActive('credit', 'user') }"
+        >경매 크레딧</RouterLink
+      >
+      <RouterLink
+        :to="`/user/userDetail/${this.consumerId}/auction`"
+        :class="{ active: isActive('auction', 'user') }"
+        >경매 참여 내역</RouterLink
+      >
     </div>
     <div class="user-detail__sub">
       <RouterView></RouterView>

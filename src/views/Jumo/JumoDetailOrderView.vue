@@ -67,7 +67,7 @@ export default {
       header: [
         { text: '상품 이름', value: 'productName' },
         { text: '판매량', value: 'productCount' },
-        { text: '총 가격', value: 'productTotalAmount' },
+        { text: '총 가격(원)', value: 'productTotalAmount' },
         { text: '주문 날짜', value: 'orderDate' },
         { text: '결제 수단', value: 'paymentType' },
         { text: '배송 상태', value: 'orderStatus' },

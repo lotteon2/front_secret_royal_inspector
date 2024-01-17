@@ -29,8 +29,8 @@ export default {
         { text: '', value: 'productImageUrl' },
         { text: '경매 이름', value: 'auctionName' },
         { text: '상품', value: 'productName' },
-        { text: '시작가', value: 'startingPrice' },
-        { text: '낙찰가', value: 'myLastBidPrice' },
+        { text: '시작가 (원)', value: 'startingPrice' },
+        { text: '낙찰가 (원)', value: 'myLastBidPrice' },
         { text: '낙찰 여부', value: 'isBid' },
         { text: '낙찰 날짜', value: 'bidDate' }
       ],
@@ -60,10 +60,20 @@ export default {
       try {
         const data = await getAuctionListByConsumerId(this.consumerId, page, size)
         if (data.code === 200) {
-          this.items = data.data.content
+          const newItems = data.data.content
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                startingPrice: it.startingPrice ? it.startingPrice.toLocaleString() : 0,
+                myLastBidPrice: it.myLastBidPrice ? it.myLastBidPrice.toLocaleString() : 0,
+                isBid: it.isBid ? 'Y' : 'N'
+              })
+          )
+          this.items = newItems
         }
       } catch (error) {
-        toast.error(`괙의 경매 내역들을 불러오는데 실패했어요.`, {
+        toast.error(`고객의 경매 내역들을 불러오는데 실패했어요.`, {
           timeout: 2000
         })
       }

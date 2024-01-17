@@ -1,11 +1,11 @@
 <template>
   <div class="user-point-card">
-    <div class="user-point-card__title">{{ title }} 냥</div>
+    <div class="user-point-card__title">{{ title ? title.toLocaleString() : 0 }} 냥</div>
     <div class="user-point-card__right">
       <div class="user-point-card__detail">
         {{ translatedDetail }} / 포인트 {{ title > 0 ? '적립' : '사용' }}
       </div>
-      <div class="user-point-card__date">{{ date.replace('T', ' ') }}</div>
+      <div class="user-point-card__date">{{ date.slice(0, 10).replace('T', ' ') }}</div>
     </div>
   </div>
 </template>

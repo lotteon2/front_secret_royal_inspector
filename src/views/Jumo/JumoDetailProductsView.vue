@@ -108,11 +108,11 @@ export default {
       header: [
         { text: '상품 이름', value: 'productName' },
         { text: '총 판매량', value: 'totalSalesCount' },
-        { text: '개당 가격', value: 'productPrice' },
+        { text: '개당 가격(원)', value: 'productPrice' },
         { text: '재고', value: 'stockQuantity' },
         { text: '리뷰 수', value: 'reviewCount' },
         { text: '쇼츠', value: 'shortsId' },
-        { text: '공개여부', value: 'isActivate' }
+        { text: '공개 여부', value: 'isActivate' }
       ],
       items: [],
       page: 0,

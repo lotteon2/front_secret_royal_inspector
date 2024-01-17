@@ -10,9 +10,7 @@
       <img src="../../assets/loading.gif" alt="loading" />
     </div>
   </div>
-  <div v-else>
-    유저의 주문 내역이 비어있어요.
-  </div>
+  <div v-else>유저의 주문 내역이 비어있어요.</div>
 </template>
 
 <script lang="ts" scoped>
@@ -22,6 +20,7 @@ import { getOrderListByConsumerId } from '@/api/order/orderAPIService.ts'
 import { useToast } from 'vue-toastification'
 import type { GetOrderListByConsumerIdResponseData } from '@/api/order/orderAPIService.types'
 import { defineComponent } from 'vue'
+import { translateOrderState } from '@/types/ORDER'
 
 export default defineComponent({
   components: {
@@ -34,7 +33,7 @@ export default defineComponent({
       header: [
         { text: '상품 이름', value: 'productName' },
         { text: '판매량', value: 'productCount' },
-        { text: '총 가격', value: 'productTotalAmount' },
+        { text: '총 가격(원)', value: 'productTotalAmount' },
         { text: '주문 날짜', value: 'orderDate' },
         { text: '결제 수단', value: 'paymentType' },
         { text: '배송 상태', value: 'orderStatus' },
@@ -67,7 +66,19 @@ export default defineComponent({
         this.isLoading = true
         const data = await getOrderListByConsumerId(this.consumerId, page, size)
         if (data.code === 200) {
-          this.items = data.data.content
+          const newItems = data.data.content
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                productTotalAmount: it.productTotalAmount
+                  ? it.productTotalAmount.toLocaleString()
+                  : 0,
+                orderStatus: it.orderStatus ? translateOrderState(it.orderStatus) : '-',
+                isAuction: it.isAuction ? 'Y' : 'N'
+              })
+          )
+          this.items = newItems
           this.totalPages = data.data.totalPages
         }
       } catch (error) {
