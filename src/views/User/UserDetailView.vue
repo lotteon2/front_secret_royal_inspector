@@ -8,15 +8,23 @@
         :phoneNumber="phoneNumber"
       ></UserCard>
       <div class="user-detail__header__btns">
-        <CustomButton :btnText="`${credit ? credit.toLocaleString() : 0} 크레딧`" />
-        <CustomButton :btnText="`${point ? point.toLocaleString() : 0} 포인트`" />
+        <CustomButton
+          :btnText="`${credit ? credit.toLocaleString() : 0} 크레딧`"
+          :disabled="true"
+        />
+        <CustomButton :btnText="`${point ? point.toLocaleString() : 0} 포인트`" :disabled="true" />
         <CustomButton
           v-if="this.isDeleted === true"
           btnText="탈퇴 유저"
           :handleClick="() => withDrawSeller()"
           btnType="negative"
         />
-        <CustomButton v-else btnText="활성 유저" :handleClick="() => withDrawSeller()" />
+        <CustomButton
+          v-else
+          btnText="활성 유저"
+          :disabled="true"
+          :handleClick="() => withDrawSeller()"
+        />
       </div>
     </div>
     <div class="user-detail__menu">

@@ -33,18 +33,14 @@ button {
 .positive {
   background-color: #94e8b4;
 }
-
-/* 추가 버튼 타입 및 배경색을 여기에 추가 */
 .negative {
   background-color: #e89494;
 }
 
-/* 비활성화 상태일 때 배경색을 회색으로 설정 */
 button:disabled {
   background-color: #ccc;
 }
 
-/* 비활성화 상태일 때의 스타일 */
 .disabled-button {
   cursor: not-allowed;
 }
