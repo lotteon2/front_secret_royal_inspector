@@ -52,7 +52,19 @@ export default {
       try {
         const data = await getProductListBySellerId(this.sellerId, page, size)
         if (data.code === 200) {
-          this.items = data.data.content
+          const newItems = data.data.content
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                productPrice: it.productPrice ? it.productPrice.toLocaleString() : 0,
+                stockQuantity: it.stockQuantity ? it.stockQuantity.toLocaleString() : 0,
+                shortsId: it.shortsId ? it.shortsId : '-',
+                isActivate: it.isActivate ? 'Y' : 'N',
+                totalSalesCount: it.totalSalesCount ? it.totalSalesCount.toLocaleString() : 0
+              })
+          )
+          this.items = newItems
           this.totalPages = data.data.totalPages
         }
       } catch (err) {

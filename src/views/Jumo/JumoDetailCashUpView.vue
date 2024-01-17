@@ -25,7 +25,21 @@ export default {
         this.isLoading = true
         const data = await getCashUpListBySellerId(this.sellerId, 2024)
         if (data.code === 200) {
-          this.items = data.data
+          const newItems = data.data
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                settlementCommision: it.settlementCommision
+                  ? `${it.settlementCommision.toLocaleString()} 원`
+                  : 0,
+                totalAmount: it.totalAmount ? `${it.totalAmount.toLocaleString()} 원` : '0',
+                settlementAmount: it.settlementAmount
+                  ? `${it.settlementAmount.toLocaleString()} 원`
+                  : 0
+              })
+          )
+          this.items = newItems
         }
       } catch (error) {
         toast.error(`주모 정산내역들을 불러오는데 실패했어요.`, {

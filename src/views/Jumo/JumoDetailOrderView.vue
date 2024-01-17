@@ -19,6 +19,7 @@ import CustomTable from '@/components/common/CustomTable.vue'
 import { getOrderListBySellerId } from '@/api/order/orderAPIService.ts'
 import { useToast } from 'vue-toastification'
 import type { GetOrderListByConsumerIdResponseData } from '@/api/order/orderAPIService.types'
+import { translateOrderState } from '@/types/ORDER'
 export default {
   components: {
     CustomTable,
@@ -36,7 +37,19 @@ export default {
         this.isLoading = true
         const data = await getOrderListBySellerId(this.sellerId, page, size)
         if (data.code === 200) {
-          this.items = data.data.content
+          const newItems = data.data.content
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                productTotalAmount: it.productTotalAmount
+                  ? it.productTotalAmount.toLocaleString()
+                  : 0,
+                orderStatus: it.orderStatus ? translateOrderState(it.orderStatus) : '-',
+                isAuction: it.isAuction ? 'Y' : 'N'
+              })
+          )
+          this.items = newItems
           this.totalPages = data.data.totalPages
         }
       } catch (error) {
