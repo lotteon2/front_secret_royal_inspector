@@ -8,12 +8,16 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import router from './router'
 export default defineComponent({
   name: 'App',
   data() {
     return {
       //
     }
+  },
+  mounted() {
+    router.replace('/dashboard')
   }
 })
 </script>

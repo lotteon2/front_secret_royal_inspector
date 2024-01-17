@@ -101,7 +101,16 @@ export default {
           const newItems = data.data.content
           newItems.forEach(
             (it: GetProductListBySellerIdResponseData, idx: number) =>
-              (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
+              (newItems[idx] = {
+                ...newItems[idx],
+                createdAt: it.createdAt.slice(0, 10),
+                shortsId: it.shortsId ? it.shortsId : '-',
+                productPrice: it.productPrice ? it.productPrice.toLocaleString() : it.productPrice,
+                stockQuantity: it.stockQuantity
+                  ? it.stockQuantity.toLocaleString()
+                  : it.stockQuantity,
+                isActivate: it.isActivate ? 'Y' : 'N'
+              })
           )
           this.items = newItems
           this.totalPages = data.data.totalPages
@@ -122,8 +131,9 @@ export default {
       totalPages: 0,
       selectedSeller: -1,
       header: [
-        { text: '주모 이름', value: 'sellerName' },
+        { text: '주모 이름', value: 'storeName' },
         { text: '상품 이름', value: 'productName' },
+        { text: '등록일', value: 'createdAt' },
         { text: '판매량', value: 'totalSalesCount' },
         { text: '총 가격', value: 'productPrice' },
         { text: '재고', value: 'stockQuantity' },
@@ -156,7 +166,6 @@ export default {
   mounted() {
     const myInfo = useMyInfoStore()
     this.sellers = myInfo.getSellers()
-    console.log(this.sellers)
     this.selectedSeller = this.sellers ? this.sellers[0].value : -1
     this.getProductListBySellerId(this.selectedSeller, 0, 10)
   },

@@ -197,6 +197,7 @@ export default {
   height: 200px;
   min-height: 200px;
   max-height: 200px;
+  flex: 1;
 
   .dashboardRankBox-title {
     font-weight: 800;

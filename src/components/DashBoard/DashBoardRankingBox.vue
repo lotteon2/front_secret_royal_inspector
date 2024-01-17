@@ -1,8 +1,7 @@
 <template>
   <div class="DashBoardInfoBox">
     <div>{{ name }}</div>
-    <div>
-    </div>
+    <div></div>
   </div>
 </template>
 
@@ -10,7 +9,7 @@
 // import type { MonthSellerRank, MonthProductRank } from '@/api/order/orderAPIService.types'
 export default {
   props: {
-    name: { type: String, default: '확인' },
+    name: { type: String, default: '확인' }
   }
 }
 </script>
