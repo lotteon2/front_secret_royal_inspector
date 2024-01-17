@@ -22,7 +22,7 @@ export default defineComponent({
       try {
         const data = await getAllSellers()
         console.log(data)
-        myInfo.setSellers(data.data)
+        myInfo.setSellers([{ value: -1, label: '전체' }, ...data.data])
         console.log(myInfo.getSellers())
       } catch (err) {
         console.log(err)

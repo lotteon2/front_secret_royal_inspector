@@ -3,14 +3,24 @@
     <header>
       <nav>
         <RouterLink to="/dashboard">
-          <img src="@/assets/main_logo.png" alt="logo" width="50" height="50" class="d-inline-block align-text-top" />
+          <img
+            src="@/assets/main_logo.png"
+            alt="logo"
+            width="50"
+            height="50"
+            class="d-inline-block align-text-top"
+          />
         </RouterLink>
         <RouterLink to="/user" :class="{ active: isActive('user', '') }">회원</RouterLink>
         <RouterLink to="/jumo" :class="{ active: isActive('jumo', '') }">주모</RouterLink>
         <RouterLink to="/product" :class="{ active: isActive('product', '') }">상품</RouterLink>
-        <RouterLink to="/orderList" :class="{ active: isActive('orderList', '') }">주문내역</RouterLink>
+        <RouterLink to="/orderList" :class="{ active: isActive('orderList', '') }"
+          >주문내역</RouterLink
+        >
         <RouterLink to="/live" :class="{ active: isActive('live', '') }">라이브경매</RouterLink>
-        <RouterLink to="/login/logout" :class="{ active: isActive('logout', '') }">로그아웃</RouterLink>
+        <RouterLink to="/login/logout" :class="{ active: isActive('logout', '') }"
+          >로그아웃</RouterLink
+        >
       </nav>
     </header>
   </div>
@@ -34,7 +44,7 @@ export default defineComponent({
       try {
         const data = await getAllSellers()
         console.log(data)
-        myInfo.setSellers(data.data)
+        // myInfo.setSellers([{ value: -1, label: '전체' }, ...data.data])
         console.log(myInfo.getSellers())
       } catch (err) {
         console.log(err)

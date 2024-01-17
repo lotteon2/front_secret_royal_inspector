@@ -7,7 +7,7 @@ export const useMyInfoStore = defineStore(
     const sellers = ref<Array<{ value: number; label: string }>>([])
 
     function setSellers(data: { value: number; label: string }[]) {
-      sellers.value = data
+      sellers.value.push(...data)
     }
 
     function getSellers(): {

@@ -62,7 +62,10 @@ export default defineComponent({
           const newItems = data.data.content
           newItems.forEach(
             (it: GetOrderListBySellerIdResponseData, idx: number) =>
-              (newItems[idx] = { ...newItems[idx], sellerName: this.getSellerName() })
+              (newItems[idx] = {
+                ...newItems[idx],
+                ordersId: it.isAuction ? `AU_${it.ordersId}` : `PR_${it.ordersId}`
+              })
           )
           this.items = newItems
           this.totalPages = data.data.totalPages
@@ -81,6 +84,7 @@ export default defineComponent({
       selectedSeller: -1,
       header: [
         { text: '주모 이름', value: 'sellerName' },
+        { text: '주문 번호', value: 'ordersId' },
         { text: '상품 이름', value: 'productName' },
         { text: '판매량', value: 'productCount' },
         { text: '총 가격', value: 'productTotalAmount' },
