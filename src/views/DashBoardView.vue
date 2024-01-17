@@ -17,15 +17,15 @@
               :key="data.productId"
               class="rankWrapper"
             >
-              <div>{{ data.productName }}</div>
-              <div>{{ data.totalCount }} 개</div>
+              <div class="whitespace">{{ data.productName }}</div>
+              <div class="whitespace">{{ data.totalCount }} 개</div>
             </div>
           </div>
           <div class="dashboardRankBox">
             <h2 class="dashboardRankBox-title">월별 셀러 판매 순위</h2>
             <div v-for="data in orderData.monthSellerRank" :key="data.sellerId" class="rankWrapper">
-              <div>{{ data.sellerName }}</div>
-              <div>{{ data.totalPrice.toLocaleString() }} 원</div>
+              <div class="whitespace">{{ data.sellerName }}</div>
+              <div class="whitespace">{{ data.totalPrice.toLocaleString() }} 원</div>
             </div>
           </div>
         </div>
@@ -231,5 +231,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.whitespace {
+  white-space: nowrap;
 }
 </style>
