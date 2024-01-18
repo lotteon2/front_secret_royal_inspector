@@ -108,10 +108,6 @@ export default {
         if (data.code === 200) {
           this.isStreaming = true
           this.$router.replace(`/live/real/${this.auctionId}`)
-          this.connect()
-          this.connectBidResultInfo()
-          this.connectBidInfo()
-          this.connectRoomInfo()
           toast.success(`성공적으로 방송이 시작됐어요.`, {
             timeout: 2000
           })

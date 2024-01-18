@@ -1,6 +1,6 @@
 <template>
   <div class="close__btn">
-    <div>{{ this.currentUser || 1 }} 명 동시 시청중</div>
+    <div v-if="this.currentUser">{{ this.currentUser || 1 }} 명 동시 시청중</div>
     <div>현재 호가 | {{ this.bidInfo?.askingPrice || 0 }}원</div>
     <CustomButton btnText="방송 종료하기" btnType="negative" @click="finishStream"></CustomButton>
     <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
@@ -14,7 +14,7 @@
       <video id="video" ref="video"></video>
     </div>
     <div>
-      <div :v-for="(auctionProduct, idx) in bidResultInfo" :key="idx">
+      <div v-if="this.bidResultInfo" :v-for="(auctionProduct, idx) in bidResultInfo" :key="idx">
         <div :key="idx">
           <div>{{ auctionProduct?.auctionProductName }}</div>
           <div>시작가 | {{ auctionProduct?.startingPrice }}원</div>
@@ -72,11 +72,6 @@ export default {
       bidResultInfo: []
     }
   },
-  watch: {
-    currentUser: function (value) {
-      console.log(value)
-    }
-  },
   mounted() {
     this.auctionId = this.$route.params.auctionId
     this.video = this.$refs.video
@@ -122,16 +117,16 @@ export default {
     },
     connectBidResultInfoSocket() {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
-      let socket = new SockJS(`${serverURL}/chat`)
-      this.stompClient = Stomp.over(socket)
+      const socket = new SockJS(`${serverURL}/chat`)
+      const stompBidResultClient = Stomp.over(socket)
       console.log(
         `connectBidResultInfo| 소켓 연결을 시도합니다. 서버 주소: ${serverURL}/chat/sub/chat/${this.auctionId}`
       )
-      this.stompClient.connect(
+      stompBidResultClient.connect(
         {},
         (frame) => {
           console.log('BID RESULT INFO 소켓 연결 성공', frame)
-          this.stompClient.subscribe(`/sub/bid-result/${this.auctionId}`, (res) => {
+          stompBidResultClient.subscribe(`/sub/bid-result/${this.auctionId}`, (res) => {
             console.log('BID RESULT INFO 구독으로 받은 메시지 입니다.', res.body)
             this.bidResultInfo = JSON.parse(res.body)
             console.log('HERE')
@@ -141,20 +136,18 @@ export default {
         (error) => {
           // 소켓 연결 실패
           console.log('BID INFO 소켓 연결 실패', error)
-          this.stompClient.connected = false
         }
       )
     },
     connectChatSocket() {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
-      let socket = new SockJS(`${serverURL}/chat`)
-      this.stompClient = Stomp.over(socket)
-      this.stompClient.connect(
+      const socket = new SockJS(`${serverURL}/chat`)
+      const stompChatClient = Stomp.over(socket)
+      stompChatClient.connect(
         {},
         (frame) => {
-          // this.stompClient.connected = true
           console.log('CHAT | INFO 소켓 연결 성공', frame)
-          this.stompClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
+          stompChatClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
             console.log('CHAT | INFO구독으로 받은 메시지 입니다.', res.body)
             this.recvList.push(JSON.parse(res.body))
             console.log(this.recvList)
@@ -162,19 +155,18 @@ export default {
         },
         (error) => {
           console.log('소켓 연결 실패', error)
-          this.stompClient.connect = false
         }
       )
     },
     connectBidInfoSocket() {
       const serverURL = 'https://api.jeontongju.shop/auction-service'
-      let socket = new SockJS(`${serverURL}/chat`)
-      this.stompClient = Stomp.over(socket)
-      this.stompClient.connect(
+      const socket = new SockJS(`${serverURL}/chat`)
+      const stompBidInfoSocket = Stomp.over(socket)
+      stompBidInfoSocket.connect(
         {},
         (frame) => {
           console.log('[BID INFO] 구독으로 받은 메시지 입니다', frame)
-          this.stompClient.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
+          stompBidInfoSocket.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
             console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
             this.bidInfo = JSON.parse(res.body)
             console.log(test)
@@ -183,7 +175,6 @@ export default {
         (error) => {
           // 소켓 연결 실패
           console.log('BID INFO 소켓 연결 실패', error)
-          this.stompClient.connected = false
         }
       )
     },
