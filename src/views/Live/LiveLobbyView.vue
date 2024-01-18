@@ -7,21 +7,6 @@
       </div>
       <div>카메라와 마이크를 확인해주세요</div>
     </div>
-    <!-- <div v-else>
-      <div class="close__btn">
-        <div>현재 호가 | {{ this.bidInfo?.askingPrice || 0 }}원</div>
-        <CustomButton
-          btnText="방송 종료하기"
-          btnType="negative"
-          @click="finishStream"
-        ></CustomButton>
-        <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
-        <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
-        <div class="stream-right">
-          <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
-        </div>
-      </div>
-    </div> -->
     <video id="video" ref="video"></video>
   </div>
 </template>
@@ -51,19 +36,7 @@ export default {
       photoSrc: null,
       streaming: false,
       height: 0,
-      width: 320,
-      userName: '',
-      message: '',
-      recvList: [],
-      bidInfo: null,
-      askingPrice: null,
-      currenUser: 1,
-      bidResultInfo: []
-    }
-  },
-  watch: {
-    currentUser: function (value) {
-      console.log(value)
+      width: 320
     }
   },
   mounted() {
@@ -83,23 +56,6 @@ export default {
         .catch((err) => {
           console.error(`error occurred : ${err}`)
         })
-    },
-    async finishStream() {
-      const toast = useToast()
-      try {
-        const data = await finishStream(this.auctionId)
-        if (data.code === 200) {
-          toast.success(`성공적으로 방송이 종료됐어요.`, {
-            timeout: 2000
-          })
-          this.isStreaming = false
-          this.$router.replace(`/live/finish/${this.auctionId}`)
-        }
-      } catch (err) {
-        toast.error('방송 종료에 실패했어요.', {
-          timeout: 2000
-        })
-      }
     },
     async startStream() {
       const toast = useToast()
@@ -193,53 +149,6 @@ input {
 }
 
 .stream-right {
-  flex: 1;
-}
-
-//css
-.chat {
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  max-height: 300px;
-  height: 300px;
-  width: 600px;
-  overflow-y: scroll;
-}
-
-.chat-input {
-  width: 100%;
-  position: sticky;
-  bottom: 0;
-}
-
-.chat-box {
-  width: min-content;
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  background-color: #ffe2e2;
-  border-radius: 12px;
-  padding: 0.5rem;
-  margin: 0.2rem 0;
-  gap: 1rem;
-
-  span {
-    white-space: nowrap;
-  }
-
-  .chat-name {
-    font-weight: 800;
-  }
-
-  .chat-message {
-    font-weight: 700;
-  }
-}
-
-.chat-box::before {
-  content: '';
-  display: block;
   flex: 1;
 }
 </style>

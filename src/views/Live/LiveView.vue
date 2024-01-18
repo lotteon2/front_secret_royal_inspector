@@ -14,10 +14,21 @@
       <video id="video" ref="video"></video>
     </div>
     <div>
-      <div v-if="this.bidResultInfo" :v-for="(auctionProduct, idx) in bidResultInfo" :key="idx">
-        <div :key="idx">
-          <div>{{ auctionProduct?.auctionProductName }}</div>
-          <div>시작가 | {{ auctionProduct?.startingPrice }}원</div>
+      <div v-if="this.bidResultInfo">
+        <h2>현재 입찰 내역</h2>
+        <div v-for="(auctionProduct, idx) in bidResultInfo" :key="idx">
+          <div :key="idx">
+            <div>{{ auctionProduct?.auctionProductName }}</div>
+            <div>시작가 | {{ auctionProduct?.startingPrice }}원</div>
+          </div>
+        </div>
+      </div>
+      <div v-if="this.bidInfo.bidHistoryList" class="bidResultInfo">
+        <div class="bidHeader">현재 입찰 내역</div>
+        <div v-for="(bidHistory, idx) in bidInfo.bidHistoryList" :key="idx" class="chatMessage">
+          <CustomAvatar :imgSrc="bidHistory.profileImage" />
+          <div>{{ bidHistory.nickname }}</div>
+          <div>{{ bidHistory.bidPrice }}</div>
         </div>
       </div>
       <div class="chat" ref="chatContainer">
@@ -45,7 +56,6 @@ import Stomp from 'webstomp-client'
 import SockJS from 'sockjs-client'
 import { useToast } from 'vue-toastification'
 import {
-  startStream,
   finishStream,
   updateAskingPrice,
   confirmBidForAuction
@@ -66,9 +76,9 @@ export default {
       userName: '',
       message: '',
       recvList: [],
-      bidInfo: null,
+      bidInfo: { askingPrice: null, bidHistoryList: [], auctionProductList: [] },
       askingPrice: null,
-      currenUser: 1,
+      currentUser: 1,
       bidResultInfo: []
     }
   },
@@ -88,6 +98,7 @@ export default {
           this.connectChatSocket()
           this.connectBidInfoSocket()
           this.connectBidResultInfoSocket()
+          this.connectRoomInfoSocket()
         })
         .catch((err) => {
           console.error(`error occurred : ${err}`)
@@ -135,7 +146,7 @@ export default {
         },
         (error) => {
           // 소켓 연결 실패
-          console.log('BID INFO 소켓 연결 실패', error)
+          console.log('BID RESULT INFO 소켓 연결 실패', error)
         }
       )
     },
@@ -169,7 +180,24 @@ export default {
           stompBidInfoSocket.subscribe(`/sub/bid-info/${this.auctionId}`, (res) => {
             console.log('BID INFO 구독으로 받은 메시지 입니다.', res.body)
             this.bidInfo = JSON.parse(res.body)
-            console.log(test)
+          })
+        },
+        (error) => {
+          console.log('BID INFO 소켓 연결 실패', error)
+        }
+      )
+    },
+    connectRoomInfoSocket() {
+      const serverURL = 'https://api.jeontongju.shop/auction-service'
+      const socket = new SockJS(`${serverURL}/chat`)
+      const stompBidInfoSocket = Stomp.over(socket)
+      stompBidInfoSocket.connect(
+        {},
+        (frame) => {
+          console.log('[ROOM INFO] 구독으로 받은 메시지 입니다', frame)
+          stompBidInfoSocket.subscribe(`/sub/auction-numbers/${this.auctionId}`, (res) => {
+            console.log('ROOM INFO 구독으로 받은 메시지 입니다.', res.body)
+            this.currentUser = Number(JSON.parse(res.body))
           })
         },
         (error) => {
@@ -279,6 +307,12 @@ input {
   bottom: 0;
 }
 
+.chatMessage {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
 .chat-box {
   width: min-content;
   display: flex;
@@ -311,5 +345,15 @@ input {
 
 .live-body {
   display: flex;
+}
+
+.bidResultInfo {
+  border-radius: 12px;
+  background-color: #ffe2e2;
+  padding: 1rem;
+
+  .bidHeader {
+    font-size: 1.5rem;
+  }
 }
 </style>
