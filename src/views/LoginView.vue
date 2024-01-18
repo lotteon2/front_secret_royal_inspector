@@ -52,7 +52,7 @@ export default {
   justify-content: center;
   flex-direction: column;
   gap: 1rem;
-  width: 80vw;
+  width: 50vw;
   margin: 0 auto;
 }
 img {

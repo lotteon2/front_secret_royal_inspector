@@ -17,7 +17,7 @@ export default {
     imgSrc: {
       type: String,
       default:
-        '"https://github.com/lotteon2/jeontongju-front-consumer/assets/72402747/dae9e692-8cfa-41e2-a44b-9bcf3f22ca4e"'
+        'https://github.com/lotteon2/jeontongju-front-consumer/assets/72402747/dae9e692-8cfa-41e2-a44b-9bcf3f22ca4e'
     }
   }
 }

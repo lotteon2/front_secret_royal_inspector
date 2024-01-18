@@ -15,7 +15,6 @@
         @click="goDetailAuction(item.auctionId, item.status)"
       ></LiveItem>
     </div>
-    <!-- <CustomTable :headers="header" :items="items"></CustomTable> -->
     <CustomPagination
       :on-change-page="onChangePage"
       :request-page="requestPage"

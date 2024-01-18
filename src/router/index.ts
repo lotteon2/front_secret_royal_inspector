@@ -84,6 +84,14 @@ const routes = [
         }
       },
       {
+        path: '/live/real/:auctionId/',
+        name: 'liveRealView',
+        component: () => import('@/views/Live/LiveView.vue'),
+        meta: {
+          title: '라이브경매 방송 페이지'
+        }
+      },
+      {
         path: '/live/test',
         name: 'LiveTestView',
         component: () => import('@/views/Live/LiveTestView.vue'),

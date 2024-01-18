@@ -53,7 +53,6 @@
       <DashBoardNewUser label="신규 고객" :chartData="ageData.consumers" class="flexBox" />
       <DashBoardNewUser label="신규 주모" :chartData="ageData.sellers" class="flexBox" />
     </div>
-    <CustomButton :handleClick="downloadAllCashUpList" btnText="모든 셀러의 정산 내역 다운받기" />
   </div>
 </template>
 

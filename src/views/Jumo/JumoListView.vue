@@ -2,6 +2,7 @@
   <div class="jumoList">
     <div class="infoSection">
       <div>행을 클릭하면 주모 상세 페이지로 이동해요.</div>
+      <CustomButton :handleClick="downloadAllCashUpList" btnText="모든 셀러의 정산 내역 다운받기" />
     </div>
     <CustomTable :headers="header" :items="items" @rowClick="goDetailJumo"></CustomTable>
     <CustomPagination
@@ -16,13 +17,15 @@
 </template>
 
 <script lang="ts" scoped>
+import CustomButton from '@/components/common/CustomButton.vue'
 import CustomPagination from '@/components/common/CustomPagination.vue'
 import CustomTable from '@/components/common/CustomTable.vue'
 import { getSellerList } from '@/api/seller/sellerAPIService'
 import { useToast } from 'vue-toastification'
 import type { GetSellerListResponseData } from '@/api/seller/sellerAPIService.types'
+import { getAllCashUpListForDashBoard } from '@/api/order/orderAPIService'
 export default {
-  components: { CustomTable, CustomPagination },
+  components: { CustomTable, CustomPagination, CustomButton },
   data() {
     return {
       header: [
@@ -54,6 +57,23 @@ export default {
     async onChangePage(page: number) {
       if (0 <= page && page < this.totalPages) {
         this.requestPage = page
+      }
+    },
+    async downloadAllCashUpList() {
+      const toast = useToast()
+      try {
+        this.isLoading = true
+        const data = await getAllCashUpListForDashBoard('2024', '01')
+        if (data.code === 200) {
+          console.log(data.data)
+          window.open(data.data)
+        }
+      } catch (err) {
+        toast.error(`셀러의 정산내역들을 불러오는데 실패했어요.`, {
+          timeout: 2000
+        })
+      } finally {
+        this.isLoading = false
       }
     },
     goDetailJumo(item) {
@@ -102,8 +122,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    min-width: 70vw;
-    max-width: 70vw;
+    gap: 1rem;
     margin: 1rem 0;
   }
 }
