@@ -92,14 +92,6 @@ const routes = [
         }
       },
       {
-        path: '/live/test',
-        name: 'LiveTestView',
-        component: () => import('@/views/Live/LiveTestView.vue'),
-        meta: {
-          title: '라이브경매 페이지'
-        }
-      },
-      {
         path: '/live/test22',
         name: 'LiveEnterView',
         component: () => import('@/views/Live/LiveAgoraTestView.vue'),
