@@ -1,3 +1,4 @@
+import type { ORDER_STATE } from '@/types/ORDER'
 import { authAxiosInstance } from '../utils'
 import type {
   GetOrderListByConsumerIdResponse,
@@ -7,9 +8,9 @@ import type {
   getAllCashUpListForDashBoardResponse
 } from './orderAPIService.types'
 
-export const getOrderListBySellerId = async (sellerId: number, page: number, size: number) => {
+export const getOrderListBySellerId = async (sellerId: number, page: number, size: number, productStatus: keyof typeof ORDER_STATE | null) => {
   const { data } = await authAxiosInstance.get<GetOrderListBySellerIdResponse>(
-    `/order-service/api/order/seller/${sellerId}?page=${page}&size=${size}`
+  `/order-service/api/order/seller/${sellerId}?page=${page}&size=${size}&productStatus=${productStatus}`
   )
   return data
 }

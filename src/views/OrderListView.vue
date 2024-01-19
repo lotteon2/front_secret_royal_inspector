@@ -13,6 +13,14 @@
         </option>
       </select>
     </template>
+    
+    <label for="statusSelect">주문 상태를 선택해주세요</label>
+    <select :value="selectedOrderStatus" @change="setSelectOrderStatus($event)" class="select">
+      <option v-for="(label, value) in ORDER_STATE" :key="value" :value="label">
+        {{ getOrderStatusLabel(label) }}
+      </option>
+    </select>
+
     <CustomTable :headers="header" :items="items"></CustomTable>
     <CustomPagination
       :on-change-page="onChangePage"
@@ -33,7 +41,7 @@ import CustomTable from '@/components/common/CustomTable.vue'
 import { useMyInfoStore } from '@/stores/myInfo'
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
-import { translateOrderState } from '@/types/ORDER'
+import { ORDER_STATE, translateOrderState } from '@/types/ORDER'
 export default defineComponent({
   components: {
     CustomTable,
@@ -54,11 +62,18 @@ export default defineComponent({
     setSelect(event) {
       this.selectedSeller = event.target.value
     },
-    async getOrderListBySellerId(sellerId: number, page: number, size: number) {
+    setSelectOrderStatus(event) {
+    console.log(event.target);
+      this.selectedOrderStatus = event.target.value
+    },
+    getOrderStatusLabel(orderStatus: keyof typeof ORDER_STATE) {
+    return translateOrderState(orderStatus);
+  },
+    async getOrderListBySellerId(sellerId: number, page: number, size: number, orderStatus: keyof typeof ORDER_STATE | null) {
       const toast = useToast()
       try {
         this.isLoading = true
-        const data = await getOrderListBySellerId(sellerId, page, size)
+        const data = await getOrderListBySellerId(sellerId, page, size, orderStatus)
         if (data.code === 200) {
           const newItems = data.data.content
           newItems.forEach(
@@ -109,7 +124,9 @@ export default defineComponent({
       page: 0,
       totalPages: 0,
       requestPage: 0,
-      isLoading: false
+      isLoading: false,
+      selectedOrderStatus: ORDER_STATE.ORDER,
+      ORDER_STATE: ORDER_STATE
     } as {
       selectedSeller: number
       header: { text: string; value: string }[]
@@ -119,20 +136,26 @@ export default defineComponent({
       totalPages: number
       requestPage: number
       isLoading: boolean
+      selectedOrderStatus: keyof typeof ORDER_STATE | null
+      ORDER_STATE: typeof ORDER_STATE
     }
   },
   mounted() {
     const myInfo = useMyInfoStore()
     this.sellers = myInfo.getSellers()
     this.selectedSeller = this.sellers ? this.sellers[0].value : -1
-    this.getOrderListBySellerId(this.selectedSeller, 0, 10)
+    this.getOrderListBySellerId(this.selectedSeller, 0, 10, this.selectedOrderStatus)
   },
   watch: {
+    selectedOrderStatus: function (value) {
+      console.log(value)
+      this.getOrderListBySellerId(this.selectedSeller, 0, 10, value)
+    },
     selectedSeller: function (value) {
-      this.getOrderListBySellerId(value, 0, 10)
+      this.getOrderListBySellerId(value, 0, 10, this.selectedOrderStatus)
     },
     requestPage: function (value) {
-      this.getOrderListBySellerId(this.selectedSeller, value, 10)
+      this.getOrderListBySellerId(this.selectedSeller, value, 10, this.selectedOrderStatus)
     }
   }
 })
