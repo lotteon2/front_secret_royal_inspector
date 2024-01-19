@@ -10,7 +10,7 @@ import type {
 
 export const getOrderListBySellerId = async (sellerId: number, page: number, size: number, productStatus: keyof typeof ORDER_STATE | null) => {
   const { data } = await authAxiosInstance.get<GetOrderListBySellerIdResponse>(
-  `/order-service/api/order/seller/${sellerId}?page=${page}&size=${size}&productStatus=${productStatus}`
+  `/order-service/api/order/seller/${sellerId}?page=${page}&size=${size}&productStatus=${productStatus}&startDate=20240112&endDate=20240120`
   )
   return data
 }

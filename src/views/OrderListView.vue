@@ -1,25 +1,19 @@
 <template>
   <div>
-    <label for="sellerSelect">주모를 선택해주세요</label>
-    <template v-if="sellers">
-      <select :value="selectedSeller" @change="setSelect($event)" class="select">
-        <option
-          id="sellerSelect"
-          v-for="seller in sellers"
-          :key="seller.value"
-          :value="seller.value"
-        >
-          {{ seller.label }}
+    <div class="orderListHeader">
+      <label>주모를 선택해주세요</label>
+      <SearchableDropdown
+      :sellers="sellers"
+      :selectedSeller="selectedSeller"
+      @select="setSelect"
+      ></SearchableDropdown>
+      <label for="statusSelect" class="statusSelect">주문 상태를 선택해주세요</label>
+      <select :value="selectedOrderStatus" @change="setSelectOrderStatus($event)" class="select">
+        <option v-for="(label, value) in ORDER_STATE" :key="value" :value="label">
+          {{ getOrderStatusLabel(label) }}
         </option>
       </select>
-    </template>
-    
-    <label for="statusSelect" class="statusSelect">주문 상태를 선택해주세요</label>
-    <select :value="selectedOrderStatus" @change="setSelectOrderStatus($event)" class="select">
-      <option v-for="(label, value) in ORDER_STATE" :key="value" :value="label">
-        {{ getOrderStatusLabel(label) }}
-      </option>
-    </select>
+    </div>
 
     <CustomTable :headers="header" :items="items"></CustomTable>
     <CustomPagination
@@ -38,6 +32,7 @@ import CustomPagination from '@/components/common/CustomPagination.vue'
 import { getOrderListBySellerId } from '@/api/order/orderAPIService'
 import type { GetOrderListBySellerIdResponseData } from '@/api/order/orderAPIService.types'
 import CustomTable from '@/components/common/CustomTable.vue'
+import SearchableDropdown from '@/components/common/CustomSearchableDropdown.vue'
 import { useMyInfoStore } from '@/stores/myInfo'
 import { defineComponent } from 'vue'
 import { useToast } from 'vue-toastification'
@@ -45,7 +40,14 @@ import { ORDER_STATE, translateOrderState } from '@/types/ORDER'
 export default defineComponent({
   components: {
     CustomTable,
-    CustomPagination
+    CustomPagination,
+    SearchableDropdown
+  },
+  computed:{
+    filteredOptions() {
+      const regex = new RegExp(this.searchTerm, 'i');
+      return this.sellers.filter(seller => regex.test(seller.label));
+    },
   },
   methods: {
     async onChangePage(page: number) {
@@ -59,11 +61,12 @@ export default defineComponent({
       )
       return this.sellers[idx].label
     },
-    setSelect(event) {
-      this.selectedSeller = event.target.value
+    setSelect(value) {
+      if(value==="" || typeof value !== "number") return;
+      this.selectedSeller = value;
     },
     setSelectOrderStatus(event) {
-    console.log(event.target);
+      console.log(event.target);
       this.selectedOrderStatus = event.target.value
     },
     getOrderStatusLabel(orderStatus: keyof typeof ORDER_STATE) {
@@ -102,6 +105,7 @@ export default defineComponent({
   },
   data() {
     return {
+      searchTerm: '',
       selectedSeller: -1,
       header: [
         { text: '주모 이름', value: 'sellerName' },
@@ -128,6 +132,7 @@ export default defineComponent({
       selectedOrderStatus: ORDER_STATE.null,
       ORDER_STATE: ORDER_STATE
     } as {
+      searchTerm: string
       selectedSeller: number
       header: { text: string; value: string }[]
       items: GetOrderListBySellerIdResponseData[]
@@ -162,12 +167,17 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
+
+.orderListHeader{
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 select::-ms-expand {
   display: none;
 }
 
 .select {
-  margin-left: 1rem;
   margin-bottom: 1rem;
   background-size: 20px;
   padding: 5px 30px 5px 10px;
