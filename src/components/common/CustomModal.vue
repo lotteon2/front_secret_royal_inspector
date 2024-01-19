@@ -1,6 +1,7 @@
 <template>
   <div class="modal-wrap">
     <div class="modal-container">
+      <div class="modal-closeBtn" @click="$emit('closeBtnClick')">X</div>
       <div v-if="canUpdate === false">
         <h2>{{ modalTitle }}</h2>
         <h3>{{ modalDesc }}</h3>
@@ -51,6 +52,7 @@ export default {
   background: #fff;
   border-radius: 10px;
   padding: 20px;
+  padding-top: 3rem;
   box-sizing: border-box;
 
   img {
@@ -65,6 +67,14 @@ export default {
     box-sizing: border-box;
     margin: 0.5rem;
   }
+}
+
+.modal-closeBtn {
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  cursor: pointer;
+  font-weight: 800;
 }
 
 .modal-btn {

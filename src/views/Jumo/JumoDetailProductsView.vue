@@ -19,6 +19,7 @@
       btnText2="공개로 바꾸기"
       @btnClick1="() => handleChangeVisibility(false)"
       @btnClick2="() => handleChangeVisibility(true)"
+      @closeBtnClick="this.changePopState"
     ></CustomModal>
   </div>
 </template>

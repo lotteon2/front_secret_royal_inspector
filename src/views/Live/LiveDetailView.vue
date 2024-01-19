@@ -32,10 +32,12 @@
       btnText2="반려"
       @btnClick1="() => handleApprove('ALLOW')"
       @btnClick2="() => handleApprove('DENY')"
+      @closeBtnClick="this.changePopState"
     ></CustomModal>
     <CustomModal
       v-if="this.status !== 'AFTER' && updateModalPopState"
       :canUpdate="true"
+      @closeBtnClick="() => changeEditModalPopState()"
       :modalTitle="this.updateModalTitle"
       :modalDesc="this.updateModalDesc"
       @editTitle="handleChangeEditModalTitle"
