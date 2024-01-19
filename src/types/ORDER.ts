@@ -1,4 +1,5 @@
 export const ORDER_STATE = {
+  null: 'null',
   ORDER: 'ORDER',
   SHIPPING: 'SHIPPING',
   COMPLETED: 'COMPLETED',
@@ -15,6 +16,9 @@ export function getOrderState(params: ORDER_STATE) {
 export const translateOrderState = (status: ORDER_STATE) => {
   let translatedOrderState = ''
   switch (status) {
+    case 'null':
+      translatedOrderState = '전체'
+       break
     case 'ORDER':
       translatedOrderState = '주문 완료'
       break

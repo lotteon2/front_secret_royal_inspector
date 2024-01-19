@@ -14,7 +14,7 @@
       </select>
     </template>
     
-    <label for="statusSelect">주문 상태를 선택해주세요</label>
+    <label for="statusSelect" class="statusSelect">주문 상태를 선택해주세요</label>
     <select :value="selectedOrderStatus" @change="setSelectOrderStatus($event)" class="select">
       <option v-for="(label, value) in ORDER_STATE" :key="value" :value="label">
         {{ getOrderStatusLabel(label) }}
@@ -125,7 +125,7 @@ export default defineComponent({
       totalPages: 0,
       requestPage: 0,
       isLoading: false,
-      selectedOrderStatus: ORDER_STATE.ORDER,
+      selectedOrderStatus: ORDER_STATE.null,
       ORDER_STATE: ORDER_STATE
     } as {
       selectedSeller: number
@@ -207,5 +207,9 @@ label {
 }
 
 option {
+}
+
+.statusSelect{
+  margin-left: 1rem;
 }
 </style>
