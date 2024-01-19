@@ -90,9 +90,7 @@ export default {
         }
         console.log(this.ageData)
       } catch (err) {
-        toast.error(`대시보드 데이터들을 불러오는데 실패했어요.`, {
-          timeout: 2000
-        })
+        console.error('err', err)
       } finally {
         this.isLoading = false
       }
@@ -106,9 +104,7 @@ export default {
           this.authData = data.data
         }
       } catch (error) {
-        toast.error(`대시보드 데이터들을 불러오는데 실패했어요.`, {
-          timeout: 2000
-        })
+        console.error('err', error)
       } finally {
         this.isLoading = false
       }
@@ -123,9 +119,7 @@ export default {
           console.log(data.data)
         }
       } catch (error) {
-        toast.error(`대시보드 데이터들을 불러오는데 실패했어요.`, {
-          timeout: 2000
-        })
+        console.error(error)
       } finally {
         this.isLoading = false
       }
