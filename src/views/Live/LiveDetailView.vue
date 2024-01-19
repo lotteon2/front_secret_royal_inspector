@@ -190,20 +190,32 @@ export default {
           this.description = description
           this.startDate = startDate.slice(0, 10)
           this.endDate = endDate ? endDate.slice(0, 10) : ''
-          this.items = data.data.productList
+          const newItems = data.data.productList
+          newItems.forEach(
+            (it, idx) =>
+              (newItems[idx] = {
+                ...newItems[idx],
+                startingPrice: it.startingPrice ? it.startingPrice.toLocaleString() : 0,
+                lastBidPrice: it.lastBidPrice ? it.lastBidPrice.toLocaleString() : 0,
+                capacity: it.capacity ? it.capacity.toLocaleString() : 0,
+                consumerId: it.consumerId ? it.consumerId : '-',
+                totalBid: it.totalBid ? it.totalBid : '-',
+                status: it.status ? 'Y' : 'N'
+              })
+          )
+          this.items = newItems
           this.header =
             this.status === 'AFTER'
               ? [
                   { text: '', value: 'productImageUrl' },
                   { text: '주모 이름', value: 'sellerName' },
                   { text: '상품 이름', value: 'productName' },
-                  { text: '상품이름', value: 'productName' },
                   { text: '시작가', value: 'startingPrice' },
                   { text: '낙찰가', value: 'lastBidPrice' },
                   { text: '낙찰자', value: 'consumerId' },
                   { text: '참여자수', value: 'totalBid' },
                   { text: '도수', value: 'alcoholDegree' },
-                  { text: '용량', value: 'capacity' }
+                  { text: '용량(ml)', value: 'capacity' }
                 ]
               : [
                   { text: '', value: 'productImageUrl' },
