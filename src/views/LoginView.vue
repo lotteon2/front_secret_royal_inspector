@@ -1,6 +1,6 @@
 <template>
   <div class="loginForm" style="height: 100vh">
-    <img src="../assets/main_logo.png" alt="logo" width="200px" />
+    <img src="../assets/main_logo.png" alt="logo" width="200" style="img" />
     <label>이메일</label>
     <input v-model="email" placeholder="이메일을 입력해주세요" />
     <label>비밀번호</label>
@@ -68,5 +68,10 @@ input {
   border-radius: 8px;
   border: 1px solid lightgray;
   padding: 0.5rem;
+}
+
+.img {
+  width: 200px;
+  height: 200px;
 }
 </style>
