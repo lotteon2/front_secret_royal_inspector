@@ -1,10 +1,15 @@
 <template>
   <div class="loginForm" style="height: 100vh">
-    <img src="../assets/main_logo.png" alt="logo" width="200" />
+    <img src="../assets/main_logo.png" alt="logo" width="200px" />
     <label>이메일</label>
     <input v-model="email" placeholder="이메일을 입력해주세요" />
     <label>비밀번호</label>
-    <input v-model="password" type="password" placeholder="비밀번호를 입력해주세요" @keyup.enter="login" />
+    <input
+      v-model="password"
+      type="password"
+      placeholder="비밀번호를 입력해주세요"
+      @keyup.enter="login"
+    />
     <CustomButton btnText="로그인" :handleClick="login" :disabled="isButtonDisabled"></CustomButton>
   </div>
 </template>

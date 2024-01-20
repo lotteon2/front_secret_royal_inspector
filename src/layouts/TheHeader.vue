@@ -3,13 +3,7 @@
     <header>
       <nav>
         <RouterLink to="/dashboard">
-          <img
-            src="@/assets/main_logo.png"
-            alt="logo"
-            width="50"
-            height="50"
-            class="d-inline-block align-text-top"
-          />
+          <img src="@/assets/main_logo.png" alt="logo" width="50px" height="50px" />
         </RouterLink>
         <RouterLink to="/user" :class="{ active: isActive('user', '') }">회원</RouterLink>
         <RouterLink to="/jumo" :class="{ active: isActive('jumo', '') }">주모</RouterLink>
