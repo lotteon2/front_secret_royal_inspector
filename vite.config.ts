@@ -1,5 +1,5 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import ViteImagemin from 'vite-plugin-imagemin'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import VueLayouts from 'vite-plugin-vue-layouts'
@@ -23,7 +23,8 @@ export default defineConfig({
         }
       }
     }),
-    VueLayouts()
+    VueLayouts(),
+    ViteImagemin()
   ],
   resolve: {
     alias: {
