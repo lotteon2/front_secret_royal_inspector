@@ -1,18 +1,13 @@
 <template>
   <div>
-    <label for="sellerSelect">주모를 선택해주세요</label>
-    <template v-if="sellers">
-      <select :value="selectedSeller" @change="setSelect($event)" class="select">
-        <option
-          id="sellerSelect"
-          v-for="seller in sellers"
-          :key="seller.value"
-          :value="seller.value"
-        >
-          {{ seller.label }}
-        </option>
-      </select>
-    </template>
+    <div class="productListHeader">
+      <label>주모를 선택해주세요</label>
+      <SearchableDropdown
+        :sellers="sellers"
+        :selectedSeller="selectedSeller"
+        @select="setSelect"
+      ></SearchableDropdown>
+    </div>
     <CustomTable :headers="header" :items="items" @rowClick="handleClickRow"></CustomTable>
     <CustomPagination
       :on-change-page="onChangePage"
@@ -35,6 +30,7 @@
 </template>
 
 <script lang="ts" scoped>
+import SearchableDropdown from '@/components/common/CustomSearchableDropdown.vue'
 import { useMyInfoStore } from '@/stores/myInfo'
 import CustomTable from '@/components/common/CustomTable.vue'
 import CustomPagination from '@/components/common/CustomPagination.vue'
@@ -48,7 +44,14 @@ export default {
   components: {
     CustomTable,
     CustomModal,
-    CustomPagination
+    CustomPagination,
+    SearchableDropdown
+  },
+  computed: {
+    filteredOptions() {
+      const regex = new RegExp(this.searchTerm, 'i')
+      return this.sellers.filter((seller) => regex.test(seller.label))
+    }
   },
   methods: {
     async onChangePage(page: number) {
@@ -65,8 +68,9 @@ export default {
       )
       return this.sellers[idx].label
     },
-    setSelect(event) {
-      this.selectedSeller = event.target.value
+    setSelect(value) {
+      if (value === '' || typeof value !== 'number') return
+      this.selectedSeller = value
     },
     changePopState() {
       this.popState = !this.popState
@@ -127,6 +131,7 @@ export default {
   },
   data() {
     return {
+      searchTerm: '',
       requestPage: 0,
       page: 0,
       totalPages: 0,
@@ -162,6 +167,7 @@ export default {
       isActivate: boolean
       selectedProductId: string
       popState: boolean
+      searchTerm: string
     }
   },
   mounted() {
@@ -182,6 +188,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.productListHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 select::-ms-expand {
   display: none;
 }

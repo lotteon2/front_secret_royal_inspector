@@ -43,7 +43,13 @@ export default {
       page: 0,
       totalPages: 0,
       requestPage: 0,
-      isLoading: false
+      isLoading: false,
+      sellers: [
+        {
+          value: 1,
+          label: '우리도가'
+        }
+      ]
     } as {
       header: { text: string; value: string }[]
       items: GetSellerListResponseData[]
@@ -51,6 +57,7 @@ export default {
       totalPages: number
       requestPage: number
       isLoading: boolean
+      sellers: { value: number; label: string }[]
     }
   },
   methods: {
