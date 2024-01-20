@@ -8,9 +8,14 @@ import type {
   getAllCashUpListForDashBoardResponse
 } from './orderAPIService.types'
 
-export const getOrderListBySellerId = async (sellerId: number, page: number, size: number, productStatus: keyof typeof ORDER_STATE | null) => {
+export const getOrderListBySellerId = async (
+  sellerId: number,
+  page: number,
+  size: number,
+  productStatus: keyof typeof ORDER_STATE | null
+) => {
   const { data } = await authAxiosInstance.get<GetOrderListBySellerIdResponse>(
-  `/order-service/api/order/seller/${sellerId}?page=${page}&size=${size}&productStatus=${productStatus}&startDate=20240112&endDate=20240120`
+    `/order-service/api/order/seller/${sellerId}?page=${page}&size=${size}&productStatus=${productStatus}`
   )
   return data
 }
@@ -36,7 +41,7 @@ export const getOrderForDashBoard = async (date: string) => {
   return data
 }
 
-export const getAllCashUpListForDashBoard= async (year: string, month: string) => {
+export const getAllCashUpListForDashBoard = async (year: string, month: string) => {
   const { data } = await authAxiosInstance.get<getAllCashUpListForDashBoardResponse>(
     `order-service/api/all-seller-settlement?year=${year}&month=${month}`
   )

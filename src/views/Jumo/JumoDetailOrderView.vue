@@ -19,7 +19,7 @@ import CustomTable from '@/components/common/CustomTable.vue'
 import { getOrderListBySellerId } from '@/api/order/orderAPIService.ts'
 import { useToast } from 'vue-toastification'
 import type { GetOrderListByConsumerIdResponseData } from '@/api/order/orderAPIService.types'
-import { translateOrderState } from '@/types/ORDER'
+import { ORDER_STATE, translateOrderState } from '@/types/ORDER'
 export default {
   components: {
     CustomTable,
@@ -35,7 +35,7 @@ export default {
       const toast = useToast()
       try {
         this.isLoading = true
-        const data = await getOrderListBySellerId(this.sellerId, page, size)
+        const data = await getOrderListBySellerId(this.sellerId, page, size, ORDER_STATE.null)
         if (data.code === 200) {
           const newItems = data.data.content
           newItems.forEach(
