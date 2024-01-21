@@ -20,7 +20,7 @@
           :handleClick="() => approveSeller('DENY')"
           btnType="negative"
         />
-        <CustomButton v-if="this.approvalState === 'ALLOW'" btnText="활성 회원" :disabled="true" />
+        <CustomButton v-if="this.isDeleted === 'ALLOW'" btnText="활성 회원" :disabled="true" />
         <CustomButton v-else btnText="탈퇴한 회원" btnType="negative" :disabled="true" />
       </div>
     </div>
