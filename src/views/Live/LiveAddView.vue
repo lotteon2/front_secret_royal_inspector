@@ -98,7 +98,7 @@ export default {
   flex-direction: column;
   justify-content: center;
   gap: 1rem;
-  margin: 3rem auto;
+  margin: 3rem;
 }
 
 input {
