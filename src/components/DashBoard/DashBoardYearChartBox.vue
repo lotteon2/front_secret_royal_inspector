@@ -40,7 +40,6 @@ export default {
   mounted() {
     this.renderChart()
   },
-  watch: {},
   methods: {
     renderChart() {
       const ctx = this.$refs.chartYearCanvas.getContext('2d')

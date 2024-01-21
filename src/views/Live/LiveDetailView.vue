@@ -94,6 +94,11 @@ export default {
       updateModalDesc: ''
     }
   },
+  watch: {
+    popState: function (value) {
+      console.log(value)
+    }
+  },
   methods: {
     changePopState() {
       this.popState = !this.popState
@@ -110,7 +115,7 @@ export default {
     },
     handleClickRow(items) {
       if (this.status === 'BEFORE') {
-        if (items.status === 'WAIT') {
+        if (items.status === 'N') {
           this.changePopState()
           this.modalTitle = items.sellerName
           this.auctionProductId = items.auctionProductId
@@ -200,7 +205,7 @@ export default {
                 capacity: it.capacity ? it.capacity.toLocaleString() : 0,
                 consumerId: it.consumerId ? it.consumerId : '-',
                 totalBid: it.totalBid ? it.totalBid : '-',
-                status: it.status ? 'Y' : 'N'
+                status: it.status === 'ALLOW' ? 'Y' : 'N'
               })
           )
           this.items = newItems
