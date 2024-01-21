@@ -14,7 +14,7 @@
         />
         <CustomButton :btnText="`${point ? point.toLocaleString() : 0} 포인트`" :disabled="true" />
         <CustomButton
-          v-if="this.isDeleted === true"
+          v-if="this.isDeleted"
           btnText="탈퇴 유저"
           :handleClick="() => withDrawSeller()"
           btnType="negative"
