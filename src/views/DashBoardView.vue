@@ -85,10 +85,8 @@ export default {
         this.isLoading = true
         const data = await getAgeListForDashBoard()
         if (data.code === 200) {
-          console.log('HERE')
           this.ageData = data.data
         }
-        console.log(this.ageData)
       } catch (err) {
         console.error('err', err)
       } finally {
@@ -116,7 +114,6 @@ export default {
         const data = await getOrderForDashBoard('202401')
         if (data.code === 200) {
           this.orderData = data.data
-          console.log(data.data)
         }
       } catch (error) {
         console.error(error)
@@ -130,7 +127,6 @@ export default {
         this.isLoading = true
         const data = await getAllCashUpListForDashBoard('2024', '01')
         if (data.code === 200) {
-          console.log(data.data)
           window.open(data.data)
         }
       } catch (err) {

@@ -3,9 +3,9 @@
     <div class="orderListHeader">
       <label>주모를 선택해주세요</label>
       <SearchableDropdown
-      :sellers="sellers"
-      :selectedSeller="selectedSeller"
-      @select="setSelect"
+        :sellers="sellers"
+        :selectedSeller="selectedSeller"
+        @select="setSelect"
       ></SearchableDropdown>
       <label for="statusSelect" class="statusSelect">주문 상태를 선택해주세요</label>
       <select :value="selectedOrderStatus" @change="setSelectOrderStatus($event)" class="select">
@@ -43,11 +43,11 @@ export default defineComponent({
     CustomPagination,
     SearchableDropdown
   },
-  computed:{
+  computed: {
     filteredOptions() {
-      const regex = new RegExp(this.searchTerm, 'i');
-      return this.sellers.filter(seller => regex.test(seller.label));
-    },
+      const regex = new RegExp(this.searchTerm, 'i')
+      return this.sellers.filter((seller) => regex.test(seller.label))
+    }
   },
   methods: {
     async onChangePage(page: number) {
@@ -62,17 +62,21 @@ export default defineComponent({
       return this.sellers[idx].label
     },
     setSelect(value) {
-      if(value==="" || typeof value !== "number") return;
-      this.selectedSeller = value;
+      if (value === '' || typeof value !== 'number') return
+      this.selectedSeller = value
     },
     setSelectOrderStatus(event) {
-      console.log(event.target);
       this.selectedOrderStatus = event.target.value
     },
     getOrderStatusLabel(orderStatus: keyof typeof ORDER_STATE) {
-    return translateOrderState(orderStatus);
-  },
-    async getOrderListBySellerId(sellerId: number, page: number, size: number, orderStatus: keyof typeof ORDER_STATE | null) {
+      return translateOrderState(orderStatus)
+    },
+    async getOrderListBySellerId(
+      sellerId: number,
+      page: number,
+      size: number,
+      orderStatus: keyof typeof ORDER_STATE | null
+    ) {
       const toast = useToast()
       try {
         this.isLoading = true
@@ -153,7 +157,6 @@ export default defineComponent({
   },
   watch: {
     selectedOrderStatus: function (value) {
-      console.log(value)
       this.getOrderListBySellerId(this.selectedSeller, 0, 10, value)
     },
     selectedSeller: function (value) {
@@ -167,8 +170,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-
-.orderListHeader{
+.orderListHeader {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -219,7 +221,7 @@ label {
 option {
 }
 
-.statusSelect{
+.statusSelect {
   margin-left: 1rem;
 }
 </style>

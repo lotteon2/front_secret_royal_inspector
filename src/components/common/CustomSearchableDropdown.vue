@@ -1,6 +1,11 @@
 <template>
-  <div class="searchable-dropdown" @click="toggleDropdown"  ref="dropdownRef">
-    <input v-model="searchTerm" @input="filterOptions" placeholder="주모를 검색하세요(기본: 전체)" class="select" />
+  <div class="searchable-dropdown" @click="toggleDropdown" ref="dropdownRef">
+    <input
+      v-model="searchTerm"
+      @input="filterOptions"
+      placeholder="주모를 검색하세요(기본: 전체)"
+      class="select"
+    />
     <ul v-show="showDropdown">
       <li v-for="(seller, index) in filteredOptions" :key="index" @click="selectSeller(seller)">
         {{ seller.label }}
@@ -10,63 +15,55 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue';
-const dropdownRef = ref(null);
+import { ref, computed } from 'vue'
+const dropdownRef = ref(null)
 
 export default {
   props: {
     sellers: Array,
-    selectedSeller: Number,
+    selectedSeller: Number
   },
   data() {
     return {
       searchTerm: '',
-      showDropdown: false,
-    };
+      showDropdown: false
+    }
   },
   computed: {
     filteredOptions() {
-      if (this.searchTerm === '') return this.sellers;
-      const regex = new RegExp(this.searchTerm, 'i');
-      return this.sellers.filter(seller => regex.test(seller.label));
-    },
+      if (this.searchTerm === '') return this.sellers
+      const regex = new RegExp(this.searchTerm, 'i')
+      return this.sellers.filter((seller) => regex.test(seller.label))
+    }
   },
   methods: {
     filterOptions() {
-      this.showDropdown = this.searchTerm === '' || this.filteredOptions.length > 0;
+      this.showDropdown = this.searchTerm === '' || this.filteredOptions.length > 0
     },
     selectSeller(seller) {
-      this.searchTerm = seller.label;
-      this.$emit('select', seller.value);
-      this.showDropdown = false;
+      this.searchTerm = seller.label
+      this.$emit('select', seller.value)
+      this.showDropdown = false
     },
     toggleDropdown() {
-      console.log("TOGGLE");
-      this.showDropdown = !this.showDropdown;
+      this.showDropdown = !this.showDropdown
     },
-    closeDropdown (event)  {
-      console.log("HERE")
+    closeDropdown(event) {
       if (dropdownRef.value && !dropdownRef.value.contains(event.target)) {
-        this.showDropdown = false;
+        this.showDropdown = false
       }
     },
     showAllOptions() {
-      this.showDropdown = true;
+      this.showDropdown = true
     },
     mounted() {
-         document.addEventListener('click', this.closeDropdown);
+      document.addEventListener('click', this.closeDropdown)
     },
     beforeUnmount() {
-    document.removeEventListener('click', this.closeDropdown);
-  },
-  },
-  watch: {
-    showDropdown: function (value) {
-      console.log(value);
-    },
-  },
-  
-};
+      document.removeEventListener('click', this.closeDropdown)
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -133,5 +130,4 @@ select:focus {
 select:disabled {
   opacity: 0.5;
 }
-
 </style>

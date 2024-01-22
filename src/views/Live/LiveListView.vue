@@ -47,7 +47,6 @@ export default {
       }
     },
     addAuction() {
-      console.log('here')
       this.$router.push({
         path: '/live/add'
       })

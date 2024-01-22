@@ -140,8 +140,6 @@ export default {
           stompBidResultClient.subscribe(`/sub/bid-result/${this.auctionId}`, (res) => {
             console.log('BID RESULT INFO 구독으로 받은 메시지 입니다.', res.body)
             this.bidResultInfo = JSON.parse(res.body)
-            console.log('HERE')
-            console.log(this.bidResultInfo)
           })
         },
         (error) => {
@@ -157,11 +155,9 @@ export default {
       stompChatClient.connect(
         {},
         (frame) => {
-          console.log('CHAT | INFO 소켓 연결 성공', frame)
           stompChatClient.subscribe(`/sub/chat/${this.auctionId}`, (res) => {
             console.log('CHAT | INFO구독으로 받은 메시지 입니다.', res.body)
             this.recvList.push(JSON.parse(res.body))
-            console.log(this.recvList)
           })
         },
         (error) => {

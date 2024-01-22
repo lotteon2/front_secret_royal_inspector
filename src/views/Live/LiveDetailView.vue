@@ -107,7 +107,6 @@ export default {
       this.updateModalPopState = !this.updateModalPopState
     },
     handleChangeEditModalTitle(title) {
-      console.log(title)
       this.updateModalTitle = title
     },
     handleChangeEditModalDesc(desc) {

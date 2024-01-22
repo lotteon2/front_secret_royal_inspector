@@ -37,7 +37,6 @@ export default defineComponent({
       const myInfo = useMyInfoStore()
       try {
         const data = await getAllSellers()
-        console.log(data)
         console.log(myInfo.getSellers())
       } catch (err) {
         console.log(err)

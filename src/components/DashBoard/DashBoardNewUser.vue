@@ -31,8 +31,6 @@ export default {
     }
   },
   mounted() {
-    console.log(this.chartData)
-    // this.updateChart()
     this.renderChart()
   },
   watch: {
@@ -43,9 +41,6 @@ export default {
   },
   methods: {
     updateChart() {
-      console.log('실행')
-      console.log(Object.keys(this.$props.chartData))
-      console.log(Object.values(this.$props.chartData))
       if (this.$refs.chartCanvas) {
         if (this.userChart) {
           this.userChart.destroy() // 기존 차트 제거

@@ -95,7 +95,6 @@ export default {
   },
   watch: {
     requestPage: function (value) {
-      console.log(value)
       this.getConsumerList(value, 7)
     }
   }
