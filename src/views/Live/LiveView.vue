@@ -6,7 +6,7 @@
     <input v-model="askingPrice" type="number" placeholder="호가를 입력해주세요" />
     <CustomButton @click="changeAskingPrice" btnText="입력"></CustomButton>
     <div class="stream-right">
-      <CustomButton @click="confirmBid" btnText="낙찰(테스트)"></CustomButton>
+      <CustomButton @click="confirmBid" btnText="낙찰"></CustomButton>
     </div>
   </div>
   <div class="live-body">
